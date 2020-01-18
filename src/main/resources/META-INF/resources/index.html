@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>airrow</title>
+    <style>
+      #nav-element {
+        transition: transform 2000ms ease;
+        transform-origin: center center;
+        display: inline-block; /* shrink wrap */
+        font-size: 50vh;
+      }
+      
+      .nav-container {
+        display:flex;
+        justify-content:center;
+        align-items:center;
+      }
+    </style>
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function(event) {
+      navigator.geolocation.watchPosition(function(position) {
+        update_coordinatess(position.coords.latitude, position.coords.longitude);
+      });
+      
+      var sessionId = document.cookie.replace(/(?:(?:^|.*;\s*)sessionId\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+      
+      if (sessionId === "") {
+        sessionId = generateUUID();
+        document.cookie = "sessionId=" + sessionId + ";max-age=86400";
+      }
+      console.log(sessionId);
+      
+      function update_coordinatess(latitude, longitude) {
+          console.log("lat: " + latitude + " long: " + longitude);
+          console.log(sessionId);
+          
+          var xmlhttp = new XMLHttpRequest();
+          var theUrl = "/point/" + sessionId;
+          xmlhttp.onload = updateNavigation;
+          xmlhttp.open("POST", theUrl);
+          xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          xmlhttp.send(JSON.stringify({"direction": 0, "latitude": latitude, "longitude": longitude}));
+      };
+    })
+    
+    function updateNavigation(evt) {
+      //console.log("Updating navigation: " + this.response);
+      if (this.response === "") {
+        console.log("No direction");
+        return;
+      }
+      var direction = JSON.parse(this.response);
+      console.log("Updating navigation: " + direction.angle);
+      var div = document.getElementById('nav-element');
+      
+      div.style.transform = 'rotate('+direction.angle+'deg)'; 
+    }
+    
+    function generateUUID() { // Public Domain/MIT
+        var d = new Date().getTime();//Timestamp
+        var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16;//random number between 0 and 16
+            if(d > 0){//Use timestamp until depleted
+                r = (d + r)%16 | 0;
+                d = Math.floor(d/16);
+            } else {//Use microseconds since page-load if supported
+                r = (d2 + r)%16 | 0;
+                d2 = Math.floor(d2/16);
+            }
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    }
+    </script>
+  </head>
+
+  <body>
+  
+  <div>
+  Monitoring your location:
+  </div>
+  
+  <div class="nav-container">
+    <div id="nav-element">^</div>
+  </div>
+  
+  </body>
+
+</html>
