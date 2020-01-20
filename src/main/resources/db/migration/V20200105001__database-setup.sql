@@ -4,12 +4,12 @@
 
 DELIMITER $$
 CREATE FUNCTION get_distance_in_meters_between_geo_locations(
-  geo1_latitude DOUBLE, geo1_longitude DOUBLE, 
+  geo1_latitude DOUBLE, geo1_longitude DOUBLE,
   geo2_latitude DOUBLE, geo2_longitude DOUBLE
-) 
-returns decimal(6,10) DETERMINISTIC
+)
+returns decimal(20,10) DETERMINISTIC
 BEGIN
-  return 
+  return
   round(
     1000 * 6371 *
     acos(
