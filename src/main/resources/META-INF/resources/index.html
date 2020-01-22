@@ -19,9 +19,12 @@
     </style>
     <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function(event) {
-      navigator.geolocation.watchPosition(function(position) {
-        update_coordinatess(position.coords.latitude, position.coords.longitude);
-      });
+      function updateCoords() {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          update_coordinates(position.coords.latitude, position.coords.longitude);
+        });
+      }
+      window.setInterval(updateCoords, 2000);
       
       var sessionId = document.cookie.replace(/(?:(?:^|.*;\s*)sessionId\s*\=\s*([^;]*).*$)|^.*$/, "$1");
       
@@ -31,7 +34,7 @@
       }
       console.log(sessionId);
       
-      function update_coordinatess(latitude, longitude) {
+      function update_coordinates(latitude, longitude) {
           console.log("lat: " + latitude + " long: " + longitude);
           console.log(sessionId);
           
