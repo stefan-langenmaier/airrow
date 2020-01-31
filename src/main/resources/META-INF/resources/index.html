@@ -18,7 +18,11 @@
       
       #status-container {
         transition: background-color 1s ease;
-        height: 1ex;
+        height: 1em;
+      }
+      
+      #debug-container {
+        height: 1em;
       }
       
       #nav-element {
@@ -36,14 +40,18 @@
       }
     </style>
     <script type="text/javascript">
+    var orientationFix = 0;
+    var absoluteAngle = 0;
+
     document.addEventListener('DOMContentLoaded', function(event) {
 
       var options = {
         enableHighAccuracy: true,
         timeout: 1000,
-        maximumAge: 1000
+        maximumAge: 2000
       };
       var sessionId = document.cookie.replace(/(?:(?:^|.*;\s*)sessionId\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+      
       
       if (sessionId === "") {
         sessionId = generateUUID();
@@ -71,6 +79,15 @@
           var div = document.getElementById('status-container');
           
           div.style.backgroundColor = "#89bba0";
+          
+          if (this.response === "") {
+            console.log("No direction");
+            return;
+          }
+          var direction = JSON.parse(this.response);
+          absoluteAngle = direction.angle;
+          console.log("Updating navigation: " + absoluteAngle);
+          updateNavigation();
       }
       
       function geo_fail(err) {
@@ -80,20 +97,31 @@
         div.style.backgroundColor = "#b38787";
       }
       
+      function handleOrientation(event) {
+        var absolute = event.absolute;
+        var alpha    = event.alpha;
+        var beta     = event.beta;
+        var gamma    = event.gamma;
+
+        var div = document.getElementById('debug-container');
+        div.innerHTML  = "northed : " + absolute + "\n";
+        orientationFix = alpha;
+        updateNavigation();
+      }
+      
       window.setInterval(heartbeat, 2000);
+      window.addEventListener("deviceorientation", handleOrientation, true);
     })
     
-    function updateNavigation(evt) {
-      //console.log("Updating navigation: " + this.response);
-      if (this.response === "") {
-        console.log("No direction");
-        return;
-      }
-      var direction = JSON.parse(this.response);
-      console.log("Updating navigation: " + direction.angle);
+    function updateNavigation() {
       var div = document.getElementById('nav-element');
+      var relativeAngle = absoluteAngle + orientationFix;
       
-      div.style.transform = 'rotate('+direction.angle+'deg)';
+      var debug = document.getElementById('debug-container');
+      debug.innerHTML  += "absoluteAngle : " + absoluteAngle + "\n";
+      debug.innerHTML  += "orientationFix : " + orientationFix + "\n";
+      
+      div.style.transform = 'rotate('+ relativeAngle +'deg)';
     }
     
     function generateUUID() { // Public Domain/MIT
@@ -118,6 +146,8 @@
     <div id="screen">
       <div class="nav-container">
         <div id="nav-element">^</div>
+      </div>
+      <div id="debug-container">
       </div>
       <div id="status-container">
       </div>
