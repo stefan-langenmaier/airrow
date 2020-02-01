@@ -5,5 +5,6 @@ public class UpdateData {
 	public Double direction;
 	public Double longitude;
 	public Double latitude;
+	public String status;
 
 }

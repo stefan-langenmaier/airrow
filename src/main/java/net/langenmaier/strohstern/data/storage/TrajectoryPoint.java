@@ -15,6 +15,7 @@ public class TrajectoryPoint extends PanacheEntity {
 	public Double direction;
 	public Double longitude;
 	public Double latitude;
+	private String status;
 	
 	public OffsetDateTime updatedAt;
 	
@@ -27,6 +28,7 @@ public class TrajectoryPoint extends PanacheEntity {
 		tp.direction = ud.direction;
 		tp.longitude = ud.longitude;
 		tp.latitude = ud.latitude;
+		tp.status = ud.status;
 		ZoneOffset zoneOffSet= ZoneOffset.of("+00:00");
 		tp.updatedAt = OffsetDateTime.now(zoneOffSet);
 		return tp;
@@ -36,6 +38,7 @@ public class TrajectoryPoint extends PanacheEntity {
 		this.session = s;
 		s.latitude = latitude;
 		s.longitude = longitude;
+		s.status = status;
 		s.updatedAt = updatedAt;
 		
 	}

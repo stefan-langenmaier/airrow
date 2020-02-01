@@ -6,4 +6,6 @@ public class Target{
 	public Double distance;
 	public Double latitude;
 	public Double longitude;
+
+	public String status;
 }

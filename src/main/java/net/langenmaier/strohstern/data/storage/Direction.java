@@ -1,9 +1,12 @@
 package net.langenmaier.strohstern.data.storage;
 
 public class Direction {
-	public Direction(double angle) {
+	public Double angle;
+	public String status;
+	
+	public Direction(double angle, String status) {
 		this.angle = angle;
+		this.status = status;
 	}
 
-	public Double angle;
 }

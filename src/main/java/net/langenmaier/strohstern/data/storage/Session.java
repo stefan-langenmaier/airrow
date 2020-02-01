@@ -16,9 +16,9 @@ public class Session extends PanacheEntity {
 	
 	public Double longitude;
 	public Double latitude;
+	public String status;
 
 	public OffsetDateTime updatedAt;
-	
 
 	public static Session findByUuid(UUID uuid){
 		return find("uuid", uuid.toString()).firstResult();
