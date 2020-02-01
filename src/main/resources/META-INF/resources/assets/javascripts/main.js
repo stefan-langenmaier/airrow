@@ -13,8 +13,8 @@ class Navigator {
   start() {
     this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 2000);
     window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
-    EmojiPicker.setRandomEmoji();
-    document.querySelector('.emoji-status').addEventListener('click', EmojiPicker.showPicker);
+    EmojiPicker.show();
+    document.querySelector('.emoji-status.-mine').addEventListener('click', EmojiPicker.showPicker);
   }
 
   stop() {
@@ -23,6 +23,7 @@ class Navigator {
   }
 
   heartbeat() {
+    document.querySelector('#nav-element').classList.toggle('-heartbeat');
     window.navigator.geolocation.getCurrentPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
   }
 
@@ -31,7 +32,7 @@ class Navigator {
     const longitude = position.coords.longitude;
     const url = `https://ärro.de/point/${this.sessionId}`;
     const contentType = "application/json;charset=UTF-8";
-    const params = { "direction": 0, "latitude": latitude, "longitude": longitude };
+    const params = { "direction": 0, "latitude": latitude, "longitude": longitude, status: EmojiPicker.emoji };
 
     Util.post(url, contentType, params)
       .then((response) => {
@@ -40,6 +41,7 @@ class Navigator {
         div.classList.add('-active-position');
 
         this.absoluteAngle = direction.angle;
+        EmojiPicker.targetStatus = direction.status;
         this.updateNavigation();
       })
       .catch((error) => console.log(error));
@@ -148,24 +150,44 @@ class EmojiPicker{
     return !!EmojiPicker.emojiCodes.find((emoji) => emoji == emojiCode);
   }
 
-  static setEmoji(emoji){
-    document.querySelector('.emoji-status').innerText = emoji;
+  static get emoji(){
+    return localStorage.getItem('status-emoji') || this.setRandomEmoji();
+  }
+
+  static set emoji(emoji){
+    localStorage.setItem('status-emoji', emoji);
+    this.show();
+  }
+
+  static show(){
+    document.querySelector('.emoji-status.-mine').innerText = this.emoji;
   }
 
   static setRandomEmoji(){
     const randomEmoji = this.emojiCodes[Math.floor(Math.random() * this.emojiCodes.length)];
-    this.setEmoji(randomEmoji);
+    this.emoji = randomEmoji;
+    return randomEmoji;
   }
 
   static showPicker(evt){
     const newEmojis = Array.from(prompt());
     const firstEmoji = newEmojis[0];
     if (EmojiPicker.valid(firstEmoji)){
-      EmojiPicker.setEmoji(newEmojis[0]);
+      EmojiPicker.emoji = newEmojis[0];
     }else{
-      EmojiPicker.setEmoji('😢');
+      EmojiPicker.emoji = '😢';
     }
     // ToDo: Support multiple emojis;
+  }
+
+  static set targetStatus(status){
+    const targetEmojiElement = document.querySelector('.emoji-status.-target');
+    if(status){
+      targetEmojiElement.innerText = status;
+      targetEmojiElement.classList.add('-visible');
+    }else{
+      targetEmojiElement.classList.remove('-visible');
+    }
   }
 }
 

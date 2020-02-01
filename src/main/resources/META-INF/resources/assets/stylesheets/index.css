@@ -9,7 +9,8 @@ html, body {
 #screen {
   display: flex;
   flex-direction: column;
-  height: 100%
+  height: 100%;
+  position: relative;
 }
 
 #status-container {
@@ -34,6 +35,16 @@ html, body {
   max-height: 50%;
   height: 100%;
   filter: drop-shadow(8px 5px 4px #333);
+  overflow: visible;
+}
+
+#nav-element g{
+  transition: transform 2s 0s;
+  transform-origin: center center;
+}
+
+#nav-element.-heartbeat g{
+  transform: scale(1.10);
 }
 
 .nav-container {
@@ -50,9 +61,23 @@ html, body {
 
 .emoji-status{
   position: absolute;
-  left: 40px;
-  bottom: 40px;
   font-family: 'emoji';
   font-size: 200px;
   cursor: pointer;
+}
+
+.emoji-status.-mine{
+  left: 40px;
+  bottom: 40px;
+}
+
+.emoji-status.-target{
+  display: none;
+  right: 40px;
+  top: 40px;
+  font-size: 100px;
+}
+
+.emoji-status.-target.-visible{
+  display: block;
 }
