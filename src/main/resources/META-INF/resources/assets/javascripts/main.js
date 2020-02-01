@@ -13,6 +13,8 @@ class Navigator {
   start() {
     this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 2000);
     window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
+    EmojiPicker.setRandomEmoji();
+    document.querySelector('.emoji-status').addEventListener('click', EmojiPicker.showPicker);
   }
 
   stop() {
@@ -75,7 +77,7 @@ class Navigator {
   }
 
   get relativeAngle() {
-    return this.absoluteAngle + this.orientationFix;
+    return this.absoluteAngle; // ToDo: Add Orientationfix after getting the north pole+ this.orientationFix;
   }
 
 }
@@ -104,7 +106,7 @@ class Util {
         if (xmlhttp.readyState === 4) {
           if (xmlhttp.status === 200) {
             resolve(xmlhttp.response);
-          } else {
+          } else if (xmlhttp.status >= 400) {
             // e.g. no other participant (Status 204)
             console.error(xmlhttp.statusText);
             reject(xmlhttp.statusText);
@@ -116,6 +118,54 @@ class Util {
       xmlhttp.send(JSON.stringify(params));
     });
     return promise;
+  }
+}
+
+class EmojiPicker{
+  static get emojiCodes(){
+
+    return this.emojis.flatMap((emoji) => emoji.code);
+  }
+
+  static get emojis(){
+    return this.peopleEmojis.concat(this.otherEmojis);
+  }
+
+  static get peopleEmojis(){
+    return [
+      { code: "\u{1F4A5}", name: "collision" },
+      { code: "\u{2620}", name: "skull and crossbones" }
+    ]
+  }
+
+  static get otherEmojis(){
+    return [
+      { code: "\u{1F631}", name: 'face screaming in fear' },
+    ]
+  }
+
+  static valid(emojiCode){
+    return !!EmojiPicker.emojiCodes.find((emoji) => emoji == emojiCode);
+  }
+
+  static setEmoji(emoji){
+    document.querySelector('.emoji-status').innerText = emoji;
+  }
+
+  static setRandomEmoji(){
+    const randomEmoji = this.emojiCodes[Math.floor(Math.random() * this.emojiCodes.length)];
+    this.setEmoji(randomEmoji);
+  }
+
+  static showPicker(evt){
+    const newEmojis = Array.from(prompt());
+    const firstEmoji = newEmojis[0];
+    if (EmojiPicker.valid(firstEmoji)){
+      EmojiPicker.setEmoji(newEmojis[0]);
+    }else{
+      EmojiPicker.setEmoji('😢');
+    }
+    // ToDo: Support multiple emojis;
   }
 }
 
