@@ -1,0 +1,39 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#status-container {
+  transition: background-color 0.21s ease;
+  height: 1em;
+  background-color: #b38787;
+}
+
+#status-container.-active-position {
+  background-color: #89bba0;
+}
+
+#debug-container {
+  height: 1em;
+}
+
+#nav-element {
+  transition: transform 2000ms ease;
+  transform-origin: center center;
+  display: inline-block;
+  /* shrink wrap */
+  font-size: 50vh;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
