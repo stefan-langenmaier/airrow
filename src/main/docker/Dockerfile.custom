@@ -18,7 +18,7 @@ FROM slangenmaier/jdk:latest
 #ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 
 RUN mkdir -p /deployments/lib
+EXPOSE 8080
 COPY target/lib/* /deployments/lib/
 COPY target/*-runner.jar /deployments/app.jar
-EXPOSE 8080
 
