@@ -19,10 +19,6 @@ html, body {
   background-color: #89bba0;
 }
 
-#debug-container {
-  height: 1em;
-}
-
 #nav-element {
   transition: transform 2000ms ease;
   transform-origin: center center;
@@ -37,3 +33,26 @@ html, body {
   align-items: center;
   flex-grow: 1;
 }
+
+.nav-container.-hidden {
+  display: none;
+}
+
+.setup-container.-hidden {
+  display: none;
+}
+
+.setup-container {
+  font-size: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+#setup-element {
+  cursor: pointer;
+  display: inline-block;
+}
+

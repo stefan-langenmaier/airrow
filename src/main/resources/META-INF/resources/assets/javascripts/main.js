@@ -3,6 +3,11 @@ class Navigator {
   constructor() {
     this.absoluteAngle = 0;
     this.activeAngle = 0;
+    
+    this.orientationAbsolute = false;
+    this.orientationOffset = 0;
+    this.orientationCurrent = 0;
+    
     this.geoLocationOptions = {
       enableHighAccuracy: true,
       timeout: 1000,
@@ -10,8 +15,52 @@ class Navigator {
     };
   }
 
+  setup() {
+    window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
+    document.querySelector('#setup-element').addEventListener('click', this.updateSetup.bind(this));
+    this.compassInterval = setInterval(this.updateCompass.bind(this), 100);
+  }
+
+  updateSetup(evt) {
+    if (this.orientationAbsolute === false) {
+      this.orientationOffset = this.orientationCurrent;
+    }
+    this.hideSetup();
+    this.showNavigation();
+  }
+
+  hideSetup() {
+    document.querySelector('.setup-container').classList.add('-hidden');
+    clearInterval(this.compassInterval);
+  }
+
+  showNavigation() {
+    document.querySelector('.nav-container').classList.remove('-hidden');
+    this.start();
+  }
+
+  handleOrientation(evt) {
+    this.orientationAbsolute = evt.absolute;
+    this.orientationCurrent = evt.alpha;
+    // TODO this needs to be done less frequently
+    // use it's own interval
+    //this.updateCompass();
+    //this.updateNavigation();
+  }
+
+  updateCompass() {
+    const compass = document.getElementById('setup-element');
+    compass.style.transform = 'rotate('+ this.orientationCurrent +'deg)';
+  }
+  
+  updateDebug() {
+    const debug = document.getElementById('debug-container');
+    debug.innerText = `northed: ${this.orientiedAngle}`;
+  }
+
   start() {
     this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 2000);
+    this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
   }
 
   stop() {
@@ -64,7 +113,7 @@ class Navigator {
   get relativeAngle() {
     // rotate in the direction of the smaller angle
     // this avoids jumping between 0 and 359 angles
-    let angleChange = Math.abs(this.activeAngle - this.absoluteAngle);
+    let angleChange = Math.abs(this.activeAngle - this.orientiedAngle);
     if (angleChange > 180) { angleChange = (-1)*(360-angleChange);}
     this.activeAngle += angleChange;
 
@@ -72,6 +121,18 @@ class Navigator {
     if (Math.abs(this.activeAngle) > 360) {this.activeAngle %= 360;}
 
     return this.activeAngle;
+  }
+  
+  get orientiedAngle() {
+    return (360 + (this.absoluteAngle - this.northedOrientation))%360;
+  }
+  
+  get northedOrientation() {
+    let diff = this.orientationOffset-this.orientationCurrent;
+    if (diff < 0) {
+      diff = 360 - Math.abs(diff);
+    }
+    return Math.floor(diff);
   }
 
 }
@@ -117,5 +178,5 @@ class Util {
 
 document.addEventListener('DOMContentLoaded', function (_evt) {
   const navigator = new Navigator();
-  navigator.start();
+  navigator.setup();
 });
