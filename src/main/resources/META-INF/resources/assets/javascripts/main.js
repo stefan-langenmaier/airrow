@@ -2,6 +2,7 @@ class Navigator {
 
   constructor() {
     this.absoluteAngle = 0;
+    this.activeAngle = 0;
     this.geoLocationOptions = {
       enableHighAccuracy: true,
       timeout: 1000,
@@ -61,7 +62,16 @@ class Navigator {
   }
 
   get relativeAngle() {
-    return this.absoluteAngle;
+    // rotate in the direction of the smaller angle
+    // this avoids jumping between 0 and 359 angles
+    let angleChange = Math.abs(this.activeAngle - this.absoluteAngle);
+    if (angleChange > 180) { angleChange = (-1)*(360-angleChange);}
+    this.activeAngle += angleChange;
+
+    // if it slowly rotates out dial it back
+    if (Math.abs(this.activeAngle) > 360) {this.activeAngle %= 360;}
+
+    return this.activeAngle;
   }
 
 }
