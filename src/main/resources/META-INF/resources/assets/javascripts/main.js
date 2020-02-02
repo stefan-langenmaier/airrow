@@ -161,7 +161,7 @@ class Util {
         if (xmlhttp.readyState === 4) {
           if (xmlhttp.status === 200) {
             resolve(xmlhttp.response);
-          } else {
+          } else if (xmlhttp.status >= 400) {
             // e.g. no other participant (Status 204)
             console.error(xmlhttp.statusText);
             reject(xmlhttp.statusText);
