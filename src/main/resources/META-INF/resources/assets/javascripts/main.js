@@ -124,7 +124,9 @@ class Navigator {
   }
   
   get orientiedAngle() {
-    return (360 + (this.absoluteAngle - this.northedOrientation))%360;
+    // TODO revert me
+    //return (360 + (this.absoluteAngle - this.northedOrientation))%360;
+    return this.absoluteAngle;
   }
   
   get northedOrientation() {
@@ -178,5 +180,8 @@ class Util {
 
 document.addEventListener('DOMContentLoaded', function (_evt) {
   const navigator = new Navigator();
-  navigator.setup();
+  // TODO revert me
+  //navigator.setup();
+  navigator.hideSetup();
+  navigator.showNavigation();
 });
