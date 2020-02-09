@@ -5,33 +5,31 @@ class Navigator {
     this.activeAngle = 0;
     
     this.orientationAbsolute = false;
-    this.orientationOffset = 0;
+    this.orientationOffset = null;
     this.orientationCurrent = 0;
     
     this.geoLocationOptions = {
       enableHighAccuracy: true,
-      timeout: 1000,
-      maximumAge: 2000
+      timeout: 1000
     };
   }
 
-  setup() {
-    window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
-    document.querySelector('#setup-element').addEventListener('click', this.updateSetup.bind(this));
-    this.compassInterval = setInterval(this.updateCompass.bind(this), 100);
+  refreshOffset(summary) {
+    const oldOrientationOffset = this.orientationOffset;
+    this.orientationOffset = summary.northOffset;
+    if (oldOrientationOffset === null) { this.updateSetup(); }
   }
 
-  updateSetup(evt) {
-    if (this.orientationAbsolute === false) {
-      this.orientationOffset = this.orientationCurrent;
-    }
+  updateSetup() {
+//    if (this.orientationAbsolute === false) {
+//      this.orientationOffset = this.orientationCurrent;
+//    }
     this.hideSetup();
     this.showNavigation();
   }
 
   hideSetup() {
     document.querySelector('.setup-container').classList.add('-hidden');
-    clearInterval(this.compassInterval);
   }
 
   showNavigation() {
@@ -42,23 +40,15 @@ class Navigator {
   handleOrientation(evt) {
     this.orientationAbsolute = evt.absolute;
     this.orientationCurrent = evt.alpha;
-    // TODO this needs to be done less frequently
-    // use it's own interval
-    //this.updateCompass();
-    //this.updateNavigation();
   }
 
-  updateCompass() {
-    const compass = document.getElementById('setup-element');
-    compass.style.transform = 'rotate('+ this.orientationCurrent +'deg)';
-  }
-  
   updateDebug() {
     const debug = document.getElementById('debug-container');
     debug.innerText = `northed: ${this.orientiedAngle}`;
   }
 
   start() {
+    window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
     this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 2000);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
   }
@@ -124,9 +114,8 @@ class Navigator {
   }
   
   get orientiedAngle() {
-    // TODO revert me
-    //return (360 + (this.absoluteAngle - this.northedOrientation))%360;
-    return this.absoluteAngle;
+    return (360 + (this.absoluteAngle - this.northedOrientation))%360;
+    //return this.absoluteAngle;
   }
   
   get northedOrientation() {
@@ -180,8 +169,10 @@ class Util {
 
 document.addEventListener('DOMContentLoaded', function (_evt) {
   const navigator = new Navigator();
-  // TODO revert me
-  //navigator.setup();
-  navigator.hideSetup();
-  navigator.showNavigation();
+  const compass = new Compass();
+  compass.start();
+  compass.register(navigator.refreshOffset.bind(navigator));
+//  navigator.setup();
+//  navigator.hideSetup();
+//  navigator.showNavigation();
 });
