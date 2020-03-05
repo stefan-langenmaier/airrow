@@ -1,6 +1,8 @@
 class Navigator {
 
   constructor() {
+    this.debug = false;
+    
     this.absoluteAngle = 0;
     this.activeAngle = 0;
     
@@ -12,6 +14,16 @@ class Navigator {
       enableHighAccuracy: true,
       timeout: 1000
     };
+    
+    const setupElement = document.getElementById('setup-element');
+    
+    setupElement.addEventListener('dblclick', this.skipSetup.bind(this));
+  }
+  
+  skipSetup() {
+    this.orientationOffset = 0;
+    this.debug = true;
+    this.updateSetup();
   }
 
   refreshOffset(summary) {
@@ -101,18 +113,9 @@ class Navigator {
   }
 
   get relativeAngle() {
-    // rotate in the direction of the smaller angle
-    // this avoids jumping between 0 and 359 angles
-    let angleChange = Math.abs(this.activeAngle - this.orientiedAngle);
-    if (angleChange > 180) { angleChange = (-1)*(360-angleChange);}
-    this.activeAngle += angleChange;
-
-    // if it slowly rotates out dial it back
-    if (Math.abs(this.activeAngle) > 360) {this.activeAngle %= 360;}
-
-    return this.activeAngle;
+    return this.orientiedAngle;
   }
-  
+
   get orientiedAngle() {
     return (360 + (this.absoluteAngle - this.northedOrientation))%360;
     //return this.absoluteAngle;
@@ -169,10 +172,8 @@ class Util {
 
 document.addEventListener('DOMContentLoaded', function (_evt) {
   const navigator = new Navigator();
+  
   const compass = new Compass();
   compass.start();
   compass.register(navigator.refreshOffset.bind(navigator));
-//  navigator.setup();
-//  navigator.hideSetup();
-//  navigator.showNavigation();
 });

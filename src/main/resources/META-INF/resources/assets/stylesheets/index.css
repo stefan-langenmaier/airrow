@@ -22,7 +22,6 @@ html, body {
 }
 
 #nav-element {
-  transition: transform 2000ms ease;
   transform-origin: center center;
   display: inline-block;
   /* shrink wrap */
