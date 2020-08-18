@@ -31,8 +31,19 @@ class Navigator {
         console.log("GEO PERMISSION already enabled - STARTING APP");
         that.startSetup();
       } else if (result.state == 'prompt') {
+        const beforePermissionQuestion = Date.now();
         // this should just trigger the permission question
-        navigator.geolocation.getCurrentPosition(function() {;}, function() {;});
+        // if the response is extremly fast we can assume it was accepted automatically and is granted
+        // looks like a bug
+        navigator.geolocation.getCurrentPosition(function() {
+            const afterPermissionQuestion = Date.now();
+            const PROBABLY_GRANTED=50;
+            const diff=(afterPermissionQuestion-beforePermissionQuestion);
+            console.log(diff);
+            if (diff < PROBABLY_GRANTED) {
+                that.startSetup();
+            }
+            }, function() {;});
       } else if (result.state == 'denied') {
         // TODO show a geo permission denied emoji
         console.log("THIS WONT WORK WITHOUT GEO PERMISSIONS");
@@ -47,7 +58,6 @@ class Navigator {
   }
   
   skipSetup() {
-    this.orientationOffset = 0;
     this.debug = true;
     this.updateSetup();
   }
@@ -95,6 +105,10 @@ class Navigator {
   handleOrientation(evt) {
     this.orientationAbsolute = evt.absolute;
     this.orientationCurrent = evt.alpha;
+    if (this.orientationOffset == null) {
+        console.log(`INIT MANUALLY ORIENTATION OFFSET: ${this.orientationCurrent}`)
+        this.orientationOffset = this.orientationCurrent;
+    }
   }
 
   updateDebug() {
