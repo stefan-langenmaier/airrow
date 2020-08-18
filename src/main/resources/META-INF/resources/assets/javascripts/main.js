@@ -16,8 +16,34 @@ class Navigator {
     };
     
     const setupElement = document.getElementById('setup-element');
-    
+
     setupElement.addEventListener('dblclick', this.skipSetup.bind(this));
+
+    const permissionElement = document.getElementById('permission-element');
+
+    permissionElement.addEventListener('click', this.handlePermission.bind(this));
+  }
+
+  handlePermission() {
+    let that = this;
+    navigator.permissions.query({name:'geolocation'}).then(function(result) {
+      if (result.state == 'granted') {
+        console.log("GEO PERMISSION already enabled - STARTING APP");
+        that.startSetup();
+      } else if (result.state == 'prompt') {
+        // this should just trigger the permission question
+        navigator.geolocation.getCurrentPosition(function() {;}, function() {;});
+      } else if (result.state == 'denied') {
+        // TODO show a geo permission denied emoji
+        console.log("THIS WONT WORK WITHOUT GEO PERMISSIONS");
+      }
+      result.onchange = function() {
+        if (result.state == 'granted') {
+          console.log("GEO PERMISSION permanently enabled - STARTING APP");
+          that.startSetup();
+        }
+      }
+    });
   }
   
   skipSetup() {
@@ -32,12 +58,29 @@ class Navigator {
     if (oldOrientationOffset === null) { this.updateSetup(); }
   }
 
+  startSetup() {
+    this.hidePermission();
+    this.showSetup();
+
+    const compass = new Compass();
+    compass.start();
+    compass.register(this.refreshOffset.bind(this));
+  }
+
   updateSetup() {
 //    if (this.orientationAbsolute === false) {
 //      this.orientationOffset = this.orientationCurrent;
 //    }
     this.hideSetup();
     this.showNavigation();
+  }
+
+  hidePermission() {
+    document.querySelector('.permission-container').classList.add('-hidden');
+  }
+
+  showSetup() {
+    document.querySelector('.setup-container').classList.remove('-hidden');
   }
 
   hideSetup() {
@@ -172,8 +215,4 @@ class Util {
 
 document.addEventListener('DOMContentLoaded', function (_evt) {
   const navigator = new Navigator();
-  
-  const compass = new Compass();
-  compass.start();
-  compass.register(navigator.refreshOffset.bind(navigator));
 });

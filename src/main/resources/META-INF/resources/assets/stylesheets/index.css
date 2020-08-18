@@ -57,3 +57,21 @@ html, body {
   display: inline-block;
 }
 
+.permission-container.-hidden {
+  display: none;
+}
+
+.permission-container {
+  font-size: 35vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+#permission-element {
+  cursor: pointer;
+  display: inline-block;
+}
+
