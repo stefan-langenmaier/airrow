@@ -8,12 +8,17 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 @ApplicationScoped
 public class TargetService {
-	
+
 	@Inject
 	public EntityManager em;
-	
+
+	@ConfigProperty(name = "airrow.debug")
+	Boolean debug;
+
 	public Target findTarget(Session s) {
 		Target t = null;
 		try {
@@ -53,14 +58,17 @@ public class TargetService {
 	// http://www.movable-type.co.uk/scripts/latlong.html
 	public Direction getDirection(Session s, Target t) {
 		if (t == null) return null;
-		
+
 		double latStart = Math.toRadians(s.latitude);
 		double longStart = Math.toRadians(s.longitude);
 		double latEnd = Math.toRadians(t.latitude);
 		double longEnd = Math.toRadians(t.longitude);
 
 		Direction d = new Direction(GeoTools.getWebAngle(Math.toDegrees(GeoTools.getBearing(latStart, longStart, latEnd, longEnd))), t.status);
-		
+		if (debug) {
+			d.target = t;
+		}
+
 		return d;
 	}
 }

@@ -1,7 +1,6 @@
 class Navigator {
 
   constructor() {
-    this.debug = false;
     this.screenLock = false;
     
     this.absoluteAngle = 0;
@@ -65,7 +64,6 @@ class Navigator {
   }
   
   skipSetup() {
-    this.debug = true;
     this.updateSetup();
   }
 
@@ -118,9 +116,10 @@ class Navigator {
     }
   }
 
-  updateDebug() {
+  updateDebug(target) {
     const debug = document.getElementById('debug-container');
-    debug.innerText = `northed: ${this.orientiedAngle}`;
+    const output = JSON.stringify(target, null, 4);
+    debug.innerText = `target: ${output}`;
   }
 
   start() {
@@ -140,7 +139,7 @@ class Navigator {
   updateCoordinates(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    const url = `https://ärro.de/point/${this.sessionId}`;
+    const url = `/point/${this.sessionId}`;
     const contentType = "application/json;charset=UTF-8";
     const params = { "direction": 0, "latitude": latitude, "longitude": longitude };
 
@@ -152,6 +151,9 @@ class Navigator {
 
         this.absoluteAngle = direction.angle;
         this.updateNavigation();
+        if (direction.target) {
+            this.updateDebug(direction.target);
+        }
       })
       .catch((error) => console.log(error));
   }
