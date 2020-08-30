@@ -2,6 +2,7 @@ class Navigator {
 
   constructor() {
     this.debug = false;
+    this.screenLock = false;
     
     this.absoluteAngle = 0;
     this.activeAngle = 0;
@@ -26,6 +27,12 @@ class Navigator {
 
   handlePermission() {
     let that = this;
+    if (this.screenLock === false) {
+      var noSleep = new NoSleep();
+      noSleep.enable();
+      this.screenLock = true;
+    }
+
     navigator.permissions.query({name:'geolocation'}).then(function(result) {
       if (result.state == 'granted') {
         console.log("GEO PERMISSION already enabled - STARTING APP");
