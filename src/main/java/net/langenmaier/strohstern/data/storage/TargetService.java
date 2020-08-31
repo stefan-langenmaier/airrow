@@ -13,6 +13,8 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class TargetService {
 
+	private static final Double MIN_FOUND_DISTANCE = 10d;
+
 	@Inject
 	public EntityManager em;
 
@@ -65,6 +67,9 @@ public class TargetService {
 		double longEnd = Math.toRadians(t.longitude);
 
 		Direction d = new Direction(GeoTools.getWebAngle(Math.toDegrees(GeoTools.getBearing(latStart, longStart, latEnd, longEnd))), t.status);
+		if (t.distance < MIN_FOUND_DISTANCE) {
+			d.searchState = SearchState.FOUND;
+		}
 		if (debug) {
 			d.target = t;
 		}

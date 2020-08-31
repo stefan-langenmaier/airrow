@@ -5,6 +5,10 @@ html, body {
   background: radial-gradient(circle at 50%, #EDF2F1, #7182A1 97%);
 }
 
+body.-found {
+  background: radial-gradient(circle at 50%, #EDF2F1, rgb(206, 92, 0));
+}
+
 #screen {
   display: flex;
   flex-direction: column;
@@ -71,6 +75,24 @@ html, body {
 }
 
 #permission-element {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.destination-container.-hidden {
+  display: none;
+}
+
+.destination-container {
+  font-size: 35vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+#destination-element {
   cursor: pointer;
   display: inline-block;
 }

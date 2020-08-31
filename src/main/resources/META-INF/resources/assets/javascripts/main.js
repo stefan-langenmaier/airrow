@@ -1,6 +1,7 @@
 class Navigator {
 
   constructor() {
+    this.FOUND_STATE = "FOUND";
     this.screenLock = false;
     
     this.absoluteAngle = 0;
@@ -107,6 +108,16 @@ class Navigator {
     this.start();
   }
 
+  stopNavigation() {
+    document.querySelector('.nav-container').classList.add('-hidden');
+    this.stop();
+  }
+
+  showDestination() {
+    document.querySelector('.destination-container').classList.remove('-hidden');
+    document.querySelector('body').classList.add('-found');
+  }
+
   handleOrientation(evt) {
     this.orientationAbsolute = evt.absolute;
     this.orientationCurrent = evt.alpha;
@@ -153,6 +164,11 @@ class Navigator {
         this.updateNavigation();
         if (direction.target) {
             this.updateDebug(direction.target);
+        }
+
+        if (direction.searchState === this.FOUND_STATE) {
+            this.showDestination();
+            this.stopNavigation();
         }
       })
       .catch((error) => console.log(error));
