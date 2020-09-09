@@ -45,11 +45,17 @@ public class TargetService {
 				t = new Target();
 				Object[] of = (Object[]) o;
 
-				t.distance = ((BigDecimal) of[0]).doubleValue();
-				t.id = ((BigInteger) of[1]).longValue();
-				t.latitude = (Double) of[2];
-				t.longitude = (Double) of[3];
-				t.status = (String) of[4];
+				try {
+					t.distance = ((BigDecimal) of[0]).doubleValue();
+					t.id = ((BigInteger) of[1]).longValue();
+					t.latitude = (Double) of[2];
+					t.longitude = (Double) of[3];
+					t.status = (String) of[4];
+				catch (NullPointerException npe) {
+					npe.printStackTrace();
+					System.out.println(of);
+					return null;
+				}
 			}
 		} catch (NoResultException e) {
 			return null;
