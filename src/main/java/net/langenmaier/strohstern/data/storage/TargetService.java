@@ -51,7 +51,7 @@ public class TargetService {
 					t.latitude = (Double) of[2];
 					t.longitude = (Double) of[3];
 					t.status = (String) of[4];
-				catch (NullPointerException npe) {
+				} catch (NullPointerException npe) {
 					npe.printStackTrace();
 					System.out.println(of);
 					return null;

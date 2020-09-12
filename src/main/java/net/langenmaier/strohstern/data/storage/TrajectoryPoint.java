@@ -15,7 +15,7 @@ public class TrajectoryPoint extends PanacheEntity {
 	public Double direction;
 	public Double longitude;
 	public Double latitude;
-	private String status;
+	public String status;
 	
 	public OffsetDateTime updatedAt;
 	

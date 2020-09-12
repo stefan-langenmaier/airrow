@@ -6,7 +6,9 @@ class Navigator {
     
     this.absoluteAngle = 0;
     this.activeAngle = 0;
-    
+
+    this.targetStatus = null;
+
     this.orientationAbsolute = false;
     this.orientationOffset = null;
     this.orientationCurrent = 0;
@@ -148,11 +150,14 @@ class Navigator {
   }
 
   updateCoordinates(position) {
+    const navigationStatus = document.getElementById('nav-status');
+
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
+    const status = navigationStatus.value
     const url = `/point/${this.sessionId}`;
     const contentType = "application/json;charset=UTF-8";
-    const params = { "direction": 0, "latitude": latitude, "longitude": longitude };
+    const params = { "direction": 0, "latitude": latitude, "longitude": longitude, "status": status };
 
     Util.post(url, contentType, params)
       .then((response) => {
@@ -161,6 +166,7 @@ class Navigator {
         div.classList.add('-active-position');
 
         this.absoluteAngle = direction.angle;
+        this.targetStatus = direction.status;
         this.updateNavigation();
         if (direction.target) {
             this.updateDebug(direction.target);
@@ -176,6 +182,15 @@ class Navigator {
 
   updateNavigation() {
     const navigationElement = document.getElementById('nav-element');
+    const navigationTarget = document.getElementById('nav-target');
+
+    if (this.targetStatus) {
+        navigationTarget.classList.remove('-inactive');
+        navigationTarget.innerText = this.targetStatus;
+    } else {
+        navigationTarget.classList.add('-inactive');
+        navigationTarget.innerText = "🎯";
+    }
 
     navigationElement.style.transform = `rotate(${this.relativeAngle}deg)`;
   }
