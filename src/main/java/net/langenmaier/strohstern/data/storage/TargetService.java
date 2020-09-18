@@ -24,10 +24,10 @@ public class TargetService {
 	public Target findTarget(Session s) {
 		Target t = null;
 		try {
-			// http://www.plumislandmedia.net/mysql/haversine-mysql-nearest-loc/
 			String NEAREST_POINT_SQL = new StringBuilder()
 				.append("SELECT ")
-					.append("get_distance_in_meters_between_geo_locations(start.latitude, start.longitude, target.latitude, target.longitude) AS distance,")
+					.append("get_distance_in_meters_between_geo_locations(start.latitude, start.longitude, target.latitude, target.longitude) AS geo_distance,")
+					.append("emoji_distance(start.status, target.status, 2) AS emoji_distance,")
 					.append("target.id AS targetId, ")
 					.append("target.latitude AS targetLatitude, ")
 					.append("target.longitude AS targetLongitude, ")
@@ -37,7 +37,7 @@ public class TargetService {
 					.append("ON start.id != target.id ")
 					.append("AND start.uuid = ?1 ")
 					.append("AND target.updatedAt > (NOW() - INTERVAL 30 SECOND)")
-				.append("ORDER BY distance ")
+				.append("ORDER BY (geo_distance*emoji_distance) ")
 				.append("LIMIT 1;")
 				.toString();
 			Object o = em.createNativeQuery(NEAREST_POINT_SQL).setParameter(1, s.uuid).getSingleResult();
@@ -46,11 +46,12 @@ public class TargetService {
 				Object[] of = (Object[]) o;
 
 				try {
-					t.distance = ((BigDecimal) of[0]).doubleValue();
-					t.id = ((BigInteger) of[1]).longValue();
-					t.latitude = (Double) of[2];
-					t.longitude = (Double) of[3];
-					t.status = (String) of[4];
+					t.geo_distance = ((BigDecimal) of[0]).doubleValue();
+					t.emoji_distance = (Double) of[1];
+					t.id = ((BigInteger) of[2]).longValue();
+					t.latitude = (Double) of[3];
+					t.longitude = (Double) of[4];
+					t.status = (String) of[5];
 				} catch (NullPointerException npe) {
 					npe.printStackTrace();
 					System.out.println(of);
@@ -73,7 +74,7 @@ public class TargetService {
 		double longEnd = Math.toRadians(t.longitude);
 
 		Direction d = new Direction(GeoTools.getWebAngle(Math.toDegrees(GeoTools.getBearing(latStart, longStart, latEnd, longEnd))), t.status);
-		if (t.distance < MIN_FOUND_DISTANCE) {
+		if (t.geo_distance < MIN_FOUND_DISTANCE) {
 			d.searchState = SearchState.FOUND;
 		}
 		if (debug) {

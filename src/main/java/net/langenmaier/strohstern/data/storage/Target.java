@@ -3,7 +3,8 @@ package net.langenmaier.strohstern.data.storage;
 public class Target{
 	public Long id;
 
-	public Double distance;
+	public Double geo_distance;
+	public Double emoji_distance;
 	public Double latitude;
 	public Double longitude;
 
