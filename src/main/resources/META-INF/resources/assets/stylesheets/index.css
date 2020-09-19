@@ -19,10 +19,24 @@ body.-found {
   transition: background-color 0.21s ease;
   height: 3em;
   background-color: #b38787;
+  display: flex;
+  flex-direction: row;
 }
 
 #status-container.-active-position {
   background-color: #89bba0;
+}
+
+#status-element {
+  flex: 5 3em;
+}
+
+#help-element {
+  flex: 1 3em;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  font-size: 2.5em;
 }
 
 #nav-element {
