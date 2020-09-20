@@ -28,7 +28,7 @@ public class TrajectoryPoint extends PanacheEntity {
 		tp.direction = ud.direction;
 		tp.longitude = ud.longitude;
 		tp.latitude = ud.latitude;
-		tp.status = ud.status;
+		tp.status = EmojiUtils.stripNonEmojis(ud.status);
 		ZoneOffset zoneOffSet= ZoneOffset.of("+00:00");
 		tp.updatedAt = OffsetDateTime.now(zoneOffSet);
 		return tp;

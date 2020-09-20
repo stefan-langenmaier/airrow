@@ -64,6 +64,11 @@
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-flyway</artifactId>
     </dependency>
+    <dependency>
+        <groupId>com.kcthota</groupId>
+        <artifactId>emoji4j</artifactId>
+        <version>6.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
