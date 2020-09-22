@@ -13,18 +13,43 @@ class Navigator {
     this.orientationOffset = null;
     this.orientationCurrent = 0;
     
+    this.isFiltering = false;
+    
     this.geoLocationOptions = {
       enableHighAccuracy: true,
       timeout: 1000
     };
     
     const setupElement = document.getElementById('setup-element');
-
     setupElement.addEventListener('dblclick', this.skipSetup.bind(this));
 
     const permissionElement = document.getElementById('permission-element');
-
     permissionElement.addEventListener('click', this.handlePermission.bind(this));
+
+    const navStatus = document.getElementById('nav-status');
+    navStatus.addEventListener('input', this.filterEmojiInput.bind(this));
+  }
+
+  filterEmojiInput(e) {
+    // lock to avoid recursive calls
+    if (this.isFiltering) {return;}
+    this.isFiltering = true;
+    
+    const input = e.target.value;
+    // https://unicode.org/reports/tr51/#Emoji_Properties
+    const regexpEmojiPresentation = /\p{Emoji}/gu;
+    let filteredInput = "";
+    const matches = input.match(regexpEmojiPresentation);
+    if (matches) {
+        filteredInput = matches.join('');
+    }
+    
+    // simple update of the target value does not seem to work
+    // slight workaround
+    e.target.setRangeText(filteredInput, 0, e.target.value.length, "end");
+    
+    // release lock
+    this.isFiltering = false;
   }
 
   handlePermission() {
