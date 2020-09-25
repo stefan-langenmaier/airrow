@@ -37,7 +37,14 @@ class Navigator {
     
     const input = e.target.value;
     // https://unicode.org/reports/tr51/#Emoji_Properties
-    const regexpEmojiPresentation = /\p{Emoji}/gu;
+    let regexpEmojiPresentation;
+    try {
+        regexpEmojiPresentation = new RegExp("\p{Emoji}/gu");
+    } catch (e) {
+        console.log("emoji regex could not be created");
+        regexpEmojiPresentation = new RegExp();
+    }
+
     let filteredInput = "";
     const matches = input.match(regexpEmojiPresentation);
     if (matches) {
