@@ -155,9 +155,8 @@ class Navigator {
   }
 
   updateDebug(target) {
-    const debug = document.getElementById('debug-container');
-    const output = JSON.stringify(target, null, 4);
-    debug.innerText = `target: ${output}`;
+    const debug = document.getElementById('status-element');
+    debug.innerText = `${target.geo_distance}m`;
   }
 
   start() {
