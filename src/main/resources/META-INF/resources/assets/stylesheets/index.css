@@ -30,6 +30,7 @@ body.-found {
 #status-element {
   flex: 5 3em;
   font-size: 2.5em;
+  padding: 0.5em;
 }
 
 #help-element {

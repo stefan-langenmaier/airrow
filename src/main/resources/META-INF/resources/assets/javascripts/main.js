@@ -28,6 +28,9 @@ class Navigator {
 
     const navStatus = document.getElementById('nav-status');
     navStatus.addEventListener('input', this.filterEmojiInput.bind(this));
+
+    const status = document.getElementById('status-element');
+    status.innerText = '';
   }
 
   filterEmojiInput(e) {
