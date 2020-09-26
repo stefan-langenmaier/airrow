@@ -21,13 +21,22 @@ public class TargetService {
 	@ConfigProperty(name = "airrow.debug")
 	Boolean debug;
 
+	@ConfigProperty(name = "airrow.search.walkDistance")
+	Integer walkDistance;
+
+	@ConfigProperty(name = "airrow.search.scale")
+	Integer scale;
+
+	@ConfigProperty(name = "airrow.search.ttl")
+	Integer ttl;
+
 	public Target findTarget(Session s) {
 		Target t = null;
 		try {
 			String NEAREST_POINT_SQL = new StringBuilder()
 				.append("SELECT ")
 					.append("get_distance_in_meters_between_geo_locations(start.latitude, start.longitude, target.latitude, target.longitude) AS geo_distance,")
-					.append("emoji_distance(start.status, target.status, 2) AS emoji_distance,")
+					.append("emoji_distance(start.status, target.status, ?2) AS emoji_distance,")
 					.append("target.id AS targetId, ")
 					.append("target.latitude AS targetLatitude, ")
 					.append("target.longitude AS targetLongitude, ")
@@ -36,11 +45,16 @@ public class TargetService {
 				.append(" INNER JOIN Session AS target ")
 					.append("ON start.id != target.id ")
 					.append("AND start.uuid = ?1 ")
-					.append("AND target.updatedAt > (NOW() - INTERVAL 30 SECOND)")
-				.append("ORDER BY (geo_distance*emoji_distance) ")
+					.append("AND target.updatedAt > (NOW() - INTERVAL ?3 SECOND)")
+				.append("ORDER BY IF(geo_distance<?4,emoji_distance,1), (geo_distance*emoji_distance) ")
 				.append("LIMIT 1;")
 				.toString();
-			Object o = em.createNativeQuery(NEAREST_POINT_SQL).setParameter(1, s.uuid).getSingleResult();
+			Object o = em.createNativeQuery(NEAREST_POINT_SQL)
+					.setParameter(1, s.uuid)
+					.setParameter(2, scale)
+					.setParameter(3, ttl)
+					.setParameter(4, walkDistance)
+					.getSingleResult();
 			if (o instanceof Object[]) {
 				t = new Target();
 				Object[] of = (Object[]) o;
