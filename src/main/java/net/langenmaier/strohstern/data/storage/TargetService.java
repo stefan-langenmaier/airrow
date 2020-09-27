@@ -45,7 +45,11 @@ public class TargetService {
 				.append(" INNER JOIN Session AS target ")
 					.append("ON start.id != target.id ")
 					.append("AND start.uuid = ?1 ")
-					.append("AND target.updatedAt > (NOW() - INTERVAL ?3 SECOND)")
+					.append("AND (")
+						.append("(target.updatedAt > (NOW() - INTERVAL ?3 SECOND))")
+						.append(" OR ")
+						.append("(target.permanent = TRUE)")
+					.append(")")
 				.append("ORDER BY IF(geo_distance<?4,emoji_distance,1), (geo_distance*emoji_distance) ")
 				.append("LIMIT 1;")
 				.toString();
