@@ -13,6 +13,8 @@ class Navigator {
     this.orientationOffset = null;
     this.orientationCurrent = 0;
     
+    this.accuracy = 0;
+
     this.isFiltering = false;
     
     this.geoLocationOptions = {
@@ -159,7 +161,7 @@ class Navigator {
 
   updateDebug(target) {
     const debug = document.getElementById('status-element');
-    debug.innerText = `${target.geo_distance}m`;
+    debug.innerText = `${target.geo_distance}m ± ${this.accuracy}m`;
   }
 
   start() {
@@ -181,6 +183,7 @@ class Navigator {
 
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
+    this.accuracy = Math.round(position.coords.accuracy);
     const status = navigationStatus.value
     const url = `/point/${this.sessionId}`;
     const contentType = "application/json;charset=UTF-8";
