@@ -19,7 +19,7 @@ class Navigator {
     
     this.geoLocationOptions = {
       enableHighAccuracy: true,
-      timeout: 1000
+      timeout: 2000
     };
     
     const setupElement = document.getElementById('setup-element');
@@ -76,7 +76,7 @@ class Navigator {
         // looks like a bug
         navigator.geolocation.getCurrentPosition(function() {
             const afterPermissionQuestion = Date.now();
-            const PROBABLY_GRANTED=50;
+            const PROBABLY_GRANTED=70;
             const diff=(afterPermissionQuestion-beforePermissionQuestion);
             console.log(diff);
             if (diff < PROBABLY_GRANTED) {
@@ -166,7 +166,7 @@ class Navigator {
 
   start() {
     window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
-    this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 2000);
+    this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 3000);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
   }
 
