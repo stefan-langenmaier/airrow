@@ -33,9 +33,6 @@ class Navigator {
 
     const status = document.getElementById('status-element');
     status.innerText = '';
-    
-    // verify permission right away
-    this.handlePermission();
   }
 
   filterEmojiInput(e) {
@@ -62,6 +59,9 @@ class Navigator {
 
   handlePermission() {
     let that = this;
+
+    // this needs to be triggered by a real user interaction
+    // therefore we always show the satellite at the beginning
     if (this.screenLock === false) {
       var noSleep = new NoSleep();
       noSleep.enable();
