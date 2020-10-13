@@ -16,6 +16,7 @@ public class TrajectoryPoint extends PanacheEntity {
 	public Double longitude;
 	public Double latitude;
 	public String status;
+	public Integer accuracy;
 	
 	public OffsetDateTime updatedAt;
 	
@@ -29,18 +30,22 @@ public class TrajectoryPoint extends PanacheEntity {
 		tp.longitude = ud.longitude;
 		tp.latitude = ud.latitude;
 		tp.status = EmojiUtils.stripNonEmojis(ud.status);
+		tp.accuracy = ud.accuracy;
 		ZoneOffset zoneOffSet= ZoneOffset.of("+00:00");
 		tp.updatedAt = OffsetDateTime.now(zoneOffSet);
 		return tp;
 	}
 
-	public void refresh(Session s) {
+	public void refresh(Session s, Integer minAccuracy) {
 		this.session = s;
-		s.latitude = latitude;
-		s.longitude = longitude;
-		s.status = status;
-		s.updatedAt = updatedAt;
-		
+		// to keep the target stable
+		// only update the active session if it's accurate enough
+		if (accuracy < minAccuracy) {
+			s.latitude = latitude;
+			s.longitude = longitude;
+			s.status = status;
+			s.updatedAt = updatedAt;
+		}
 	}
 
 }

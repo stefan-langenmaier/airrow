@@ -200,7 +200,7 @@ class Navigator {
     const status = navigationStatus.value
     const url = `/point/${this.sessionId}`;
     const contentType = "application/json;charset=UTF-8";
-    const params = { "direction": 0, "latitude": latitude, "longitude": longitude, "status": status };
+    const params = { "direction": 0, "latitude": latitude, "longitude": longitude, "status": status, "accuracy": this.accuracy};
 
     Util.post(url, contentType, params)
       .then((response) => {

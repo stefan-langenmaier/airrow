@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 @Path("/point")
@@ -23,6 +24,9 @@ public class PointResource {
 	@Inject
 	TargetService ts;
 	
+	@ConfigProperty(name = "airrow.search.minAccuracy")
+	Integer minAccuracy;
+	
 	@POST
 	@Transactional
 	@Path("/{sessionId}")
@@ -32,12 +36,17 @@ public class PointResource {
 		}
 		Session s = Session.findByUuid(sessionId);
 		if (s == null) {
-			LOGGER.info("create new session");
-			s = new Session();
-			s.uuid = sessionId.toString();
+			if (ud.accuracy < minAccuracy) {
+				LOGGER.info("create new session");
+				s = new Session();
+				s.uuid = sessionId.toString();
+			} else {
+				// only start persisting once we have one accurate data point
+				return null;
+			}
 		}
 		TrajectoryPoint tp = TrajectoryPoint.of(ud);
-		tp.refresh(s);
+		tp.refresh(s, minAccuracy);
 		tp.persist();
 		s.persist();
 		LOGGER.info("location persisted");

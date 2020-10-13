@@ -6,5 +6,6 @@ public class UpdateData {
 	public Double longitude;
 	public Double latitude;
 	public String status;
+	public Integer accuracy;
 
 }
