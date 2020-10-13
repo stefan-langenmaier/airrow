@@ -33,6 +33,9 @@ class Navigator {
 
     const status = document.getElementById('status-element');
     status.innerText = '';
+    
+    // verify permission right away
+    this.handlePermission();
   }
 
   filterEmojiInput(e) {
@@ -65,37 +68,47 @@ class Navigator {
       this.screenLock = true;
     }
 
-    navigator.permissions.query({name:'geolocation'}).then(function(result) {
-      if (result.state == 'granted') {
-        console.log("GEO PERMISSION already enabled - STARTING APP");
-        that.startSetup();
-      } else if (result.state == 'prompt') {
-        const beforePermissionQuestion = Date.now();
-        // this should just trigger the permission question
-        // if the response is extremly fast we can assume it was accepted automatically and is granted
-        // looks like a bug
-        navigator.geolocation.getCurrentPosition(function() {
-            const afterPermissionQuestion = Date.now();
-            const PROBABLY_GRANTED=70;
-            const diff=(afterPermissionQuestion-beforePermissionQuestion);
-            console.log(diff);
-            if (diff < PROBABLY_GRANTED) {
-                that.startSetup();
-            }
-            }, function() {;});
-      } else if (result.state == 'denied') {
-        // TODO show a geo permission denied emoji
-        console.log("THIS WONT WORK WITHOUT GEO PERMISSIONS");
-      }
-      result.onchange = function() {
+    const PROBABLY_GRANTED=50;
+    if (navigator.permissions === undefined) {
+        this.verifyPermission(PROBABLY_GRANTED, that);
+    } else {
+      navigator.permissions.query({name:'geolocation'}).then(function(result) {
         if (result.state == 'granted') {
-          console.log("GEO PERMISSION permanently enabled - STARTING APP");
+          console.log("GEO PERMISSION already enabled - STARTING APP");
           that.startSetup();
+        } else if (result.state == 'prompt') {
+          that.verifyPermission(PROBABLY_GRANTED, that);
+        } else if (result.state == 'denied') {
+          // TODO show a geo permission denied emoji
+          console.log("THIS WONT WORK WITHOUT GEO PERMISSIONS");
         }
-      }
-    });
+        result.onchange = function() {
+          if (result.state == 'granted') {
+            console.log("GEO PERMISSION permanently enabled - STARTING APP");
+            that.startSetup();
+          }
+        }
+      });
+    }
   }
   
+  verifyPermission(PROBABLY_GRANTED, that) {
+      const beforePermissionQuestion = Date.now();
+      // this should just trigger the permission question
+      // if the response is extremly fast we can assume it was accepted permanently
+      // and is actually in state granted
+      // looks like a bug in firefox
+      // https://stackoverflow.com/questions/55127053/navigator-permissions-query-geolocation-onchange-not-working-in-firefox
+      navigator.geolocation.getCurrentPosition(function() {
+          const afterPermissionQuestion = Date.now();
+          const diff = (afterPermissionQuestion - beforePermissionQuestion);
+          console.log(diff);
+          if (diff < PROBABLY_GRANTED) {
+              that.startSetup();
+          }
+      });
+  }
+
   skipSetup() {
     this.updateSetup();
   }
