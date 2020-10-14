@@ -14,6 +14,7 @@ class Navigator {
     this.orientationCurrent = 0;
     
     this.accuracy = 0;
+    this.accuracyHistory = [];
 
     this.isFiltering = false;
     
@@ -197,6 +198,7 @@ class Navigator {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     this.accuracy = Math.round(position.coords.accuracy);
+    this.accuracyHistory.push(this.accuracy < 30);
     const status = navigationStatus.value
     const url = `/point/${this.sessionId}`;
     const contentType = "application/json;charset=UTF-8";
@@ -234,8 +236,32 @@ class Navigator {
         navigationTarget.classList.add('-inactive');
         navigationTarget.innerText = "🎯";
     }
+    
+    if (this.isAccurate()) {
+        navigationElement.classList.remove('-blur');
+        navigationElement.innerText = "^";
+        navigationElement.style.transform = `rotate(${this.relativeAngle}deg)`;
+    } else {
+        navigationElement.classList.add('-blur');
+        navigationElement.innerText = "⚠️";
+        navigationElement.style.transform = '';
+    }
 
-    navigationElement.style.transform = `rotate(${this.relativeAngle}deg)`;
+  }
+  
+  isAccurate() {
+    // reduce array to the last 10 elements
+    // TODO this should be done in a setter 
+    this.accuracyHistory = this.accuracyHistory.slice(-10);
+    
+    const totalPoints = this.accuracyHistory.length;
+    if (totalPoints < 3) {
+        return true;
+    }
+
+    const accuratePoints = this.accuracyHistory.filter(point => point).length;
+    if ((accuratePoints/totalPoints) > 0.7) return true;
+    return false;
   }
 
   noGeoPositionAvailable(err) {

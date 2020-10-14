@@ -48,6 +48,10 @@ body.-found {
   font-size: 35vh;
 }
 
+#nav-element.-blur {
+  filter: blur(15px);
+}
+
 #nav-target {
   transform-origin: center center;
   display: inline-block;
