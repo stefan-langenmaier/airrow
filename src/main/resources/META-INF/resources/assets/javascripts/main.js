@@ -8,6 +8,7 @@ class Navigator {
     this.activeAngle = 0;
 
     this.targetStatus = null;
+    this.target = null;
 
     this.orientationAbsolute = false;
     this.orientationOffset = null;
@@ -173,9 +174,13 @@ class Navigator {
     }
   }
 
-  updateDebug(target) {
+  updateDebug() {
     const debug = document.getElementById('status-element');
-    debug.innerText = `${target.geo_distance}m ± ${this.accuracy}m`;
+    if (this.target) {
+        debug.innerText = `${this.target.geo_distance}m ± ${this.accuracy}m`;
+    } else {
+        debug.innerText = `± ${this.accuracy}m`;
+    }
   }
 
   start() {
@@ -204,35 +209,43 @@ class Navigator {
     const contentType = "application/json;charset=UTF-8";
     const params = { "direction": 0, "latitude": latitude, "longitude": longitude, "status": status, "accuracy": this.accuracy};
 
+    this.updateDebug();
+
     Util.post(url, contentType, params)
       .then((response) => {
-        const div = document.getElementById('status-container');
         const direction = JSON.parse(response);
-        div.classList.add('-active-position');
 
         this.absoluteAngle = direction.angle;
         this.targetStatus = direction.status;
+        this.target = direction.target;
+        
         this.updateNavigation();
-        if (direction.target) {
-            this.updateDebug(direction.target);
-        }
+        this.updateDebug();
 
         if (direction.searchState === this.FOUND_STATE) {
             this.showDestination();
             this.stopNavigation();
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.target = null;
+        this.targetStatus = null;
+        this.updateNavigation();
+      });
   }
 
   updateNavigation() {
     const navigationElement = document.getElementById('nav-element');
     const navigationTarget = document.getElementById('nav-target');
-
+    const statusElement = document.getElementById('status-container');
+        
     if (this.targetStatus) {
+        statusElement.classList.add('-active-position');
         navigationTarget.classList.remove('-inactive');
         navigationTarget.innerText = this.targetStatus;
     } else {
+        statusElement.classList.remove('-active-position');
         navigationTarget.classList.add('-inactive');
         navigationTarget.innerText = "🎯";
     }
@@ -321,9 +334,11 @@ class Util {
         if (xmlhttp.readyState === 4) {
           if (xmlhttp.status === 200) {
             resolve(xmlhttp.response);
-          } else if (xmlhttp.status >= 400) {
+          } else {
             // e.g. no other participant (Status 204)
-            console.error(xmlhttp.statusText);
+            if (xmlhttp.status >= 400) {
+              console.error(xmlhttp.statusText);
+            }
             reject(xmlhttp.statusText);
           }
         }
