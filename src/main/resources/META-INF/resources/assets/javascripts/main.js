@@ -254,7 +254,7 @@ class Navigator {
         document.querySelector('body').classList.remove('-found');
     }
 
-    if (this.targetStatus) {
+    if (this.targetStatus !== null) {
         statusElement.classList.add('-active-position');
         navigationTarget.classList.remove('-inactive');
         navigationTarget.innerText = this.targetStatus;
