@@ -27,6 +27,9 @@ class Navigator {
     const setupElement = document.getElementById('setup-element');
     setupElement.addEventListener('dblclick', this.skipSetup.bind(this));
 
+    const navElement = document.getElementById('nav-element');
+    navElement.addEventListener('dblclick', this.continue.bind(this));
+
     const permissionElement = document.getElementById('permission-element');
     permissionElement.addEventListener('click', this.handlePermission.bind(this));
 
@@ -155,14 +158,8 @@ class Navigator {
     this.start();
   }
 
-  stopNavigation() {
-    document.querySelector('.nav-container').classList.add('-hidden');
-    this.stop();
-  }
-
-  showDestination() {
-    document.querySelector('.destination-container').classList.remove('-hidden');
-    document.querySelector('body').classList.add('-found');
+  pauseNavigation() {
+    this.pause();
   }
 
   handleOrientation(evt) {
@@ -189,9 +186,17 @@ class Navigator {
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
   }
 
-  stop() {
+  continue() {
+    if (this.searchState === this.FOUND_STATE) {
+        this.searchState = null;
+        this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 3000);
+    }
+  }
+
+  pause() {
     clearInterval(this.heartBeatInterval);
   }
+  
 
   heartbeat() {
     window.navigator.geolocation.getCurrentPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
@@ -218,13 +223,13 @@ class Navigator {
         this.absoluteAngle = direction.angle;
         this.targetStatus = direction.status;
         this.target = direction.target;
+        this.searchState = direction.searchState
         
         this.updateNavigation();
         this.updateDebug();
 
         if (direction.searchState === this.FOUND_STATE) {
-            this.showDestination();
-            this.stopNavigation();
+            this.pauseNavigation();
         }
       })
       .catch((error) => {
@@ -239,7 +244,16 @@ class Navigator {
     const navigationElement = document.getElementById('nav-element');
     const navigationTarget = document.getElementById('nav-target');
     const statusElement = document.getElementById('status-container');
-        
+
+    if (this.searchState === this.FOUND_STATE) {
+        document.querySelector('body').classList.add('-found');
+        navigationElement.innerText = "🏁";
+        navigationElement.style.transform = '';
+        return;
+    } else {
+        document.querySelector('body').classList.remove('-found');
+    }
+
     if (this.targetStatus) {
         statusElement.classList.add('-active-position');
         navigationTarget.classList.remove('-inactive');
