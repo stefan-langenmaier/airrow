@@ -17,7 +17,7 @@ body.-found {
 
 #status-container {
   transition: background-color 0.21s ease;
-  height: 6em;
+  height: 4em;
   background-color: #b38787;
   display: flex;
   flex-direction: row;
@@ -28,9 +28,9 @@ body.-found {
 }
 
 #status-element {
-  flex: 5 3em;
-  font-size: 2.5em;
-  padding: 0.5em;
+  flex: 7 3em;
+  font-size: 1.2em;
+  padding: 1em;
 }
 
 #help-element {
@@ -38,7 +38,7 @@ body.-found {
   display: flex;
   align-items: center;
   justify-content: right;
-  font-size: 4em;
+  font-size: 3em;
 }
 
 #nav-element {
@@ -121,22 +121,3 @@ body.-found {
   cursor: pointer;
   display: inline-block;
 }
-
-.destination-container.-hidden {
-  display: none;
-}
-
-.destination-container {
-  font-size: 35vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  flex-direction: column;
-}
-
-#destination-element {
-  cursor: pointer;
-  display: inline-block;
-}
-
