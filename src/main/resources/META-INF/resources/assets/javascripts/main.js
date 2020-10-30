@@ -24,9 +24,6 @@ class Navigator {
       timeout: 2000
     };
     
-    const setupElement = document.getElementById('setup-element');
-    setupElement.addEventListener('dblclick', this.skipSetup.bind(this));
-
     const navElement = document.getElementById('nav-element');
     navElement.addEventListener('dblclick', this.continue.bind(this));
 
@@ -80,7 +77,7 @@ class Navigator {
       navigator.permissions.query({name:'geolocation'}).then(function(result) {
         if (result.state == 'granted') {
           console.log("GEO PERMISSION already enabled - STARTING APP");
-          that.startSetup();
+          that.startNavigation();
         } else if (result.state == 'prompt') {
           that.verifyPermission(PROBABLY_GRANTED, that);
         } else if (result.state == 'denied') {
@@ -90,7 +87,7 @@ class Navigator {
         result.onchange = function() {
           if (result.state == 'granted') {
             console.log("GEO PERMISSION permanently enabled - STARTING APP");
-            that.startSetup();
+            that.startNavigation();
           }
         }
       });
@@ -109,51 +106,17 @@ class Navigator {
           const diff = (afterPermissionQuestion - beforePermissionQuestion);
           console.log(diff);
           if (diff < PROBABLY_GRANTED) {
-              that.startSetup();
+              that.startNavigation();
           }
       });
-  }
-
-  skipSetup() {
-    this.updateSetup();
-  }
-
-  refreshOffset(summary) {
-    const oldOrientationOffset = this.orientationOffset;
-    this.orientationOffset = summary.northOffset;
-    if (oldOrientationOffset === null) { this.updateSetup(); }
-  }
-
-  startSetup() {
-    this.hidePermission();
-    this.showSetup();
-
-    const compass = new Compass();
-    compass.start();
-    compass.register(this.refreshOffset.bind(this));
-  }
-
-  updateSetup() {
-//    if (this.orientationAbsolute === false) {
-//      this.orientationOffset = this.orientationCurrent;
-//    }
-    this.hideSetup();
-    this.showNavigation();
   }
 
   hidePermission() {
     document.querySelector('.permission-container').classList.add('-hidden');
   }
 
-  showSetup() {
-    document.querySelector('.setup-container').classList.remove('-hidden');
-  }
-
-  hideSetup() {
-    document.querySelector('.setup-container').classList.add('-hidden');
-  }
-
-  showNavigation() {
+  startNavigation() {
+    this.hidePermission();
     document.querySelector('.nav-container').classList.remove('-hidden');
     this.start();
   }
@@ -164,11 +127,15 @@ class Navigator {
 
   handleOrientation(evt) {
     this.orientationAbsolute = evt.absolute;
-    this.orientationCurrent = evt.alpha;
-    if (this.orientationOffset == null) {
-        console.log(`INIT MANUALLY ORIENTATION OFFSET: ${this.orientationCurrent}`)
-        this.orientationOffset = this.orientationCurrent;
-    }
+    if (this.orientationAbsolute) { 
+        this.orientationCurrent = evt.alpha; 
+    } else if (evt.hasOwnProperty('webkitCompassHeading')) { 
+        //get absolute orientation for Safari/iOS
+        this.orientationAbsolute = true;
+        this.orientationCurrent = 360 - event.webkitCompassHeading; // TODO this is not tested
+    } else { 
+        console.log('Could not retrieve absolute orientation'); 
+    } 
   }
 
   updateDebug() {
@@ -181,7 +148,12 @@ class Navigator {
   }
 
   start() {
-    window.addEventListener("deviceorientation", this.handleOrientation.bind(this), true);
+    if ('ondeviceorientationabsolute' in window) { 
+        // works only in Chrome
+        window.addEventListener('deviceorientationabsolute', this.handleOrientation.bind(this)); 
+    } else if ('ondeviceorientation' in window) { 
+        window.addEventListener('deviceorientation', this.handleOrientation.bind(this)); 
+    }
     this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 3000);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
   }
@@ -310,16 +282,7 @@ class Navigator {
   }
 
   get orientiedAngle() {
-    return (360 + (this.absoluteAngle - this.northedOrientation))%360;
-    //return this.absoluteAngle;
-  }
-  
-  get northedOrientation() {
-    let diff = this.orientationOffset-this.orientationCurrent;
-    if (diff < 0) {
-      diff = 360 - Math.abs(diff);
-    }
-    return Math.floor(diff);
+    return (360 + (this.absoluteAngle + this.orientationCurrent))%360;
   }
 
 }
@@ -351,9 +314,9 @@ class Util {
           } else {
             // e.g. no other participant (Status 204)
             if (xmlhttp.status >= 400) {
-              console.error(xmlhttp.statusText);
+              console.error(xmlhttp);
             }
-            reject(xmlhttp.statusText);
+            reject(xmlhttp);
           }
         }
       };
