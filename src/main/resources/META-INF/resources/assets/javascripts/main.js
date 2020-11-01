@@ -19,6 +19,8 @@ class Navigator {
 
     this.isFiltering = false;
     
+    this.heartBeatId =  null;
+    
     this.geoLocationOptions = {
       enableHighAccuracy: true,
       timeout: 2000
@@ -154,25 +156,21 @@ class Navigator {
     } else if ('ondeviceorientation' in window) { 
         window.addEventListener('deviceorientation', this.handleOrientation.bind(this)); 
     }
-    this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 3000);
+    this.heartBeatId = navigator.geolocation.watchPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
   }
 
   continue() {
     if (this.searchState === this.FOUND_STATE) {
         this.searchState = null;
-        this.heartBeatInterval = setInterval(this.heartbeat.bind(this), 3000);
+        this.heartBeatId = navigator.geolocation.watchPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
     }
   }
 
   pause() {
-    clearInterval(this.heartBeatInterval);
+    navigator.geolocation.clearWatch(this.heartBeatId);
   }
   
-
-  heartbeat() {
-    window.navigator.geolocation.getCurrentPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
-  }
 
   updateCoordinates(position) {
     const navigationStatus = document.getElementById('nav-status');
