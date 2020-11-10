@@ -10,16 +10,20 @@ class Navigator {
     this.targetStatus = null;
     this.target = null;
 
-    this.orientationAbsolute = false;
-    this.orientationOffset = null;
+    this.orientationAbsolute = false; // remove this variable as it is not really used
     this.orientationCurrent = 0;
-    
+
+    this.compass = null;
+    this.orientationOffset = 0;
+
     this.accuracy = 0;
     this.accuracyHistory = [];
 
     this.isFiltering = false;
     
     this.heartBeatId =  null;
+    
+    this.lastUpdate = Date.now()-1000;
     
     this.geoLocationOptions = {
       enableHighAccuracy: true,
@@ -127,6 +131,10 @@ class Navigator {
     this.pause();
   }
 
+  refreshOffset(summary) {
+    this.orientationOffset = summary.northOffset;
+  }
+
   handleOrientation(evt) {
     this.orientationAbsolute = evt.absolute;
     if (this.orientationAbsolute) { 
@@ -135,26 +143,33 @@ class Navigator {
         //get absolute orientation for Safari/iOS
         this.orientationAbsolute = true;
         this.orientationCurrent = 360 - event.webkitCompassHeading; // TODO this is not tested
-    } else { 
-        console.log('Could not retrieve absolute orientation'); 
-    } 
+    } else {
+        if (this.compass === null) {
+            this.compass = new Compass();
+            this.compass.start();
+            this.compass.register(this.refreshOffset.bind(this));
+        }
+        this.orientationAbsolute = false;
+        this.orientationCurrent = evt.alpha;
+    }
   }
 
   updateDebug() {
     const debug = document.getElementById('status-element');
     if (this.target) {
         debug.innerText = `${this.target.geo_distance}m ± ${this.accuracy}m`;
-    } else {
-        debug.innerText = `± ${this.accuracy}m`;
+    }
+    if (this.compass != null) {
+        debug.innerText += ` ± ${this.orientationOffset}deg`;
     }
   }
 
   start() {
-    if ('ondeviceorientationabsolute' in window) { 
+    if ('ondeviceorientationabsolute' in window) {
         // works only in Chrome
-        window.addEventListener('deviceorientationabsolute', this.handleOrientation.bind(this)); 
-    } else if ('ondeviceorientation' in window) { 
-        window.addEventListener('deviceorientation', this.handleOrientation.bind(this)); 
+        window.addEventListener('deviceorientationabsolute', this.handleOrientation.bind(this));
+    } else if ('ondeviceorientation' in window) {
+        window.addEventListener('deviceorientation', this.handleOrientation.bind(this));
     }
     this.heartBeatId = navigator.geolocation.watchPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
@@ -185,6 +200,12 @@ class Navigator {
     const params = { "direction": 0, "latitude": latitude, "longitude": longitude, "status": status, "accuracy": this.accuracy};
 
     this.updateDebug();
+    
+    // rate limit position update
+    if ((Date.now() - this.lastUpdate) < 1000) {
+        return;
+    }
+    this.lastUpdate = Date.now();
 
     Util.post(url, contentType, params)
       .then((response) => {
@@ -280,7 +301,7 @@ class Navigator {
   }
 
   get orientiedAngle() {
-    return (360 + (this.absoluteAngle + this.orientationCurrent))%360;
+    return (360 + (this.absoluteAngle + this.orientationCurrent - this.orientationOffset))%360;
   }
 
 }
