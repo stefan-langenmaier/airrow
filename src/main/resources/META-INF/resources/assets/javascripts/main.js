@@ -241,6 +241,7 @@ class Navigator {
         document.querySelector('body').classList.add('-found');
         navigationElement.innerText = "🏁";
         navigationElement.style.transform = '';
+        navigationElement.classList.remove('-blur');
         return;
     } else {
         document.querySelector('body').classList.remove('-found');
