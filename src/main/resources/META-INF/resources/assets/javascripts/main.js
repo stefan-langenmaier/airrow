@@ -132,7 +132,7 @@ class Navigator {
   }
 
   refreshOffset(summary) {
-    this.orientationOffset = summary.northOffset;
+    this.orientationOffset = Math.round(summary.northOffset);
   }
 
   handleOrientation(evt) {
@@ -156,11 +156,12 @@ class Navigator {
 
   updateDebug() {
     const debug = document.getElementById('status-element');
+    debug.innerText = "";
     if (this.target) {
-        debug.innerText = `${this.target.geo_distance}m ± ${this.accuracy}m`;
+        debug.innerText += `${this.target.geo_distance}m ± ${this.accuracy}m`;
     }
     if (this.compass != null) {
-        debug.innerText += ` ± ${this.orientationOffset}deg`;
+        debug.innerText += ` / 🧭 ${this.orientationOffset}deg`;
     }
   }
 
