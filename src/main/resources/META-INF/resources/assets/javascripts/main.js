@@ -1,7 +1,9 @@
 class Navigator {
 
   constructor() {
+    // TODO how to do enums
     this.FOUND_STATE = "FOUND";
+    this.SEARCHING_STATE = "SEARCHING";
     this.screenLock = false;
     
     this.absoluteAngle = 0;
@@ -9,6 +11,7 @@ class Navigator {
 
     this.targetStatus = null;
     this.target = null;
+    this.searchState = this.SEARCHING_STATE;
 
     this.orientationAbsolute = false; // remove this variable as it is not really used
     this.orientationCurrent = 0;
@@ -127,10 +130,6 @@ class Navigator {
     this.start();
   }
 
-  pauseNavigation() {
-    this.pause();
-  }
-
   refreshOffset(summary) {
     this.orientationOffset = Math.round(summary.northOffset);
   }
@@ -178,15 +177,9 @@ class Navigator {
 
   continue() {
     if (this.searchState === this.FOUND_STATE) {
-        this.searchState = null;
-        this.heartBeatId = navigator.geolocation.watchPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
+        this.searchState = this.SEARCHING_STATE;
     }
   }
-
-  pause() {
-    navigator.geolocation.clearWatch(this.heartBeatId);
-  }
-  
 
   updateCoordinates(position) {
     const navigationStatus = document.getElementById('nav-status');
@@ -215,14 +208,12 @@ class Navigator {
         this.absoluteAngle = direction.angle;
         this.targetStatus = direction.status;
         this.target = direction.target;
-        this.searchState = direction.searchState
+        if (this.searchState === this.SEARCHING_STATE) {
+            this.searchState = direction.searchState
+        }
         
         this.updateNavigation();
         this.updateDebug();
-
-        if (direction.searchState === this.FOUND_STATE) {
-            this.pauseNavigation();
-        }
       })
       .catch((error) => {
         console.log(error);
