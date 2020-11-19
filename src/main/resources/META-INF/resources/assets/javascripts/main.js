@@ -155,13 +155,14 @@ class Navigator {
 
   updateDebug() {
     const debug = document.getElementById('status-element');
-    debug.innerText = "";
+    let debugText = "";
     if (this.target) {
-        debug.innerText += `${this.target.geo_distance}m ± ${this.accuracy}m`;
+        debugText += `${this.target.geo_distance}m ± ${this.accuracy}m`;
     }
     if (this.compass != null) {
-        debug.innerText += ` / 🧭 ${this.orientationOffset}deg`;
+        debugText += ` / 🧭 ${this.orientationOffset}deg`;
     }
+    debug.innerText = debugText;
   }
 
   start() {
@@ -276,8 +277,8 @@ class Navigator {
   }
 
   noGeoPositionAvailable(err) {
-    console.warn(`error: ${err.message}`);
-    document.getElementById('status-container').classList.remove('-active-position');
+    //well, nothing to do for now
+    ;
   }
 
   get sessionId() {
