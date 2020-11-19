@@ -143,11 +143,6 @@ class Navigator {
         this.orientationAbsolute = true;
         this.orientationCurrent = 360 - event.webkitCompassHeading; // TODO this is not tested
     } else {
-        if (this.compass === null) {
-            this.compass = new Compass();
-            this.compass.start();
-            this.compass.register(this.refreshOffset.bind(this));
-        }
         this.orientationAbsolute = false;
         this.orientationCurrent = evt.alpha;
     }
@@ -174,6 +169,12 @@ class Navigator {
     }
     this.heartBeatId = navigator.geolocation.watchPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
+
+     if (this.compass === null) {
+        this.compass = new Compass();
+        this.compass.start();
+        this.compass.register(this.refreshOffset.bind(this));
+    }
   }
 
   continue() {
@@ -295,7 +296,11 @@ class Navigator {
   }
 
   get orientiedAngle() {
-    return (360 + (this.absoluteAngle + this.orientationCurrent - this.orientationOffset))%360;
+    // if the orientationOffset is too large we have to assume that it's not working'
+    if (this.orientationAbsolute == false || this.orientationOffset > 10) {
+        return (360 + (this.absoluteAngle + this.orientationCurrent - this.orientationOffset))%360;
+    }
+    return (360 + (this.absoluteAngle + this.orientationCurrent))%360;
   }
 
 }
