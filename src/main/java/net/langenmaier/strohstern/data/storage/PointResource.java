@@ -51,9 +51,13 @@ public class PointResource {
 		s.persist();
 		LOGGER.info("location persisted");
 		
-		Direction d = findDirection(s);
-		
-		return d;
+		if (ud.accuracy < minAccuracy) {
+			Direction d = findDirection(s);
+			return d;
+		} else {
+			// only return a direction when accurate
+			return null;
+		}
 	}
 
 	private Direction findDirection(Session s) {
