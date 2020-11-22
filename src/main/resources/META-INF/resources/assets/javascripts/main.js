@@ -229,6 +229,16 @@ class Navigator {
     const navigationTarget = document.getElementById('nav-target');
     const statusElement = document.getElementById('status-container');
 
+    if (this.targetStatus !== null) {
+        statusElement.classList.add('-active-position');
+        navigationTarget.classList.remove('-inactive');
+        navigationTarget.innerText = this.targetStatus;
+    } else {
+        statusElement.classList.remove('-active-position');
+        navigationTarget.classList.add('-inactive');
+        navigationTarget.innerText = "🎯";
+    }
+
     if (this.searchState === this.FOUND_STATE) {
         document.querySelector('body').classList.add('-found');
         navigationElement.innerText = "🏁";
@@ -239,16 +249,6 @@ class Navigator {
         document.querySelector('body').classList.remove('-found');
     }
 
-    if (this.targetStatus !== null) {
-        statusElement.classList.add('-active-position');
-        navigationTarget.classList.remove('-inactive');
-        navigationTarget.innerText = this.targetStatus;
-    } else {
-        statusElement.classList.remove('-active-position');
-        navigationTarget.classList.add('-inactive');
-        navigationTarget.innerText = "🎯";
-    }
-    
     if (this.isAccurate()) {
         navigationElement.classList.remove('-blur');
         navigationElement.innerText = "^";
