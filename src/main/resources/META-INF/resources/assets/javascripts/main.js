@@ -230,11 +230,9 @@ class Navigator {
     const statusElement = document.getElementById('location-status-element');
 
     if (this.targetStatus !== null) {
-        statusElement.classList.add('-active-position');
         navigationTarget.classList.remove('-inactive');
         navigationTarget.innerText = this.targetStatus;
     } else {
-        statusElement.classList.remove('-active-position');
         navigationTarget.classList.add('-inactive');
         navigationTarget.innerText = "🎯";
     }

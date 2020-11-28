@@ -24,24 +24,6 @@ body.-found {
   grid-template-rows: 5fr 1fr;
 }
 
-#status-container {
-  transition: background-color 0.21s ease;
-  height: 4em;
-  background-color: #b38787;
-  display: flex;
-  flex-direction: row;
-}
-
-#status-container.-active-position {
-  background-color: #89bba0;
-}
-
-#status-element {
-  flex: 7 3em;
-  font-size: 0.9em;
-  padding: 1em;
-}
-
 #help-container {
   grid-column-start: 1;
   grid-column-end: -1;
