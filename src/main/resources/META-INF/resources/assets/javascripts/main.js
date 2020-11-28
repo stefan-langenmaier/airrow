@@ -36,14 +36,14 @@ class Navigator {
     const navElement = document.getElementById('nav-element');
     navElement.addEventListener('dblclick', this.continue.bind(this));
 
-    const permissionElement = document.getElementById('permission-element');
+    const permissionElement = document.getElementById('permission-container');
     permissionElement.addEventListener('click', this.handlePermission.bind(this));
 
-    const navStatus = document.getElementById('nav-status');
+    const navStatus = document.getElementById('nav-status-input');
     navStatus.addEventListener('input', this.filterEmojiInput.bind(this));
 
-    const status = document.getElementById('status-element');
-    status.innerText = '';
+    const debug = document.getElementById('debug-element');
+    debug.innerText = '';
   }
 
   filterEmojiInput(e) {
@@ -121,12 +121,12 @@ class Navigator {
   }
 
   hidePermission() {
-    document.querySelector('.permission-container').classList.add('-hidden');
+    document.getElementById('permission-screen').classList.add('-hidden');
   }
 
   startNavigation() {
     this.hidePermission();
-    document.querySelector('.nav-container').classList.remove('-hidden');
+    document.getElementById('navigation-screen').classList.remove('-hidden');
     this.start();
   }
 
@@ -341,6 +341,16 @@ class Util {
   }
 }
 
+// https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+function setDocHeight() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight/100}px`);
+};
+
+window.addEventListener('resize', setDocHeight);
+window.addEventListener('orientationchange', setDocHeight);
+
+
 document.addEventListener('DOMContentLoaded', function (_evt) {
+  setDocHeight();
   const navigator = new Navigator();
 });

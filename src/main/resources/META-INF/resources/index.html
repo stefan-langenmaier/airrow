@@ -12,24 +12,29 @@
   </head>
 
   <body>
-    <div id="screen">
-      <div class="permission-container">
-        <div id="permission-element">🛰</div>
-        <div id="highlight-element"></div>
-      </div>
-      <div class="nav-container -hidden">
-        <div id="nav-target" class="-inactive">🎯</div>
-        <div id="nav-element">^</div>
-        <div id="nav-status-container">
-          <input id="nav-status" type="text" placeholder="🗣️" size="5"/>
+    <div id="screens">
+      <div id="permission-screen" class="screen">
+        <div id="permission-container">
+          <div class="permission-element">🛰</div>
+          <div class="permission-element highlight"></div>
+        </div>
+        <div id="help-container">
+          <div id="help-element">
+              <a href="https://github.com/stefan-langenmaier/airrow/wiki" target="_blank">❓</a>
+          </div>
+          <div id="debug-element">🛑</div>
         </div>
       </div>
-      <div id="status-container">
-        <div id="status-element">
-        🛑
+      <div id="navigation-screen" class="-hidden screen">
+        <div id="navigation-container">
+          <div id="nav-target" class="-inactive">🎯</div>
+          <div id="nav-element">^</div>
+          <div id="nav-status-container">
+            <input id="nav-status-input" type="text" placeholder="🗣️" size="5"/>
+          </div>
         </div>
-        <div id="help-element">
-            <a href="https://github.com/stefan-langenmaier/airrow/wiki" target="_blank">❓</a>
+        <div id="status-container">
+          <div id="status-element"></div>
         </div>
       </div>
     </div>
