@@ -154,7 +154,7 @@ class Navigator {
   }
 
   updateDebug() {
-    const debug = document.getElementById('status-element');
+    const debug = document.getElementById('location-status-element');
     let debugText = "";
     if (this.target) {
         debugText += `${this.target.geo_distance}m ± ${this.accuracy}m`;
@@ -183,7 +183,7 @@ class Navigator {
   }
 
   updateCoordinates(position) {
-    const navigationStatus = document.getElementById('nav-status');
+    const navigationStatus = document.getElementById('nav-status-input');
 
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
@@ -227,7 +227,7 @@ class Navigator {
   updateNavigation() {
     const navigationElement = document.getElementById('nav-element');
     const navigationTarget = document.getElementById('nav-target');
-    const statusElement = document.getElementById('status-container');
+    const statusElement = document.getElementById('location-status-element');
 
     if (this.targetStatus !== null) {
         statusElement.classList.add('-active-position');

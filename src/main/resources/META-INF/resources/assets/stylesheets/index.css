@@ -43,9 +43,9 @@ body.-found {
 }
 
 #help-container {
-  grid-column-start: 1; 
-  grid-column-end: -1; 
-  grid-row-start: 2; 
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 2;
   grid-row-end: -1;
 
   display: grid;
@@ -78,21 +78,38 @@ body.-found {
   margin: auto;
 }
 
+#navigation-container {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 1;
+  grid-row-end: -2;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 3fr 1fr;
+}
+
 #nav-element {
-  transform-origin: center center;
-  display: inline-block;
-  /* shrink wrap */
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+  margin: auto;
   font-size: 35vh;
 }
 
 #nav-element.-blur {
-  filter: blur(15px);
+  filter: blur(10px);
 }
 
 #nav-target {
-  transform-origin: center center;
-  display: inline-block;
-  /* shrink wrap */
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+  margin: auto;
   font-size: 5vh;
 }
 
@@ -101,49 +118,66 @@ body.-found {
 }
 
 #nav-status-container {
-  transform-origin: center center;
-  display: inline-block;
-  /* shrink wrap */
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 3;
+  grid-row-end: -1;
+
+  margin: auto;
 }
 
-#nav-status {
-  font-size: 5vh;
+#nav-status-input {
+  font-size: 6vh;
 }
 
-.nav-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
+#location-status-container {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: -2;
+  grid-row-end: -1;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+
+  background-color: rgba(255,255,255,.2);
 }
+
+#location-status-element {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 1;
+  grid-row-end: -1;
+
+  margin: auto;
+}
+
 
 .-hidden {
   display: none;
 }
 
 #permission-screen {
-  grid-column-start: 1; 
-  grid-column-end: -1; 
-  grid-row-start: 1; 
-  grid-row-end: -1; 
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 1;
+  grid-row-end: -1;
 }
 
 #permission-container {
-  grid-column-start: 1; 
-  grid-column-end: -1; 
-  grid-row-start: 1; 
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 1;
   grid-row-end: -2;
 
   display: grid;
 }
 
 .permission-element {
-  grid-column-start: 1; 
-  grid-column-end: -1; 
-  grid-row-start: 1; 
-  grid-row-end: -1; 
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 1;
+  grid-row-end: -1;
 
   font-size: 30vh;
   margin: auto;
