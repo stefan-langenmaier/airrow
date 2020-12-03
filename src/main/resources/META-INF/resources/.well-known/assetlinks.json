@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "de.xn__rro_pla.twa",
+    "sha256_cert_fingerprints": [
+      "6B:18:19:9F:C3:E6:DB:60:85:A6:68:FB:4E:AC:FC:FE:0D:EC:99:40:C6:BE:78:88:00:7E:D1:60:5B:AA:26:C2"
+    ]
+  }
+}]
