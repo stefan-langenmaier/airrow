@@ -95,6 +95,12 @@ public class TargetService {
 		if (t.geo_distance < MIN_FOUND_DISTANCE) {
 			d.searchState = SearchState.FOUND;
 		}
+		
+		// corona mode
+		if (s.status != null && s.status.contains("😷")) {
+			d.angle = (d.angle+180)%360;
+		}
+		
 		if (debug) {
 			d.target = t;
 		}
