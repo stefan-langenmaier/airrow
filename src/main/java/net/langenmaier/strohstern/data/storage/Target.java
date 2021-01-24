@@ -4,7 +4,7 @@ public class Target{
 	public Long id;
 
 	public Double geo_distance;
-	public Double emoji_distance;
+	public Double distance;
 	public Double latitude;
 	public Double longitude;
 

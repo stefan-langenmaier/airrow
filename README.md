@@ -4,9 +4,10 @@ Easily meet other people
 
 ## Setup
 
-When creating the database make sure to have proper emoji support enabled.
+### Elasticsearch
 
-`ALTER DATABASE <DB> CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_520_ci';`
+docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:6.8.13
+docker run -d --link elasticsearch:elasticsearch -p 5601:5601 docker.elastic.co/kibana/kibana:6.8.13
 
 ## Usage
 

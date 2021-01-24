@@ -39,3 +39,8 @@ release.properties
 
 # node
 node_modules/
+
+
+# custom
+.factorypath
+jmeter.log

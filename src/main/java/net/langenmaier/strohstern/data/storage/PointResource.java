@@ -4,7 +4,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,31 +27,17 @@ public class PointResource {
 	Integer minAccuracy;
 	
 	@POST
-	@Transactional
 	@Path("/{sessionId}")
 	public Direction create(@PathParam UUID sessionId, UpdateData ud) {
 		if (ud ==  null) {
 			throw new InvalidTrajectoryPoint();
 		}
-		Session s = Session.findByUuid(sessionId);
-		if (s == null) {
-			if (ud.accuracy < minAccuracy) {
-				LOGGER.info("create new session");
-				s = new Session();
-				s.uuid = sessionId.toString();
-			} else {
-				// only start persisting once we have one accurate data point
-				return null;
-			}
-		}
-		TrajectoryPoint tp = TrajectoryPoint.of(ud);
-		tp.refresh(s, minAccuracy);
-		tp.persist();
-		s.persist();
+		SessionData sd = SessionData.of(ud);
+		ts.updateSession(sessionId, sd);
 		LOGGER.info("location persisted");
 		
-		if (ud.accuracy < minAccuracy) {
-			Direction d = findDirection(s);
+		if (sd.accuracy < minAccuracy) {
+			Direction d = findDirection(sd);
 			return d;
 		} else {
 			// only return a direction when accurate
@@ -60,9 +45,9 @@ public class PointResource {
 		}
 	}
 
-	private Direction findDirection(Session s) {
-		Target t = ts.findTarget(s);
-		Direction d = ts.getDirection(s, t);
+	private Direction findDirection(SessionData sd) {
+		Target t = ts.findTarget(sd);
+		Direction d = ts.getDirection(sd, t);
 		return d;
 	}
 
