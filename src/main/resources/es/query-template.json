@@ -1,62 +1,14 @@
 {
-    "query": {
-        "function_score": {
-          "query": {
-              "bool" : {
-                "must" : {
-                  "match_all": {}
-                },
-                "should" : {
-                  "match" : {
-                    "status": {
-                      "query": "🌿"
-                    }
-                  }
-                },
-                "filter": [
-                  {
-                  "geo_distance": {
-                    "distance": "300km",
-                    "location": {
-                      "lat": 48.33215,
-                      "lon": 10.86065
-                    }
-                  }
-                },
-                  {
-                    "bool": {
-                        "should": [
-                            {"exists": {"field": "permanent"}},
-                            {"range" : {
-                                "updatedAt" : {
-                                    "gt" : "now-6h"
-                                }
-                              }
-                            }
-                        ]
-                    }
-                  }
-                ],
-                "must_not" : [
-                  {
-                    "term" : {
-                      "_id" : "ee0e8ba3-2944-4e6f-9f6c-1b5c6cbabc07"
-                    }
-                  }
-                ]
-              }
-            },
-            "gauss": {
-                "location": {
-                      "origin": {
-                        "lon": 10.86065,
-                        "lat": 48.33215
-                      },
-                      "scale": "500m",
-                      "offset": "1000m",
-                      "decay" : 0.5
-                }
-            }
-        }
-    }
+  "id": "airrow-default-search",
+  "params": {
+    "status": "_STATUS_",
+    "self": "_SELF_",
+    "location": {
+      "latitude": "_LATITUDE_",
+      "longitude": "_LONGITUDE_"
+    },
+    "walkDistance": "_WALK_DISTANCE_",
+    "scale": "_SCALE_",
+    "ttl": "_TTL_"
+  }
 }

@@ -33,6 +33,7 @@ public class PointResource {
 			throw new InvalidTrajectoryPoint();
 		}
 		SessionData sd = SessionData.of(ud);
+		sd.uuid = sessionId.toString();
 		ts.updateSession(sessionId, sd);
 		LOGGER.info("location persisted");
 		
