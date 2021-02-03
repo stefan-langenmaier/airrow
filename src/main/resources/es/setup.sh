@@ -1,6 +1,35 @@
 #!/bin/bash
 
-curl -X PUT "localhost:9200/airrow?pretty" -H 'Content-Type: application/json' -d'
+# data structure
+
+# airrow-sessions (uuid)
+## location
+## status
+## updatedAt
+
+# airrow-trajectories
+## creator
+## location
+## status
+## updatedAt
+
+# airrow-entities
+## creator
+## location
+## status
+## updatedAt
+## permanent
+## mimeType
+## path
+
+# airrow-ratings
+## creator
+## entity
+## rating
+
+# airrow alias (airrow-session, airrow-entities)
+
+curl -X PUT "localhost:9200/airrow-sessions?pretty" -H 'Content-Type: application/json' -d'
 {
   "settings": {
     "analysis": {
@@ -21,11 +50,12 @@ curl -X PUT "localhost:9200/airrow?pretty" -H 'Content-Type: application/json' -
       }
     },
     "index" : {
+      "number_of_shards" : 2,
       "number_of_replicas" : 0
     }
   },
   "mappings": {
-    "airrow": {  
+    "_doc": {  
       "properties": {
         "location": {
           "type": "geo_point"
@@ -33,9 +63,6 @@ curl -X PUT "localhost:9200/airrow?pretty" -H 'Content-Type: application/json' -
         "status": {
           "type": "text",
           "analyzer": "status_analyzer"
-        },
-        "permanent": {
-          "type": "boolean"
         },
         "updatedAt": {
             "type":   "date",
@@ -46,6 +73,169 @@ curl -X PUT "localhost:9200/airrow?pretty" -H 'Content-Type: application/json' -
   }
 }
 '
+
+curl -X PUT "localhost:9200/airrow-trajectories?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "status_analyzer": {
+          "type": "custom", 
+          "tokenizer": "status_tokenizer",
+          "char_filter": [],
+          "filter": []
+        }
+      },
+      "tokenizer": {
+        "status_tokenizer": {
+          "type": "ngram",
+          "min_gram": 1,
+          "max_gram": 4
+        }
+      }
+    },
+    "index" : {
+      "number_of_shards" : 2,
+      "number_of_replicas" : 0
+    }
+  },
+  "mappings": {
+    "_doc": {  
+      "properties": {
+        "uuid": {
+          "type": "keyword"
+        },
+        "location": {
+          "type": "geo_point"
+        },
+        "status": {
+          "type": "text",
+          "analyzer": "status_analyzer"
+        },
+        "updatedAt": {
+            "type":   "date",
+            "format": "basic_date_time"
+        }
+      }
+    }
+  }
+}
+'
+
+curl -X PUT "localhost:9200/airrow-entities?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "status_analyzer": {
+          "type": "custom", 
+          "tokenizer": "status_tokenizer",
+          "char_filter": [],
+          "filter": []
+        }
+      },
+      "tokenizer": {
+        "status_tokenizer": {
+          "type": "ngram",
+          "min_gram": 1,
+          "max_gram": 4
+        }
+      }
+    },
+    "index" : {
+      "number_of_shards" : 2,
+      "number_of_replicas" : 0
+    }
+  },
+  "mappings": {
+    "_doc": {  
+      "properties": {
+        "creator": {
+          "type": "keyword"
+        },
+        "location": {
+          "type": "geo_point"
+        },
+        "status": {
+          "type": "text",
+          "analyzer": "status_analyzer"
+        },
+        "updatedAt": {
+          "type":   "date",
+          "format": "basic_date_time"
+        },
+        "permanent": {
+          "type": "boolean"
+        },
+        "mimeType": {
+          "type": "keyword"
+        },
+        "path": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
+'
+
+curl -X POST "localhost:9200/_aliases?pretty" -H 'Content-Type: application/json' -d'
+{
+    "actions" : [
+        { "add" : { "index" : "airrow-sessions", "alias" : "airrow" } },
+        { "add" : { "index" : "airrow-entities", "alias" : "airrow" } }
+    ]
+}
+'
+
+curl -X PUT "localhost:9200/airrow-ratings?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "status_analyzer": {
+          "type": "custom", 
+          "tokenizer": "status_tokenizer",
+          "char_filter": [],
+          "filter": []
+        }
+      },
+      "tokenizer": {
+        "status_tokenizer": {
+          "type": "ngram",
+          "min_gram": 1,
+          "max_gram": 4
+        }
+      }
+    },
+    "index" : {
+      "number_of_shards" : 2,
+      "number_of_replicas" : 0
+    }
+  },
+  "mappings": {
+    "_doc": {  
+      "properties": {
+        "creator": {
+          "type": "keyword"
+        },
+        "entity": {
+          "type": "keyword"
+        },
+        "rating": {
+          "type": "integer"
+        },
+        "updatedAt": {
+            "type":   "date",
+            "format": "basic_date_time"
+        }
+      }
+    }
+  }
+}
+'
+
+
 
 curl -X POST "localhost:9200/_scripts/airrow-default-search?pretty" -H 'Content-Type: application/json' -d'
 {
@@ -139,3 +329,49 @@ curl -X POST "localhost:9200/airrow/_search/template?pretty" -H 'Content-Type: a
   }
 }
 '
+
+curl -X POST "localhost:9200/airrow/_search/template?pretty" -H 'Content-Type: application/json' -d'
+{
+  "id": "airrow-default-search",
+  "params": {
+    "status": "",
+    "self": "null",
+    "location": {
+      "latitude": 48.000000,
+      "longitude": 10.000000
+    },
+    "walkDistance": "500m",
+    "scale": 0.50,
+    "ttl": "30s"
+  }
+}
+'
+
+curl -X PUT "localhost:9200/airrow/_doc/77c03aa8-f71b-4cfa-af73-6b1f1519041b" -H 'Content-Type: application/json' -d'
+{
+  "permanent": true,
+  "location": {
+    "lat": 48,
+    "lon": 10
+  },
+  "status": "🥰",
+  "updatedAt": "20210131T230315.059+0000"
+}
+'
+
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.331950,"lon": 10.866627},"status": "🍺🌽","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.341910,"lon": 10.869792},"status": "🎭🎵","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.342486,"lon": 10.868475},"status": "📚🕮","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.340299,"lon": 10.865330},"status": "⚕️🚑","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.339696,"lon": 10.864436},"status": "⛲🏰","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.339583,"lon": 10.857775},"status": "🛷🌄","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.341600,"lon": 10.859079},"status": "🏊⛱️","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.338283,"lon": 10.855744},"status": "🐟💦","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.331711,"lon": 10.853194},"status": "🏝️⏸️","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.328292,"lon": 10.850056},"status": "🏞️🎄","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.322270,"lon": 10.850421},"status": "🪑 💺","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.323308,"lon": 10.851853},"status": "🌳🌲","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.326383,"lon": 10.857974},"status": "⛳🎪","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.330788,"lon": 10.856520},"status": "🐴🐎","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.331219,"lon": 10.859835},"status": "🌉🌊","updatedAt": "20210131T230315.059+0000"}'
+curl -X POST 'localhost:9200/airrow-entities/_doc/' -H 'Content-Type: application/json' -d'{"permanent": true,"location": {"lat": 48.333066,"lon": 10.864942},"status": "🌿🏘️","updatedAt": "20210131T230315.059+0000"}'

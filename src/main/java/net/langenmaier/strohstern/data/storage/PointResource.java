@@ -34,7 +34,7 @@ public class PointResource {
 		}
 		SessionData sd = SessionData.of(ud);
 		sd.uuid = sessionId.toString();
-		ts.updateSession(sessionId, sd);
+		ts.updateSession(sd);
 		LOGGER.info("location persisted");
 		
 		if (sd.accuracy < minAccuracy) {

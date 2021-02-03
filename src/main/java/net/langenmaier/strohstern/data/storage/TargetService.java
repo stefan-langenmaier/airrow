@@ -1,8 +1,6 @@
 package net.langenmaier.strohstern.data.storage;
 
 import java.io.IOException;
-import java.util.UUID;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -15,6 +13,8 @@ import org.elasticsearch.client.RestClient;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import net.langenmaier.strohstern.data.storage.dto.EsSessionDto;
+import net.langenmaier.strohstern.data.storage.dto.EsTrajectoryDto;
 
 @ApplicationScoped
 public class TargetService {
@@ -36,18 +36,19 @@ public class TargetService {
 	@ConfigProperty(name = "airrow.search.ttl")
 	String ttl;
 
-	public Integer updateSession(UUID sessionId, SessionData sd) {
-		Request request = new Request("PUT", "/airrow/_doc/" + sessionId);
+	public void updateSession(SessionData sd) {
+		Request session = new Request("PUT", "/airrow-sessions/_doc/" + sd.uuid.toString());
+		session.setJsonEntity(JsonObject.mapFrom(EsSessionDto.of(sd)).toString());
 
-		request.setJsonEntity(JsonObject.mapFrom(sd).toString());
+		Request trajectory = new Request("POST", "/airrow-trajectories/_doc/");
+		trajectory.setJsonEntity(JsonObject.mapFrom(EsTrajectoryDto.of(sd)).toString());
 
-		Response response = null;
 		try {
-			response = restClient.performRequest(request);
+			restClient.performRequest(session);
+			restClient.performRequest(trajectory);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return response.getStatusLine().getStatusCode();
 	}
 
 	public Target findTarget(SessionData sd) {
