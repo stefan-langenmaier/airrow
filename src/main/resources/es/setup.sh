@@ -5,6 +5,7 @@
 # airrow-sessions (uuid)
 ## location
 ## status
+## visitor
 ## updatedAt
 
 # airrow-trajectories
@@ -16,6 +17,7 @@
 # airrow-entities
 ## creator
 ## location
+## visitor
 ## status
 ## updatedAt
 ## permanent
@@ -242,72 +244,93 @@ curl -X POST "localhost:9200/_scripts/airrow-default-search?pretty" -H 'Content-
     "script": {
         "lang": "mustache",
         "source": {
-          "query": {
-            "function_score": {
-              "query": {
-                "bool": {
-                  "must": {
-                    "match_all": {}
-                  },
-                  "should": {
-                    "match": {
-                      "status": {
-                        "query": "{{status}}"
-                      }
-                    }
-                  },
-                  "filter": [
-                    {
-                      "geo_distance": {
-                        "distance": "300km",
-                        "location": {
-                          "lat": "{{location.latitude}}",
-                          "lon": "{{location.longitude}}"
+            "query": {
+                "function_score": {
+                    "query": {
+                        "bool": {
+                            "must": {
+                                "match_all": {}
+                            },
+                            "should": {
+                                "match": {
+                                    "status": {
+                                        "query": "{{status}}"
+                                    }
+                                }
+                            },
+                            "filter": [
+                                {
+                                    "geo_distance": {
+                                        "distance": "300km",
+                                        "location": {
+                                            "lat": "{{location.latitude}}",
+                                            "lon": "{{location.longitude}}"
+                                        }
+                                    }
+                                },
+                                {
+                                    "bool": {
+                                        "should": [
+                                            {
+                                                "exists": {
+                                                    "field": "permanent"
+                                                }
+                                            },
+                                            {
+                                                "range": {
+                                                    "updatedAt": {
+                                                        "gt": "now-{{ttl}}"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "must_not": [
+                                {
+                                    "term": {
+                                        "_id": "{{self}}"
+                                    }
+                                },
+                                {
+                                  "term" : {
+                                    "visitor" : "{{self}}"
+                                  }
+                                }
+                            ]
                         }
-                      }
                     },
-                    {
-                      "bool": {
-                        "should": [
-                          {
-                            "exists": {
-                              "field": "permanent"
+                    "functions": [
+                        {
+                            "gauss": {
+                                "location": {
+                                    "origin": {
+                                        "lat": "{{location.latitude}}",
+                                        "lon": "{{location.longitude}}"
+                                    },
+                                    "scale": "1000m",
+                                    "offset": "{{walkDistance}}",
+                                    "decay": "{{scale}}"
+                                }
                             }
-                          },
-                          {
-                            "range": {
-                              "updatedAt": {
-                                "gt": "now-{{ttl}}"
-                              }
+                        },
+                        {
+                            "linear": {
+                                "location": {
+                                    "origin": {
+                                        "lat": "{{location.latitude}}",
+                                        "lon": "{{location.longitude}}"
+                                    },
+                                    "scale": "{{walkDistance}}",
+                                    "offset": "0m",
+                                    "decay": "{{scale}}"
+                                }
                             }
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "must_not": [
-                    {
-                      "term": {
-                        "_id": "{{self}}"
-                      }
-                    }
-                  ]
+                        }
+                    ]
                 }
-              },
-              "gauss": {
-                "location": {
-                  "origin": {
-                    "lat": "{{location.latitude}}",
-                    "lon": "{{location.longitude}}"
-                  },
-                  "scale": "1000m",
-                  "offset": "{{walkDistance}}",
-                  "decay": "{{scale}}"
-                }
-              }
             }
-          }
-
         }
     }
 }

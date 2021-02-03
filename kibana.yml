@@ -1,0 +1,14 @@
+#
+# ** THIS IS AN AUTO-GENERATED FILE **
+#
+
+# Default Kibana configuration for docker target
+server.name: kibana
+server.host: "0"
+elasticsearch.hosts: [ "http://localhost:9200" ]
+
+# custom
+map.tilemap.url: "https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"
+map.tilemap.options.attribution: "[Wikimedia maps](https://wikimediafoundation.org/wiki/Maps_Terms_of_Use)|&#xA9; [OpenStreetMap](http://www.openstreetmap.org/copyright)"
+map.tilemap.options.maxZoom: 20
+map.includeElasticMapsService: false
