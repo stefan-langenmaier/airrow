@@ -22,6 +22,9 @@ class Navigator {
     this.accuracy = 0;
     this.accuracyHistory = [];
 
+    this.latitude = 0.0;
+    this.longitude = 0.0;
+
     this.isFiltering = false;
     
     this.heartBeatId =  null;
@@ -41,6 +44,11 @@ class Navigator {
 
     const navStatus = document.getElementById('nav-status-input');
     navStatus.addEventListener('input', this.filterEmojiInput.bind(this));
+
+    const uploadElement = document.getElementById('upload-file-target');
+    uploadElement.addEventListener('click', this.uploadTrigger.bind(this));
+    const upload = document.getElementById('upload-file-input');
+    upload.addEventListener('change', this.uploadFile.bind(this));
 
     const debug = document.getElementById('debug-element');
     debug.innerText = '';
@@ -182,17 +190,63 @@ class Navigator {
     }
   }
 
+  uploadTrigger() {
+    const upload = document.getElementById('upload-file-input');
+    upload.click();
+  }
+
+  uploadFile() {
+    const upload = document.getElementById('upload-file-input');
+    const uploadStatus = document.getElementById('upload-file-status');
+    const navigationStatus = document.getElementById('nav-status-input');
+
+    uploadStatus.innerText = '⏳';
+    uploadStatus.classList.remove('-done');
+    uploadStatus.classList.add('-running');
+
+    const file = upload.files[0];
+    const meta = {
+      "creator": this.sessionId,
+      "location": {
+        "lat": this.latitude,
+        "lon": this.longitude
+      },
+      "status": navigationStatus.value,
+      "accuracy": this.accuracy,
+      "fileName": file.name
+    };
+
+    var formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('meta', JSON.stringify(meta));
+
+    const url = '/upload';
+    Util.upload(url, formData)
+      .then((response) => {
+        console.log("upload done");
+        uploadStatus.innerText = '✅';
+        uploadStatus.classList.remove('-running');
+        uploadStatus.classList.add('-done');
+      })
+      .catch((error) => {
+        console.log(error);
+        uploadStatus.innerText = '💥';
+        uploadStatus.classList.remove('-running');
+        uploadStatus.classList.add('-done');
+      });
+  }
+
   updateCoordinates(position) {
     const navigationStatus = document.getElementById('nav-status-input');
 
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+    this.latitude = position.coords.latitude;
+    this.longitude = position.coords.longitude;
     this.accuracy = Math.round(position.coords.accuracy);
     this.accuracyHistory.push(this.accuracy < 30);
     const status = navigationStatus.value
     const url = `/point/${this.sessionId}`;
     const contentType = "application/json;charset=UTF-8";
-    const params = { "direction": 0, "latitude": latitude, "longitude": longitude, "status": status, "accuracy": this.accuracy};
+    const params = { "direction": 0, "latitude": this.latitude, "longitude": this.longitude, "status": status, "accuracy": this.accuracy};
 
     this.updateDebug();
     
@@ -334,6 +388,25 @@ class Util {
       xmlhttp.open("POST", url);
       xmlhttp.setRequestHeader("Content-Type", contentType);
       xmlhttp.send(JSON.stringify(params));
+    });
+    return promise;
+  }
+
+  static upload(url, data) {
+    let promise = new Promise((resolve, reject) => {
+      const xmlhttp = new XMLHttpRequest();
+      xmlhttp.onload = () => {
+        if (xmlhttp.readyState === 4) {
+          if (xmlhttp.status === 200) {
+            resolve(xmlhttp.response);
+          } else {
+            reject(xmlhttp);
+          }
+        }
+      };
+      //xmlhttp.setRequestHeader('Content-Type','multipart/form-data');
+      xmlhttp.open("POST", url);
+      xmlhttp.send(data);
     });
     return promise;
   }
