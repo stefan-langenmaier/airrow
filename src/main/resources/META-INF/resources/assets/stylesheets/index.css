@@ -147,10 +147,6 @@ body.-found {
   display: none;
 }
 
-#upload-file-status {
-  opacity: 0;
-}
-
 .-running{
   opacity: 1;
 }

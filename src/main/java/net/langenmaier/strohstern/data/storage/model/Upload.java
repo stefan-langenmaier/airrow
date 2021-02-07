@@ -3,6 +3,11 @@ package net.langenmaier.strohstern.data.storage.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -52,13 +57,17 @@ public class Upload {
 		return basePath;
 	}
 	
-	private boolean store(File f) {
+	private void store(File f) {
 		String storageDirectory = ConfigProvider.getConfig().getValue("storage.directory", String.class);
+		Path source = f.toPath();
 		File baseDir = new File(storageDirectory + getFileBasePath(fileHash));
 		baseDir.mkdirs();
-		File saveFile = new File(storageDirectory + getFileBasePath(fileHash) + fileHash);
-		boolean success =  f.renameTo(saveFile);
-		return success;
+		Path saveFile = Paths.get(storageDirectory + getFileBasePath(fileHash) + fileHash);
+		try {
+			Files.move(source, saveFile, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
