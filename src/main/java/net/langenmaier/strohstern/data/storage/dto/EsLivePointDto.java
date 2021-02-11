@@ -22,6 +22,7 @@ public class EsLivePointDto {
     public String creator;
 	public Location location;
     public String status;
+    public Boolean permanent = true;
 
     public String mimeType;
 	public String fileHash;

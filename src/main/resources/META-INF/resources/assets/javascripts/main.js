@@ -149,7 +149,7 @@ class Navigator {
     } else if (evt.hasOwnProperty('webkitCompassHeading')) { 
         //get absolute orientation for Safari/iOS
         this.orientationAbsolute = true;
-        this.orientationCurrent = 360 - event.webkitCompassHeading; // TODO this is not tested
+        this.orientationCurrent = 360 - evt.webkitCompassHeading; // TODO this is not tested
     } else {
         if (this.compass === null) {
             this.compass = new Compass();
@@ -165,7 +165,7 @@ class Navigator {
     const debug = document.getElementById('location-status-element');
     let debugText = "";
     if (this.target) {
-        debugText += `${this.target.geo_distance}m ± ${this.accuracy}m`;
+        debugText += `${Math.round(this.target.geo_distance)}m ± ${this.accuracy}m`;
     }
     if (this.compass != null) {
         debugText += ` / 🧭 ${this.orientationOffset}deg`;

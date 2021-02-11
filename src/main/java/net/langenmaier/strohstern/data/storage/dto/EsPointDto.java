@@ -1,7 +1,6 @@
 package net.langenmaier.strohstern.data.storage.dto;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,6 +23,7 @@ public class EsPointDto {
 	public Location location;
     public String status;
     public Integer accuracy;
+    public Boolean permanent = true;
 
     public String mimeType;
 	public String fileName;
