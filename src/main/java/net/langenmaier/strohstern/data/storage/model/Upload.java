@@ -3,7 +3,6 @@ package net.langenmaier.strohstern.data.storage.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,24 +11,29 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.tika.Tika;
 import org.eclipse.microprofile.config.ConfigProvider;
 
 import net.langenmaier.strohstern.data.storage.Location;
 import net.langenmaier.strohstern.data.storage.dto.MultipartUpload;
 
 public class Upload {
-
+	public UUID uuid;
 	public UUID creator;
 	public Location location;
 	public String status;
     public Integer accuracy;
 	public String fileName;
 	public String fileHash;
+	public String mimeType;
 	public OffsetDateTime updatedAt;
 	
 	public static Upload of(MultipartUpload data) {
 		Upload u  = new Upload();
+		u.uuid = UUID.randomUUID();
 		
 		File uploadedFile = data.file;
 		try {
@@ -38,6 +42,7 @@ public class Upload {
 			e.printStackTrace();
 			return null;
 		}
+		u.detect(uploadedFile);
 		u.store(uploadedFile);
 		
 		u.creator = data.umd.creator;
@@ -52,6 +57,16 @@ public class Upload {
 		return u;
 	}
 	
+	private void detect(File uploadedFile) {
+		Tika tika = new Tika();
+		try {
+			mimeType = tika.detect(uploadedFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+			mimeType = "application/octet-stream";
+		}
+	}
+
 	public static String getFileBasePath(String fileHash) {
 		String basePath = fileHash.substring(0,2) + "/" + fileHash.substring(0,4) + "/";
 		return basePath;

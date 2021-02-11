@@ -52,9 +52,14 @@
                                     }
                                 },
                                 {
-                                  "term" : {
-                                    "visitor" : "{{self}}"
-                                  }
+                                    "has_child" : {
+                                        "type" : "rating",
+                                        "query" : {
+                                            "term": {
+                                                "creator": "{{self}}"
+                                            }
+                                        }
+                                    }
                                 }
                             ]
                         }
@@ -86,7 +91,8 @@
                                 }
                             }
                         }
-                    ]
+                    ],
+                    "score_mode": "sum"
                 }
             }
         }

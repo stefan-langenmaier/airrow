@@ -13,7 +13,7 @@ import org.elasticsearch.client.RestClient;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import net.langenmaier.strohstern.data.storage.dto.EsSessionDto;
+import net.langenmaier.strohstern.data.storage.dto.EsLiveTrajectoryDto;
 import net.langenmaier.strohstern.data.storage.dto.EsTrajectoryDto;
 
 @ApplicationScoped
@@ -37,14 +37,14 @@ public class TargetService {
 	String ttl;
 
 	public void updateSession(SessionData sd) {
-		Request session = new Request("PUT", "/airrow-sessions/_doc/" + sd.uuid.toString());
-		session.setJsonEntity(JsonObject.mapFrom(EsSessionDto.of(sd)).toString());
+		Request live = new Request("PUT", "/airrow/_doc/" + sd.uuid.toString());
+		live.setJsonEntity(JsonObject.mapFrom(EsLiveTrajectoryDto.of(sd)).toString());
 
 		Request trajectory = new Request("POST", "/airrow-trajectories/_doc/");
 		trajectory.setJsonEntity(JsonObject.mapFrom(EsTrajectoryDto.of(sd)).toString());
 
 		try {
-			restClient.performRequest(session);
+			restClient.performRequest(live);
 			restClient.performRequest(trajectory);
 		} catch (IOException e) {
 			e.printStackTrace();
