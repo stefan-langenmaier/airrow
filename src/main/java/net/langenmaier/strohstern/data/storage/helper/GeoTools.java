@@ -1,4 +1,6 @@
-package net.langenmaier.strohstern.data.storage;
+package net.langenmaier.strohstern.data.storage.helper;
+
+import net.langenmaier.strohstern.data.storage.model.Location;
 
 public class GeoTools {
 
@@ -25,6 +27,10 @@ public class GeoTools {
 		double distance = R * c * 1000; // convert to meters
 	
 		return distance;
+	}
+
+	public static Double getWebAngle(Location s, Location t) {
+		return getWebAngle(Math.toDegrees(GeoTools.getBearing(s.lat, s.lon, t.lat, t.lon)));
 	}
 	
 }

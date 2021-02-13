@@ -6,11 +6,9 @@ class Navigator {
     this.SEARCHING_STATE = "SEARCHING";
     this.screenLock = false;
     
-    this.absoluteAngle = 0;
     this.activeAngle = 0;
 
-    this.targetStatus = null;
-    this.target = null;
+    this.navState = null;
     this.searchState = this.SEARCHING_STATE;
 
     this.orientationAbsolute = false; // remove this variable as it is not really used
@@ -164,8 +162,8 @@ class Navigator {
   updateDebug() {
     const debug = document.getElementById('location-status-element');
     let debugText = "";
-    if (this.target) {
-        debugText += `${Math.round(this.target.geo_distance)}m ± ${this.accuracy}m`;
+    if (this.navState) {
+        debugText += `${Math.round(this.navState.geo_distance)}m ± ${this.accuracy}m`;
     }
     if (this.compass != null) {
         debugText += ` / 🧭 ${this.orientationOffset}deg`;
@@ -244,9 +242,17 @@ class Navigator {
     this.accuracy = Math.round(position.coords.accuracy);
     this.accuracyHistory.push(this.accuracy < 30);
     const status = navigationStatus.value
-    const url = `/point/${this.sessionId}`;
+    const url = '/refresh';
     const contentType = "application/json;charset=UTF-8";
-    const params = { "direction": 0, "latitude": this.latitude, "longitude": this.longitude, "status": status, "accuracy": this.accuracy};
+    const params = {
+      "uuid": this.sessionId,
+      "location": {
+        "lat": this.latitude,
+        "lon": this.longitude
+      },
+      "status": status,
+      "accuracy": this.accuracy
+    };
 
     this.updateDebug();
     
@@ -258,13 +264,9 @@ class Navigator {
 
     Util.post(url, contentType, params)
       .then((response) => {
-        const direction = JSON.parse(response);
-
-        this.absoluteAngle = direction.angle;
-        this.targetStatus = direction.status;
-        this.target = direction.target;
+        this.navState = JSON.parse(response);
         if (this.searchState === this.SEARCHING_STATE) {
-            this.searchState = direction.searchState
+            this.searchState = this.navState.searchState
         }
         
         this.updateNavigation();
@@ -272,8 +274,7 @@ class Navigator {
       })
       .catch((error) => {
         console.log(error);
-        this.target = null;
-        this.targetStatus = null;
+        this.navState = null;
         this.updateNavigation();
       });
   }
@@ -283,9 +284,9 @@ class Navigator {
     const navigationTarget = document.getElementById('nav-target');
     const statusElement = document.getElementById('location-status-element');
 
-    if (this.targetStatus !== null) {
+    if (this.navState !== null) {
         navigationTarget.classList.remove('-inactive');
-        navigationTarget.innerText = this.targetStatus;
+        navigationTarget.innerText = this.navState.target.status;
     } else {
         navigationTarget.classList.add('-inactive');
         navigationTarget.innerText = "🎯";
@@ -347,7 +348,7 @@ class Navigator {
   }
 
   get orientiedAngle() {
-    return (360 + (this.absoluteAngle + this.orientationCurrent - this.orientationOffset))%360;
+    return (360 + (this.navState.angle + this.orientationCurrent - this.orientationOffset))%360;
   }
 
 }

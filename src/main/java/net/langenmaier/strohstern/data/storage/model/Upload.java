@@ -15,7 +15,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tika.Tika;
 import org.eclipse.microprofile.config.ConfigProvider;
 
-import net.langenmaier.strohstern.data.storage.Location;
 import net.langenmaier.strohstern.data.storage.dto.MultipartUpload;
 
 public class Upload {

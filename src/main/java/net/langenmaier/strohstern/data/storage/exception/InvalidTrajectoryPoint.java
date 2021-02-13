@@ -1,4 +1,4 @@
-package net.langenmaier.strohstern.data.storage;
+package net.langenmaier.strohstern.data.storage.exception;
 
 public class InvalidTrajectoryPoint extends RuntimeException {
 

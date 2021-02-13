@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import net.langenmaier.strohstern.data.storage.helper.GeoTools;
+
 class GeoToolsTest {
 
 	@Test

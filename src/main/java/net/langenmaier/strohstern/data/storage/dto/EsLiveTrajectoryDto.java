@@ -1,6 +1,7 @@
 package net.langenmaier.strohstern.data.storage.dto;
 
 import java.time.OffsetDateTime;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -9,9 +10,9 @@ import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import net.langenmaier.strohstern.data.storage.Location;
-import net.langenmaier.strohstern.data.storage.OffsetDateTimeDeserializer;
-import net.langenmaier.strohstern.data.storage.SessionData;
+import net.langenmaier.strohstern.data.storage.helper.OffsetDateTimeDeserializer;
+import net.langenmaier.strohstern.data.storage.model.Location;
+import net.langenmaier.strohstern.data.storage.model.Session;
 
 public class EsLiveTrajectoryDto {
 	@JsonIgnore
@@ -29,19 +30,19 @@ public class EsLiveTrajectoryDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd'T'HHmmss.SSSZ")
 	public OffsetDateTime updatedAt;
 
-	public static EsLiveTrajectoryDto of(SessionData sd) {
+	public static EsLiveTrajectoryDto of(Session s) {
 		EsLiveTrajectoryDto esd = new EsLiveTrajectoryDto();
 		
-		esd.uuid = sd.uuid.toString();
+		esd.uuid = s.uuid.toString();
         esd.refCode = DigestUtils.sha256Hex(esd.uuid);
 
 		Location location = new Location();
-		location.lon = sd.location.lon;
-		location.lat = sd.location.lat;
+		location.lon = s.location.lon;
+		location.lat = s.location.lat;
 		esd.location = location;
-		esd.status = sd.status;
-		esd.accuracy = sd.accuracy;
-		esd.updatedAt = sd.updatedAt;
+		esd.status = s.status;
+		esd.accuracy = s.accuracy;
+		esd.updatedAt = s.updatedAt;
 		return esd;
 	}
 }

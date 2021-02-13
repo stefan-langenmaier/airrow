@@ -10,8 +10,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import net.langenmaier.strohstern.data.storage.Location;
-import net.langenmaier.strohstern.data.storage.OffsetDateTimeDeserializer;
+import net.langenmaier.strohstern.data.storage.helper.OffsetDateTimeDeserializer;
+import net.langenmaier.strohstern.data.storage.model.Location;
 import net.langenmaier.strohstern.data.storage.model.Upload;
 
 public class EsPointDto {

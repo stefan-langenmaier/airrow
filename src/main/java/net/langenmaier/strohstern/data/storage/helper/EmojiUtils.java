@@ -1,4 +1,4 @@
-package net.langenmaier.strohstern.data.storage;
+package net.langenmaier.strohstern.data.storage.helper;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

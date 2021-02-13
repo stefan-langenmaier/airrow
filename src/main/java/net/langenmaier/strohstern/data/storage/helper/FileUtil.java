@@ -1,4 +1,4 @@
-package net.langenmaier.strohstern.data.storage;
+package net.langenmaier.strohstern.data.storage.helper;
 
 import java.io.InputStream;
 import java.util.Scanner;

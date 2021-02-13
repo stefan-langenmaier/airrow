@@ -13,8 +13,8 @@ import org.elasticsearch.client.RestClient;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import net.langenmaier.strohstern.data.storage.FileUtil;
 import net.langenmaier.strohstern.data.storage.dto.JsonDownloadDto;
+import net.langenmaier.strohstern.data.storage.helper.FileUtil;
 import net.langenmaier.strohstern.data.storage.model.Download;
 
 @ApplicationScoped
@@ -30,7 +30,6 @@ public class DownloadService {
 		DOWNLOAD_QUERY = DOWNLOAD_QUERY.replaceAll("\"_FILE_HASH_\"", "\"" + fileHash + "\"");
 		downloadRequest.setJsonEntity(DOWNLOAD_QUERY);
 
-		System.out.println(DOWNLOAD_QUERY);
 		Response response = null;
 		try {
 			response = restClient.performRequest(downloadRequest);

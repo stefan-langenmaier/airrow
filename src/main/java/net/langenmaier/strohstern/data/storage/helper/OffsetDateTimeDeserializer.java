@@ -1,4 +1,4 @@
-package net.langenmaier.strohstern.data.storage;
+package net.langenmaier.strohstern.data.storage.helper;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
