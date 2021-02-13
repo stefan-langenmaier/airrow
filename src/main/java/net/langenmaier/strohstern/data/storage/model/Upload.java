@@ -11,8 +11,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import javax.inject.Inject;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tika.Tika;
 import org.eclipse.microprofile.config.ConfigProvider;

@@ -31,6 +31,8 @@
 ## status
 ## updatedAt
 
+# could be split into file and point
+# many points can share the same file
 # airrow-points - uuid
 ## refCode
 ## creator
@@ -340,6 +342,11 @@ curl -X POST "localhost:9200/_scripts/airrow-default-search?pretty" -H 'Content-
                                                 "creator": "{{self}}"
                                             }
                                         }
+                                    }
+                                },
+                                {
+                                    "term": {
+                                        "creator": "{{self}}"
                                     }
                                 }
                             ]

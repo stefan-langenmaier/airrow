@@ -1,0 +1,7 @@
+{
+  "query": {
+    "term": {
+      "fileHash": "_FILE_HASH_"
+    }
+  }
+}
