@@ -276,6 +276,8 @@ class Navigator {
       if (this.navState.geo_distance >= 0) {
         debugText += `${Math.round(this.navState.geo_distance)}m ± ${this.accuracy}m`;
       }
+    } else {
+      debugText += `± ${this.accuracy}m`;
     }
     if (this.compass != null) {
         debugText += ` / 🧭 ${this.orientationOffset}deg`;

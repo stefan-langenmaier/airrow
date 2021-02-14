@@ -25,9 +25,8 @@ public class DownloadResource {
 	@GET
 	@Path("/{fileHash}")
 	public Response upload(@PathParam String fileHash) {
-		LOGGER.info("download received");
+		LOGGER.info("download started");
 		Download download = service.get(fileHash);
-		LOGGER.info("upload stored on disk");
 		ResponseBuilder response = Response.ok(download.file, download.mediaType);
 		return response.build();
 	}
