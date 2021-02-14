@@ -10,7 +10,7 @@ public class GeoTools {
 	}
 	
 	public static double getWebAngle(double angle) {
-		return (360 + (90-angle))%360;
+		return (360 + (angle-90))%360;
 	}
 
 	// https://stackoverflow.com/questions/3694380/calculating-distance-between-two-points-using-latitude-longitude

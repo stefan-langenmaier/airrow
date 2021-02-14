@@ -17,8 +17,8 @@ class GeoToolsTest {
 		double longEnd = Math.toRadians(5);
 		
 		
-		double degress = Math.toDegrees(GeoTools.getBearing(latStart, longStart, latEnd, longEnd));
-		assertTrue(Math.abs(90d - degress) < 0.00001);
+		double degrees = Math.toDegrees(GeoTools.getBearing(latStart, longStart, latEnd, longEnd));
+		assertTrue(Math.abs(90d - degrees) < 0.00001);
 		
 		latStart = Math.toRadians(50);
 		longStart = Math.toRadians(5);
@@ -27,16 +27,16 @@ class GeoToolsTest {
 		longEnd = Math.toRadians(10);
 		
 		
-		degress = Math.toDegrees(GeoTools.getBearing(latStart, longStart, latEnd, longEnd));
-		assertTrue(Math.abs(2d - degress) < 0.1);
+		degrees = Math.toDegrees(GeoTools.getBearing(latStart, longStart, latEnd, longEnd));
+		assertTrue(Math.abs(2d - degrees) < 0.1);
 	}
 	
 	@Test
 	void testWebAngle() {
-		assertTrue(Math.abs(GeoTools.getWebAngle(0) - 90) < 0.00001);
+		assertTrue(Math.abs(GeoTools.getWebAngle(0) - 270) < 0.00001);
 		assertTrue(Math.abs(GeoTools.getWebAngle(90) - 0) < 0.00001);
-		assertTrue(Math.abs(GeoTools.getWebAngle(10) - 80) < 0.00001);
-		assertTrue(Math.abs(GeoTools.getWebAngle(180) - 270) < 0.00001);
+		assertTrue(Math.abs(GeoTools.getWebAngle(10) - 280) < 0.00001);
+		assertTrue(Math.abs(GeoTools.getWebAngle(180) - 90) < 0.00001);
 	}
 
 }

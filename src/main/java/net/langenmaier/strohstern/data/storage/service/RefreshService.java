@@ -54,8 +54,6 @@ public class RefreshService {
 		Request trajectory = new Request("POST", "/airrow-trajectories/_doc/");
 		trajectory.setJsonEntity(JsonObject.mapFrom(EsTrajectoryDto.of(s)).toString());
 
-		System.out.println(s);
-
 		try {
 			if (s.accuracy <= minAccuracy) {
 				// only update if accurate
@@ -113,7 +111,6 @@ public class RefreshService {
 		JsonNavigationState ns = new JsonNavigationState();
 		ns.target = Target.of(et);
 		ns.geo_distance = GeoTools.getDistance(s.location, et.location);
-		LOGGER.info("distance:" + ns.geo_distance);
 		ns.angle = GeoTools.getWebAngle(s.location, et.location);
 		if (ns.geo_distance < MIN_FOUND_DISTANCE) {
 			ns.searchState = SearchState.FOUND;

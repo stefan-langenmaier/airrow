@@ -34,7 +34,7 @@ public class RefreshResource {
 
 		JsonNavigationState ns = rs.refresh(session);
 		LOGGER.info("Session refreshed: " + session.uuid.toString());
-		
+
 		return ns;
 	}
 
