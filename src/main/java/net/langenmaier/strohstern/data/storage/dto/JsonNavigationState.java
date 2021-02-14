@@ -8,5 +8,5 @@ public class JsonNavigationState {
 	public Double geo_distance;
 	
 	public Target target;
-	public SearchState searchState;
+	public SearchState searchState = SearchState.SEARCHING;
 }

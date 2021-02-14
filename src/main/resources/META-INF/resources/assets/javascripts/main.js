@@ -253,7 +253,7 @@ class Navigator {
     Util.post(url, contentType, params)
       .then((response) => {
         this.navState = JSON.parse(response);
-        if (this.searchState === this.SEARCHING_STATE) {
+        if (!this.searchState || this.searchState === this.SEARCHING_STATE) {
             this.searchState = this.navState.searchState
         }
         
