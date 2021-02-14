@@ -216,3 +216,14 @@ body.-found {
     opacity: 0;
   }
 }
+
+.medialink {
+  font-size: 5vh;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.media {
+  max-height: 30vh;
+  display: block;
+}

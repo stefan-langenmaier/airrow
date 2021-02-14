@@ -57,7 +57,7 @@ public class RefreshService {
 		System.out.println(s);
 
 		try {
-			if (s.accuracy >= minAccuracy) {
+			if (s.accuracy <= minAccuracy) {
 				// only update if accurate
 				restClient.performRequest(live);
 			}

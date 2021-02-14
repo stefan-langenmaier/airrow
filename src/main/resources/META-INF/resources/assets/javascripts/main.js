@@ -8,7 +8,7 @@ class Navigator {
     
     this.activeAngle = 0;
 
-    this.navState = null;
+    this.navState = {angle:0, target: {status: null}, searchState: this.SEARCHING_STATE};
     this.searchState = this.SEARCHING_STATE;
 
     this.orientationAbsolute = false; // remove this variable as it is not really used
@@ -159,18 +159,6 @@ class Navigator {
     }
   }
 
-  updateDebug() {
-    const debug = document.getElementById('location-status-element');
-    let debugText = "";
-    if (this.navState) {
-        debugText += `${Math.round(this.navState.geo_distance)}m ± ${this.accuracy}m`;
-    }
-    if (this.compass != null) {
-        debugText += ` / 🧭 ${this.orientationOffset}deg`;
-    }
-    debug.innerText = debugText;
-  }
-
   start() {
     if ('ondeviceorientationabsolute' in window) {
         // works only in Chrome
@@ -254,7 +242,7 @@ class Navigator {
       "accuracy": this.accuracy
     };
 
-    this.updateDebug();
+    this.updateNavigation();
     
     // rate limit position update
     if ((Date.now() - this.lastUpdate) < 1000) {
@@ -270,11 +258,10 @@ class Navigator {
         }
         
         this.updateNavigation();
-        this.updateDebug();
       })
       .catch((error) => {
         console.log(error);
-        this.navState = null;
+        this.navState = {angle:0, target: {status: null}, searchState: this.SEARCHING_STATE};
         this.updateNavigation();
       });
   }
@@ -284,7 +271,18 @@ class Navigator {
     const navigationTarget = document.getElementById('nav-target');
     const statusElement = document.getElementById('location-status-element');
 
-    if (this.navState !== null) {
+    let debugText = "";
+    if (this.navState.geo_distance !== undefined) {
+      if (this.navState.geo_distance >= 0) {
+        debugText += `${Math.round(this.navState.geo_distance)}m ± ${this.accuracy}m`;
+      }
+    }
+    if (this.compass != null) {
+        debugText += ` / 🧭 ${this.orientationOffset}deg`;
+    }
+    statusElement.innerText = debugText;
+
+    if (this.navState.target.status !== null) {
         navigationTarget.classList.remove('-inactive');
         navigationTarget.innerText = this.navState.target.status;
     } else {
@@ -292,25 +290,48 @@ class Navigator {
         navigationTarget.innerText = "🎯";
     }
 
-    if (this.searchState === this.FOUND_STATE) {
-        document.querySelector('body').classList.add('-found');
-        navigationElement.innerText = "🏁";
-        navigationElement.style.transform = '';
-        navigationElement.classList.remove('-blur');
-        return;
+    if (this.searchState === this.FOUND_STATE ) {
+        if (!document.querySelector('body').classList.contains('-found')) {
+          document.querySelector('body').classList.add('-found');
+          if (this.navState && this.navState.target.fileHash) {
+            let fHash = this.navState.target.fileHash;
+            let mimeType = this.navState.target.mimeType;
+            switch (true) {
+              case /image\//.test(mimeType):
+                navigationElement.innerHTML = `<img class="media" src="/download/${fHash}">`;
+                break;
+              case /audio\//.test(mimeType):
+                  navigationElement.innerHTML = `<audio class="media" controls src="/download/${fHash}">`;
+                  break;
+              case /application\/x-matroska/.test(mimeType):
+              case /video\//.test(mimeType):
+                navigationElement.innerHTML = `<video class="media" controls src="/download/${fHash}">`;
+                break;
+              default:
+                navigationElement.innerHTML = "🏁";
+                break;
+              }
+              navigationElement.innerHTML += `<p class="medialink"><a href="/download/${fHash}" target="_blank">🔗↗️</a></p>`;
+          } else {
+            navigationElement.innerText = "🏁";
+          }
+          navigationElement.style.transform = '';
+          navigationElement.classList.remove('-blur');
+        }
     } else {
         document.querySelector('body').classList.remove('-found');
+
+        if (this.isAccurate()) {
+            navigationElement.classList.remove('-blur');
+            navigationElement.innerText = "^";
+            navigationElement.style.transform = `rotate(${this.relativeAngle}deg)`;
+        } else {
+            navigationElement.classList.add('-blur');
+            navigationElement.innerText = "⚠️";
+            navigationElement.style.transform = '';
+        }
     }
 
-    if (this.isAccurate()) {
-        navigationElement.classList.remove('-blur');
-        navigationElement.innerText = "^";
-        navigationElement.style.transform = `rotate(${this.relativeAngle}deg)`;
-    } else {
-        navigationElement.classList.add('-blur');
-        navigationElement.innerText = "⚠️";
-        navigationElement.style.transform = '';
-    }
 
   }
   
