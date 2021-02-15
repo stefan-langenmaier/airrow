@@ -1,7 +1,6 @@
 package net.langenmaier.strohstern.data.storage.service;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -27,8 +26,6 @@ import net.langenmaier.strohstern.data.storage.model.Target;
 
 @ApplicationScoped
 public class RefreshService {
-
-	private final static Logger LOGGER = Logger.getLogger(RefreshService.class.getName());
 
 	private static final Double MIN_FOUND_DISTANCE = 10d;
 
