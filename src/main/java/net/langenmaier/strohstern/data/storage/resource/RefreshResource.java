@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 
 import net.langenmaier.strohstern.data.storage.dto.JsonNavigationState;
 import net.langenmaier.strohstern.data.storage.dto.JsonRefreshData;
-import net.langenmaier.strohstern.data.storage.exception.InvalidTrajectoryPoint;
 import net.langenmaier.strohstern.data.storage.model.Session;
 import net.langenmaier.strohstern.data.storage.service.RefreshService;
 
@@ -27,8 +26,8 @@ public class RefreshResource {
 	
 	@POST
 	public JsonNavigationState create(JsonRefreshData rd) {
-		if (rd ==  null) {
-			throw new InvalidTrajectoryPoint();
+		if (rd == null) {
+			return null;
 		}
 		Session session = Session.of(rd);
 
