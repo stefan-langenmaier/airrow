@@ -61,7 +61,7 @@ public class RefreshService {
 			e.printStackTrace();
 		}
 
-		if (s.accuracy < minAccuracy) {
+		if (s.accuracy <= minAccuracy) {
 			JsonNavigationState d = getNavigationState(s);
 			return d;
 		} else {
@@ -101,6 +101,8 @@ public class RefreshService {
 
 		JsonObject json = new JsonObject(responseBody); 
 		JsonArray hits = json.getJsonObject("hits").getJsonArray("hits");
+		if (hits.size() == 0)
+			return null;
 		JsonObject target = hits.getJsonObject(0);
 		JsonObject source = target.getJsonObject("_source");
 		EsTarget et = source.mapTo(EsTarget.class);

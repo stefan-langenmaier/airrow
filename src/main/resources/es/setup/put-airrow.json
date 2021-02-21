@@ -1,0 +1,69 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "status_analyzer": {
+          "type": "custom",
+          "tokenizer": "status_tokenizer",
+          "char_filter": [],
+          "filter": []
+        }
+      },
+      "tokenizer": {
+        "status_tokenizer": {
+          "type": "ngram",
+          "min_gram": 1,
+          "max_gram": 2
+        }
+      }
+    },
+    "index": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    }
+  },
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "location": {
+          "type": "geo_point"
+        },
+        "status": {
+          "type": "text",
+          "analyzer": "status_analyzer"
+        },
+        "relation": {
+          "type": "join",
+          "relations": {
+            "entity": "rating"
+          }
+        },
+        "updatedAt": {
+          "type": "date",
+          "format": "basic_date_time"
+        },
+        "creator": {
+          "type": "keyword"
+        },
+        "refCode": {
+          "type": "keyword"
+        },
+        "selfReference": {
+          "type": "boolean"
+        },
+        "permanent": {
+          "type": "boolean"
+        },
+        "mimeType": {
+          "type": "keyword"
+        },
+        "path": {
+          "type": "keyword"
+        },
+        "rating": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

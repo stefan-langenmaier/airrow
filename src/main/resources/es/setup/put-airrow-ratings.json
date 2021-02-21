@@ -1,0 +1,44 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "status_analyzer": {
+          "type": "custom",
+          "tokenizer": "status_tokenizer",
+          "char_filter": [],
+          "filter": []
+        }
+      },
+      "tokenizer": {
+        "status_tokenizer": {
+          "type": "ngram",
+          "min_gram": 1,
+          "max_gram": 2
+        }
+      }
+    },
+    "index": {
+      "number_of_shards": 2,
+      "number_of_replicas": 0
+    }
+  },
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "creator": {
+          "type": "keyword"
+        },
+        "entity": {
+          "type": "keyword"
+        },
+        "rating": {
+          "type": "integer"
+        },
+        "updatedAt": {
+          "type": "date",
+          "format": "basic_date_time"
+        }
+      }
+    }
+  }
+}
