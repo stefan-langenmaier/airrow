@@ -9,9 +9,9 @@
     <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon.png" sizes="96x96">
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
-    <link type="text/css" rel="stylesheet" href="assets/stylesheets/index.css?v=20210214" />
+    <link type="text/css" rel="stylesheet" href="assets/stylesheets/index.css?v=20210221" />
     <script type="text/javascript" src="assets/javascripts/compass.js?v=20201128"></script>
-    <script type="text/javascript" src="assets/javascripts/main.js?v=20210214"></script>
+    <script type="text/javascript" src="assets/javascripts/main.js?v=20210221"></script>
     <script type="text/javascript" src="assets/javascripts/nosleep.js"></script>
   </head>
 
@@ -40,6 +40,16 @@
             ☁️🔼
             <input id="upload-file-input" type="file" />
             <div id="upload-file-status"></div>
+          </div>
+          <div id="rating-container" class="-hidden">
+            <input type="radio" id="rating-report" name="rating" value="REPORT">
+            <label for="rating-report">🚫☠️🤬</label>
+        
+            <input type="radio" id="rating-down" name="rating" value="DOWN">
+            <label for="rating-down">👎</label>
+        
+            <input type="radio" id="rating-up" name="rating" value="UP">
+            <label for="rating-up">👍</label>
           </div>
         </div>
         <div id="location-status-container">

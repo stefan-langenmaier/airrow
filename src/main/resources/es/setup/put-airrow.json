@@ -61,7 +61,7 @@
           "type": "keyword"
         },
         "rating": {
-          "type": "integer"
+          "type": "keyword"
         }
       }
     }

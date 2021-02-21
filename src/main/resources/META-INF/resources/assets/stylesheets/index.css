@@ -143,6 +143,23 @@ body.-found {
   margin: auto;
 }
 
+#rating-container {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 4;
+  grid-row-end: -1;
+
+  margin: auto;
+}
+
+#rating-container input[type=radio] {
+  display: none;
+}
+
+#rating-container input[type="radio"]:checked+label {
+  background-color: rgba(0,0,0,.5);
+}
+
 #upload-file-input {
   display: none;
 }

@@ -172,7 +172,40 @@ class Navigator {
 
   continue() {
     if (this.searchState === this.FOUND_STATE) {
+      const navigationStatus = document.getElementById('nav-status-input');
+      const status = navigationStatus.value;
+      const rating = document.querySelector('input[name="rating"]:checked');
+      const refCode = this.navState.target.refCode;
+
+      if (refCode === null || rating === null) {
         this.searchState = this.SEARCHING_STATE;
+        return;
+      }
+
+      const url = '/rate';
+      const contentType = "application/json;charset=UTF-8";
+      const params = {
+        "uuid": this.sessionId,
+        "location": {
+          "lat": this.latitude,
+          "lon": this.longitude
+        },
+        "status": status,
+        "rating": rating.value,
+        "refCode": refCode
+      };
+
+      Util.post(url, contentType, params)
+      .then((response) => {
+        this.searchState = this.SEARCHING_STATE;
+      })
+      .catch((error) => {
+        console.log(error);
+        this.searchState = this.SEARCHING_STATE;
+      });
+
+      const navigationElement = document.getElementById('nav-element');
+      navigationElement.innerHTML = "⏳";
     }
   }
 
@@ -271,6 +304,9 @@ class Navigator {
     const navigationTarget = document.getElementById('nav-target');
     const statusElement = document.getElementById('location-status-element');
 
+    const ratingContainer = document.getElementById('rating-container');
+    const uploadFileTarget = document.getElementById('upload-file-target');
+
     let debugText = "";
     if (this.navState.geo_distance !== undefined) {
       if (this.navState.geo_distance >= 0) {
@@ -295,6 +331,8 @@ class Navigator {
     if (this.searchState === this.FOUND_STATE ) {
         if (!document.querySelector('body').classList.contains('-found')) {
           document.querySelector('body').classList.add('-found');
+          ratingContainer.classList.remove('-hidden');
+          uploadFileTarget.classList.add('-hidden');
           if (this.navState && this.navState.target.fileHash) {
             let fHash = this.navState.target.fileHash;
             let mimeType = this.navState.target.mimeType;
@@ -322,6 +360,12 @@ class Navigator {
         }
     } else {
         document.querySelector('body').classList.remove('-found');
+        ratingContainer.classList.add('-hidden');
+        uploadFileTarget.classList.remove('-hidden');
+
+        document.getElementById('rating-report').checked = false;
+        document.getElementById('rating-down').checked = false;
+        document.getElementById('rating-up').checked = false;
 
         if (this.isAccurate()) {
             navigationElement.classList.remove('-blur');

@@ -32,7 +32,7 @@
           "type": "keyword"
         },
         "rating": {
-          "type": "integer"
+          "type": "keyword"
         },
         "updatedAt": {
           "type": "date",

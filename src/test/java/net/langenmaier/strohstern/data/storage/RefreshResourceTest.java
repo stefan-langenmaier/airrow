@@ -37,7 +37,7 @@ public class RefreshResourceTest {
             .when().post()
             .then()
                 .statusCode(200)
-                .body(jsonEquals("{\"angle\":126.20299829986558,\"geo_distance\":6.1111539086248685,\"target\":{\"refCode\":null,\"status\":\"\uD83C\uDF7A\uD83C\uDF3D\",\"mimeType\":null,\"fileHash\":null},\"searchState\":\"FOUND\"}"));
+                .body(jsonEquals("{\"angle\":126.20299829986558,\"geo_distance\":6.1111539086248685,\"target\":{\"refCode\":\"r01\",\"status\":\"\uD83C\uDF7A\uD83C\uDF3D\",\"mimeType\":null,\"fileHash\":null},\"searchState\":\"FOUND\"}"));
     }
 
     @Test
