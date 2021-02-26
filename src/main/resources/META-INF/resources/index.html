@@ -9,9 +9,9 @@
     <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon.png" sizes="96x96">
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
-    <link type="text/css" rel="stylesheet" href="assets/stylesheets/index.css?v=20210221" />
+    <link type="text/css" rel="stylesheet" href="assets/stylesheets/index.css?v=20210225" />
     <script type="text/javascript" src="assets/javascripts/compass.js?v=20201128"></script>
-    <script type="text/javascript" src="assets/javascripts/main.js?v=20210221"></script>
+    <script type="text/javascript" src="assets/javascripts/main.js?v=20210225"></script>
     <script type="text/javascript" src="assets/javascripts/nosleep.js"></script>
   </head>
 
@@ -53,7 +53,25 @@
           </div>
         </div>
         <div id="location-status-container">
+          <div class="switch-screen left" data-switch-target="personal">&lt;</div>
           <div id="location-status-element"></div>
+          <div class="switch-screen right" data-switch-target="points">&gt;</div>
+        </div>
+      </div>
+      <div id="personal-screen" class="-hidden screen">
+        <div id="personal-container">
+        </div>
+        <div id="personal-status-container">
+          <div id="personal-refcode">🆔</div>
+          <div class="switch-screen right" data-switch-target="navigation">&gt;</div>
+        </div>
+      </div>
+      <div id="points-screen" class="-hidden screen">
+        <div id="points-container">
+          POIs
+        </div>
+        <div id="points-status-container">
+          <div class="switch-screen left" data-switch-target="navigation">&lt;</div>
         </div>
       </div>
     </div>

@@ -48,6 +48,13 @@ class Navigator {
     const upload = document.getElementById('upload-file-input');
     upload.addEventListener('change', this.uploadFile.bind(this));
 
+    const switches = document.querySelectorAll(".switch-screen");
+    for (let s of switches) {
+      s.addEventListener('click', this.switchScreen.bind(this));
+    }
+
+    this.screenRefresh = [ {screen: 'personal', method: this.refreshPersonal.bind(this)} ];
+
     const debug = document.getElementById('debug-element');
     debug.innerText = '';
   }
@@ -72,6 +79,55 @@ class Navigator {
     
     // release lock
     this.isFiltering = false;
+  }
+
+  switchScreen(evt) {
+    const screen = evt.target.dataset['switchTarget'];
+    const screens = document.querySelectorAll(".screen");
+    for (let s of screens) {
+      if (s.id.includes(screen)) {
+        s.classList.remove('-hidden');
+      } else {
+        s.classList.add('-hidden');
+      }
+    }
+
+    this.refresh(screen);
+  }
+
+  refresh(screen) {
+    for (let r of this.screenRefresh) {
+      if (r.screen === screen) {
+        r.method();
+      }
+    }
+  }
+
+  refreshPersonal() {
+    const url = '/personal';
+    Util.get(url)
+    .then((response) => {
+      this.renderPersonalScreen(JSON.parse(response));
+    })
+    .catch((error) => {
+      console.log(error);
+      this.renderPersonalScreen(null);
+    });
+
+    const personalElement = document.getElementById('personal-refcode');
+    personalElement.innerHTML = "⏳";
+  }
+
+  renderPersonalScreen(data) {
+    const personalElement = document.getElementById('personal-refcode');
+    personalElement.innerHTML = " ";
+
+    const personalContainer = document.getElementById('personal-container');
+    personalContainer.innerHTML = `<div class="heading">📊</div><div>👣${data.trajectoryPoints}</div><div>🗺️${data.pointsPoints}</div><div>🚦${data.ratingsPoints}</div>`;
+
+    if (data !== null) {
+      personalElement.innerHTML = "🆔 " + data.refCode.substring(0, 8);
+    }
   }
 
   handlePermission() {
@@ -456,6 +512,28 @@ class Util {
       xmlhttp.open("POST", url);
       xmlhttp.setRequestHeader("Content-Type", contentType);
       xmlhttp.send(JSON.stringify(params));
+    });
+    return promise;
+  }
+
+  static get(url) {
+    let promise = new Promise((resolve, reject) => {
+      const xmlhttp = new XMLHttpRequest();
+      xmlhttp.onload = () => {
+        if (xmlhttp.readyState === 4) {
+          if (xmlhttp.status === 200) {
+            resolve(xmlhttp.response);
+          } else {
+            // e.g. no other participant (Status 204)
+            if (xmlhttp.status >= 400) {
+              console.error(xmlhttp);
+            }
+            reject(xmlhttp);
+          }
+        }
+      };
+      xmlhttp.open("GET", url);
+      xmlhttp.send();
     });
     return promise;
   }
