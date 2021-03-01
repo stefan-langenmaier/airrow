@@ -133,25 +133,35 @@ class Navigator {
   handlePermission() {
     let that = this;
 
+    const debug = document.getElementById('debug-element');
+    debug.innerText += '▶️';
+
     // this needs to be triggered by a real user interaction
     // therefore we always show the satellite at the beginning
     if (this.screenLock === false) {
       var noSleep = new NoSleep();
       noSleep.enable();
       this.screenLock = true;
+      debug.innerText += '🔒';
     }
 
     const PROBABLY_GRANTED=50;
     if (navigator.permissions === undefined) {
-        this.verifyPermission(PROBABLY_GRANTED, that);
+      debug.innerText += '⚠️';
+      this.verifyPermission(PROBABLY_GRANTED, that);
     } else {
       navigator.permissions.query({name:'geolocation'}).then(function(result) {
         if (result.state == 'granted') {
+          debug.innerText += '✅';
           console.log("GEO PERMISSION already enabled - STARTING APP");
+          debug.innerText += '🔼';
           that.startNavigation();
+          debug.innerText += '⏺️';
         } else if (result.state == 'prompt') {
+          debug.innerText += '❓';
           that.verifyPermission(PROBABLY_GRANTED, that);
         } else if (result.state == 'denied') {
+          debug.innerText += '‼️';
           // TODO show a geo permission denied emoji
           console.log("THIS WONT WORK WITHOUT GEO PERMISSIONS");
         }
@@ -167,6 +177,7 @@ class Navigator {
   
   verifyPermission(PROBABLY_GRANTED, that) {
       const beforePermissionQuestion = Date.now();
+      const debug = document.getElementById('debug-element');
       // this should just trigger the permission question
       // if the response is extremly fast we can assume it was accepted permanently
       // and is actually in state granted
@@ -177,7 +188,9 @@ class Navigator {
           const diff = (afterPermissionQuestion - beforePermissionQuestion);
           console.log(diff);
           if (diff < PROBABLY_GRANTED) {
+              debug.innerText += '🔼';
               that.startNavigation();
+              debug.innerText += '⏺️';
           }
       });
   }
