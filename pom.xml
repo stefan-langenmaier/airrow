@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.langenmaier.strohstern</groupId>
@@ -12,10 +12,10 @@
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus-plugin.version>1.11.3.Final</quarkus-plugin.version>
+    <quarkus-plugin.version>1.12.0.Final</quarkus-plugin.version>
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>1.11.3.Final</quarkus.platform.version>
+    <quarkus.platform.version>1.12.0.Final</quarkus.platform.version>
     <surefire-plugin.version>2.22.1</surefire-plugin.version>
   </properties>
   <dependencyManagement>
@@ -28,11 +28,11 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-          <groupId>org.testcontainers</groupId>
-          <artifactId>testcontainers-bom</artifactId>
-          <version>1.15.2</version>
-          <type>pom</type>
-          <scope>import</scope>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers-bom</artifactId>
+        <version>1.15.2</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -92,14 +92,18 @@
       <artifactId>quarkus-elasticsearch-rest-client</artifactId>
     </dependency>
     <dependency>
-        <groupId>com.kcthota</groupId>
-        <artifactId>emoji4j</artifactId>
-        <version>6.0</version>
+      <groupId>com.kcthota</groupId>
+      <artifactId>emoji4j</artifactId>
+      <version>6.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.tika</groupId>
       <artifactId>tika-core</artifactId>
       <version>1.22</version>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-container-image-docker</artifactId>
     </dependency>
   </dependencies>
   <build>

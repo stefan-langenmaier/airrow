@@ -1,4 +1,7 @@
 *
-!target/*-runner
-!target/*-runner.jar
-!target/lib/*
+!target/quarkus-app/*-run
+!target/quarkus-app/*-run.jar
+!target/quarkus-app/app/*
+!target/quarkus-app/lib/*
+!target/quarkus-app/quarkus/*
+!target/*.jar
