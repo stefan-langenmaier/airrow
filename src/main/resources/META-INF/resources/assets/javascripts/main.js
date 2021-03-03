@@ -145,7 +145,7 @@ class Navigator {
       debug.innerText += '🔒';
     }
 
-    const PROBABLY_GRANTED=50;
+    const PROBABLY_GRANTED=70;
     if (navigator.permissions === undefined) {
       debug.innerText += '⚠️';
       this.verifyPermission(PROBABLY_GRANTED, that);
@@ -191,7 +191,14 @@ class Navigator {
               debug.innerText += '🔼';
               that.startNavigation();
               debug.innerText += '⏺️';
+          } else {
+            debug.innerText += '🐢';
           }
+      },
+      function(error) {
+        debug.innerText += '⛔';
+        debug.innerText += error.code;
+        debug.innerText += '🥬';
       });
   }
 
