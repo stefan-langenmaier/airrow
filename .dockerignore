@@ -5,3 +5,4 @@
 !target/quarkus-app/lib/*
 !target/quarkus-app/quarkus/*
 !target/*.jar
+!target/lib/*
