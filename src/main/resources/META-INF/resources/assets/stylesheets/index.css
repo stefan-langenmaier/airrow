@@ -195,6 +195,10 @@ body.-found {
   font-size: 10vh;
 }
 
+#points-container table{
+  font-size: 5vh;
+}
+
 #points-status-container {
   grid-column-start: 1;
   grid-column-end: -1;

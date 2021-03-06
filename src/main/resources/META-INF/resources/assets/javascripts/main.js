@@ -163,8 +163,13 @@ class Navigator {
 
     const pointsContainer = document.getElementById('points-container');
     pointsContainer.innerHTML = `<div class="heading">🗺️</div>`
-    for (let point of data.points) {
-      pointsContainer.innerHTML += `<div class="poi" data-id="${point.uuid}">${point.status}, ${point.distance}m, ${point.mimeType} <a href="">❌</a></div>`;
+    if (data.points.length > 0) {
+      let table = '<table>';
+      for (let point of data.points) {
+        table += `<tr class="poi" data-id="${point.uuid}"><td>${point.status}</td><td>${Math.round(point.distance)}m</td><td>${Util.mimeToEmoji(point.mimeType)}</td><td><a href="">❌</a></td></tr>`;
+      }
+      table += '</table>';
+      pointsContainer.innerHTML += table;
     }
 
     const pois = document.querySelectorAll("#points-container .poi a");
@@ -176,8 +181,8 @@ class Navigator {
   deletePoi(evt) {
     evt.preventDefault();
 
-    const poi = evt.target.parentElement.dataset.id;
-    evt.target.parentElement.remove();
+    const poi = evt.target.parentElement.parentElement.dataset.id;
+    evt.target.parentElement.parentElement.remove();
 
     const url = '/points/delete';
     const contentType = "application/json;charset=UTF-8";
@@ -558,6 +563,20 @@ class Navigator {
 }
 
 class Util {
+  static mimeToEmoji(mimeType) {
+    switch (true) {
+      case /image\//.test(mimeType):
+        return '🖼️';
+      case /audio\//.test(mimeType):
+        return '🎶';
+      case /application\/x-matroska/.test(mimeType):
+      case /video\//.test(mimeType):
+        return '🎞️';
+      default:
+        return '❓';
+      }
+  }
+
   static generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();//Timestamp
     var d2 = (performance && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
