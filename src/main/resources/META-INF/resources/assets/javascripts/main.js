@@ -53,7 +53,10 @@ class Navigator {
       s.addEventListener('click', this.switchScreen.bind(this));
     }
 
-    this.screenRefresh = [ {screen: 'personal', method: this.refreshPersonal.bind(this)} ];
+    this.screenRefresh = [
+      {screen: 'personal', method: this.refreshPersonal.bind(this)},
+      {screen: 'points', method: this.refreshPoints.bind(this)}
+    ];
 
     const debug = document.getElementById('debug-element');
     debug.innerText = '';
@@ -128,6 +131,64 @@ class Navigator {
     if (data !== null) {
       personalElement.innerHTML = "🆔 " + data.refCode.substring(0, 8);
     }
+  }
+
+  refreshPoints() {
+    const url = '/points/list';
+    const contentType = "application/json;charset=UTF-8";
+    const params = {
+      "uuid": this.sessionId,
+      "location": {
+        "lat": this.latitude,
+        "lon": this.longitude
+      }
+    };
+
+    Util.post(url, contentType, params)
+    .then((response) => {
+      this.renderPointsScreen(JSON.parse(response));
+    })
+    .catch((error) => {
+      console.log(error);
+      this.renderPointsScreen(null);
+    });
+
+    const pointsStatus = document.getElementById('points-status');
+    pointsStatus.innerHTML = "⏳";
+  }
+
+  renderPointsScreen(data) {
+    const pointsStatus = document.getElementById('points-status');
+    pointsStatus.innerHTML = '';
+
+    const pointsContainer = document.getElementById('points-container');
+    pointsContainer.innerHTML = `<div class="heading">🗺️</div>`
+    for (let point of data.points) {
+      pointsContainer.innerHTML += `<div class="poi" data-id="${point.uuid}">${point.status}, ${point.distance}m, ${point.mimeType} <a href="">❌</a></div>`;
+    }
+
+    const pois = document.querySelectorAll("#points-container .poi a");
+    for (let p of pois) {
+      p.addEventListener('click', this.deletePoi.bind(this));
+    }
+  }
+
+  deletePoi(evt) {
+    evt.preventDefault();
+
+    const poi = evt.target.parentElement.dataset.id;
+    evt.target.parentElement.remove();
+
+    const url = '/points/delete';
+    const contentType = "application/json;charset=UTF-8";
+    const params = {
+      "uuid": poi,
+    };
+
+    Util.post(url, contentType, params)
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   handlePermission() {
