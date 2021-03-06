@@ -547,7 +547,7 @@ class Navigator {
     let sessionId = document.cookie.replace(/(?:(?:^|.*;\s*)sessionId\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     if (sessionId === "") {
       sessionId = Util.generateUUID();
-      document.cookie = `sessionId=${sessionId};max-age=86400`;
+      document.cookie = `sessionId=${sessionId};max-age=7776000`;
     }
     return sessionId;
   }
