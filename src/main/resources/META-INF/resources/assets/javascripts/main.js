@@ -128,7 +128,7 @@ class Navigator {
     const personalContainer = document.getElementById('personal-container');
     personalContainer.innerHTML = `<div class="heading">📊</div><div>👣${data.trajectoryPoints}</div><div>🗺️${data.pointsPoints}</div><div>🚦${data.ratingsPoints}</div>`;
 
-    if (data !== null) {
+    if (data.refCode !== null) {
       personalElement.innerHTML = "🆔 " + data.refCode.substring(0, 8);
     }
   }
@@ -205,9 +205,15 @@ class Navigator {
     // this needs to be triggered by a real user interaction
     // therefore we always show the satellite at the beginning
     if (this.screenLock === false) {
-      var noSleep = new NoSleep();
-      noSleep.enable();
-      this.screenLock = true;
+      if ('wakeLock' in navigator) {
+        navigator.wakeLock.request('screen');
+        debug.innerText += '💡';
+      } else {
+        var noSleep = new NoSleep();
+        noSleep.enable();
+        this.screenLock = true;
+        debug.innerText += '😴';
+      }
       debug.innerText += '🔒';
     }
 
