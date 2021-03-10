@@ -202,6 +202,13 @@ class Navigator {
     const debug = document.getElementById('debug-element');
     debug.innerText += '▶️';
 
+    screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+    if (screen.lockOrientationUniversal("portrait-primary")) {
+      debug.innerText += '🔄';
+    } else {
+      debug.innerText += '🙃';
+    }
+
     // this needs to be triggered by a real user interaction
     // therefore we always show the satellite at the beginning
     if (this.screenLock === false) {
