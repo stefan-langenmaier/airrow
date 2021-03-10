@@ -287,6 +287,21 @@ body.-found {
   display: grid;
 }
 
+#legal-container {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  grid-row-start: 1;
+  grid-row-end: -2;
+
+  display: grid;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+
+  font-size: 7vh;
+}
+
 .permission-element {
   grid-column-start: 1;
   grid-column-end: -1;

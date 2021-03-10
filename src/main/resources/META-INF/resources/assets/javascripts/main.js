@@ -37,6 +37,16 @@ class Navigator {
     const navElement = document.getElementById('nav-element');
     navElement.addEventListener('dblclick', this.continue.bind(this));
 
+    const legalVerified = document.cookie.replace(/(?:(?:^|.*;\s*)legal-verified\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    const legalStatus = document.getElementById('legal');
+    if (legalVerified === "true") {
+      legalStatus.checked = true;
+      const legalContainer = document.getElementById('legal-element');
+      legalContainer.classList.add('-hidden');
+    } else {
+      legalStatus.checked = false;
+    }
+
     const permissionElement = document.getElementById('permission-container');
     permissionElement.addEventListener('click', this.handlePermission.bind(this));
 
@@ -200,7 +210,17 @@ class Navigator {
     let that = this;
 
     const debug = document.getElementById('debug-element');
-    debug.innerText += '▶️';
+    debug.innerText = '▶️';
+
+    const legalStatus = document.getElementById('legal');
+    if (legalStatus.checked === true) {
+      document.cookie = `legal-verified=true;max-age=7776000`;
+      debug.innerText += '§✅';
+    } else {
+      document.cookie = `legal-verified=false;max-age=7776000`;
+      debug.innerText += '§❓';
+      return;
+    }
 
     screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
     if (screen.lockOrientationUniversal("portrait-primary")) {
