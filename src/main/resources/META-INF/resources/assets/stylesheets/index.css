@@ -233,6 +233,8 @@ body.-found {
   grid-row-end: -1;
 
   margin: auto;
+
+  font-size: 5vh;
 }
 
 #rating-container input[type=radio] {
@@ -245,6 +247,10 @@ body.-found {
 
 #upload-file-input {
   display: none;
+}
+
+#upload-file-target {
+  font-size: 5vh;
 }
 
 .-running{
