@@ -31,6 +31,7 @@ class Navigator {
     
     this.eventMode = 'no';
     this.eventData = 'na';
+    this.orientationEventAllowed = false;
     
     this.geoLocationOptions = {
       enableHighAccuracy: true,
@@ -250,6 +251,32 @@ class Navigator {
       debug.innerText += '🔒';
     }
 
+    // this needs to be triggered by a real user interaction
+    // therefore we always show the satellite at the beginning
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission()
+      .then(response => {
+        debug.innerText += '↔️';
+        if (!this.orientationEventAllowed) {
+          this.orientationEventAllowed = true;
+          // retry because original run was canceled
+          this.handlePermission();
+        }
+      })
+      .catch(response => {
+        debug.innerText += '💫';
+      });
+    } else {
+      this.orientationEventAllowed = true;
+    }
+    // hobo solution
+    // I dont know how to wait for the result of the above permission dialogue
+    // and I dont want to have it displayed while also asked for the geo permission
+    // so backing out here
+    if (!this.orientationEventAllowed) {
+      return;
+    }
+
     const PROBABLY_GRANTED=70;
     if (navigator.permissions === undefined) {
       debug.innerText += '⚠️';
@@ -283,6 +310,7 @@ class Navigator {
   verifyPermission(PROBABLY_GRANTED, that) {
       const beforePermissionQuestion = Date.now();
       const debug = document.getElementById('debug-element');
+      debug.innerText += '👀';
       // this should just trigger the permission question
       // if the response is extremly fast we can assume it was accepted permanently
       // and is actually in state granted
@@ -326,7 +354,7 @@ class Navigator {
     if (this.orientationAbsolute) { 
         this.orientationCurrent = evt.alpha;
         this.eventData = 'abs';
-    } else if (evt.hasOwnProperty('webkitCompassHeading')) { 
+    } else if ('webkitCompassHeading' in evt) { 
         //get absolute orientation for Safari/iOS
         this.orientationAbsolute = true;
         this.orientationCurrent = 360 - evt.webkitCompassHeading; // TODO this is not tested
@@ -349,11 +377,8 @@ class Navigator {
         this.eventMode = 'abs';
         window.addEventListener('deviceorientationabsolute', this.handleOrientation.bind(this));
     } else if ('ondeviceorientation' in window) {
-        this.eventMode = 'rel';
+        this.eventMode = 'rel/ios';
         window.addEventListener('deviceorientation', this.handleOrientation.bind(this));
-    } else {
-        this.eventMode = 'else';
-      window.addEventListener('deviceorientation', this.handleOrientation.bind(this));
     }
     this.heartBeatId = navigator.geolocation.watchPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
