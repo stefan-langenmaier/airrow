@@ -8,3 +8,5 @@
 * background postion refreshes (service worker)
 * configure on makandra env
 * fix bug where a rated point reappears
+* flamingo not working on ios
+* airrow not turning on ios

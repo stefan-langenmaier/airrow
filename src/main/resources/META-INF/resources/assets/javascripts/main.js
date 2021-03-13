@@ -221,13 +221,16 @@ class Navigator {
       debug.innerText += '§❓';
       return;
     }
-
-    // screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-    // if (screen.lockOrientationUniversal("portrait-primary")) {
-    //   debug.innerText += '🔄';
-    // } else {
-    //   debug.innerText += '🙃';
-    // }
+    
+    try {
+      if (ScreenOrientation.lock("portrait-primary")) {
+        debug.innerText += '🔄';
+      } else {
+        debug.innerText += '🙃';
+      }
+    } catch (e) {
+      debug.innerText += '🙃';
+    }
 
     // this needs to be triggered by a real user interaction
     // therefore we always show the satellite at the beginning
