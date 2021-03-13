@@ -29,6 +29,9 @@ class Navigator {
     
     this.lastUpdate = Date.now()-1000;
     
+    this.eventMode = 'no';
+    this.eventData = 'na';
+    
     this.geoLocationOptions = {
       enableHighAccuracy: true,
       timeout: 2000
@@ -321,11 +324,13 @@ class Navigator {
   handleOrientation(evt) {
     this.orientationAbsolute = evt.absolute;
     if (this.orientationAbsolute) { 
-        this.orientationCurrent = evt.alpha; 
+        this.orientationCurrent = evt.alpha;
+        this.eventData = 'abs';
     } else if (evt.hasOwnProperty('webkitCompassHeading')) { 
         //get absolute orientation for Safari/iOS
         this.orientationAbsolute = true;
         this.orientationCurrent = 360 - evt.webkitCompassHeading; // TODO this is not tested
+        this.eventData = 'ios';
     } else {
         if (this.compass === null) {
             this.compass = new Compass();
@@ -334,17 +339,21 @@ class Navigator {
         }
         this.orientationAbsolute = false;
         this.orientationCurrent = evt.alpha;
+        this.eventData = 'rel';
     }
   }
 
   start() {
     if ('ondeviceorientationabsolute' in window) {
         // works only in Chrome
+        this.eventMode = 'abs';
         window.addEventListener('deviceorientationabsolute', this.handleOrientation.bind(this));
     } else if ('ondeviceorientation' in window) {
+        this.eventMode = 'rel';
         window.addEventListener('deviceorientation', this.handleOrientation.bind(this));
     } else {
-      window.addEventListener('deviceorientation', this.handleOrientation.bind(this), true);
+        this.eventMode = 'else';
+      window.addEventListener('deviceorientation', this.handleOrientation.bind(this));
     }
     this.heartBeatId = navigator.geolocation.watchPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
@@ -498,6 +507,7 @@ class Navigator {
     if (this.compass != null) {
         debugText += ` / 🧭 ${this.orientationOffset}deg`;
     }
+    debugText += ` - ${this.eventMode}- ${this.eventData}`;
     statusElement.innerText = debugText;
 
     if (this.navState.target.status !== null) {
