@@ -340,6 +340,8 @@ class Navigator {
         window.addEventListener('deviceorientationabsolute', this.handleOrientation.bind(this));
     } else if ('ondeviceorientation' in window) {
         window.addEventListener('deviceorientation', this.handleOrientation.bind(this));
+    } else {
+      window.addEventListener('deviceorientation', this.handleOrientation.bind(this), true);
     }
     this.heartBeatId = navigator.geolocation.watchPosition(this.updateCoordinates.bind(this), this.noGeoPositionAvailable.bind(this), this.geoLocationOptions);
     this.navigationInterval = setInterval(this.updateNavigation.bind(this), 100);
