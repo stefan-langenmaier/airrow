@@ -562,6 +562,10 @@ class Navigator {
               case /video\//.test(mimeType):
                 navigationElement.innerHTML = `<video class="media" controls src="/download/${fHash}">`;
                 break;
+                case /text\/link/.test(mimeType):
+                  navigationElement.innerHTML = "⏳";
+                  Util.loadLink(fHash);
+                  break;
               default:
                 navigationElement.innerHTML = "🏁";
                 break;
@@ -648,6 +652,26 @@ class Util {
       default:
         return '❓';
       }
+  }
+
+  static loadLink(fHash) {
+    Util.get(`/download/${fHash}`)
+    .then((response) => {
+      const navigationElement = document.getElementById('nav-element');
+      switch (true) {
+        case /https:\/\/www.youtube.com\/embed\//.test(response):
+          navigationElement.innerHTML = `<iframe src="${response}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+          break;
+        default:
+          navigationElement.innerHTML = `<a href="${response}" target="_blank">🔗↗️</a>`;
+      }
+      navigationElement.innerHTML += `<p class="medialink">🆗</p>`;
+    })
+    .catch((error) => {
+      console.log(error);
+      const navigationElement = document.getElementById('nav-element');
+      navigationElement.innerHTML = "🏁";
+    });
   }
 
   static generateUUID() { // Public Domain/MIT

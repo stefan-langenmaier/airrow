@@ -3,6 +3,7 @@ package net.langenmaier.strohstern.data.storage.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,6 +59,15 @@ public class Upload {
 		Tika tika = new Tika();
 		try {
 			mimeType = tika.detect(uploadedFile);
+			if (mimeType.equals("text/plain") && uploadedFile.length() < 1000) {
+				try {
+					String content = Files.readString(uploadedFile.toPath());
+					new URL(content);
+					mimeType = "text/link";
+				} catch (IOException e) {
+					// content is no link
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			mimeType = "application/octet-stream";
