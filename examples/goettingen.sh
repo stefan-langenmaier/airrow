@@ -37,12 +37,4 @@ curl -X POST \
   https://xn--rro-pla.de/upload && echo "ok kiessee"
 
 
-
-
-
-
-
-
-
-
-
+# https://medium.com/@worstonlinedater/tinder-experiments-ii-guys-unless-you-are-really-hot-you-are-probably-better-off-not-wasting-your-2ddf370a6e9a

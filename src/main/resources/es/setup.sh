@@ -101,9 +101,6 @@ curl -X PUT "localhost:9200/airrow?pretty" -H 'Content-Type: application/json' -
         "refCode": {
           "type": "keyword"
         },
-        "selfReference": {
-          "type": "boolean"
-        },
         "permanent": {
           "type": "boolean"
         },
@@ -186,7 +183,7 @@ curl -X PUT "localhost:9200/airrow-points?pretty" -H 'Content-Type: application/
         "status_tokenizer": {
           "type": "ngram",
           "min_gram": 1,
-          "max_gram": 4
+          "max_gram": 2
         }
       }
     },
