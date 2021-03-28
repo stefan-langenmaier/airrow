@@ -27,7 +27,8 @@ public class RateService {
 	RestClient restClient;
 
 	public void rate(Rating r) {
-		Request live = new Request("POST", "/airrow/_doc/?routing=1");
+		// refersh forces to update the index immediately
+		Request live = new Request("POST", "/airrow/_doc/?routing=1&refresh=true");
 		live.setJsonEntity(JsonObject.mapFrom(EsLiveRatingDto.of(r)).toString());
 
 		Request rating = new Request("POST", "/airrow-ratings/_doc/");
