@@ -62,6 +62,9 @@ class Navigator {
     const upload = document.getElementById('upload-file-input');
     upload.addEventListener('change', this.uploadFile.bind(this));
 
+    const accountDeletionElement = document.getElementById('account-deletion-element');
+    accountDeletionElement.addEventListener('click', this.deleteAccount.bind(this));
+
     const switches = document.querySelectorAll(".switch-screen");
     for (let s of switches) {
       s.addEventListener('click', this.switchScreen.bind(this));
@@ -133,6 +136,9 @@ class Navigator {
 
     const personalElement = document.getElementById('personal-refcode');
     personalElement.innerHTML = "⏳";
+
+    const accountDeletion = document.getElementById('account-deletion');
+    accountDeletion.checked = false;
   }
 
   renderPersonalScreen(data) {
@@ -466,6 +472,32 @@ class Navigator {
         uploadStatus.innerText = '💥';
         uploadStatus.classList.remove('-running');
         uploadStatus.classList.add('-done');
+      });
+  }
+
+  deleteAccount() {
+    const verified = document.querySelector('input[name="account-deletion"]:checked');
+
+    if (verified === null) {
+      return;
+    }
+
+    const url = '/delete-account';
+    const contentType = "application/json;charset=UTF-8";
+    const params = {
+      "uuid": this.sessionId
+    };
+
+    Util.post(url, contentType, params)
+      .then((response) => {
+        // remove cookies
+        document.cookie = 'sessionId=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'legal-verified=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        // reload page
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
