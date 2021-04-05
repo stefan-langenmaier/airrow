@@ -6,4 +6,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class JsonDownloadDto {
     public String fileHash;
     public String mimeType;
+    public String fileName;
 }

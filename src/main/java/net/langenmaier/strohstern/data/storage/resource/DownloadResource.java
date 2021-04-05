@@ -27,7 +27,7 @@ public class DownloadResource {
 	public Response upload(@PathParam String fileHash) {
 		LOGGER.info("download started");
 		Download download = service.get(fileHash);
-		ResponseBuilder response = Response.ok(download.file, download.mediaType);
+		ResponseBuilder response = Response.ok(download.file, download.mediaType).header("Content-Disposition", "attachment; filename=\"" + download.fileName + "\"");
 		return response.build();
 	}
 

@@ -12,6 +12,7 @@ public class Download {
 
     public File file;
     public MediaType mediaType;
+    public String fileName;
 
     public static Download of(JsonDownloadDto download) {
         String storageDirectory = ConfigProvider.getConfig().getValue("storage.directory", String.class);
@@ -19,6 +20,7 @@ public class Download {
 		Download d  = new Download();
         d.file = new File(storageDirectory + getFileBasePath(download.fileHash) + download.fileHash);
         d.mediaType = MediaType.valueOf(download.mimeType);
+        d.fileName = download.fileName;
         
         return d;
     }
