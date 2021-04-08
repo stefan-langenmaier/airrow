@@ -1,0 +1,26 @@
+{
+    "size": 3,
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "term": {
+              "relation": "entity"
+            }
+          },
+          {
+            "range": {
+                "updatedAt": {
+                    "gt": "now-1h"
+                }
+            }
+          }
+        ],
+        "must_not": {
+          "exists": {
+            "field": "creator"
+          }
+        }
+      }
+    }
+}

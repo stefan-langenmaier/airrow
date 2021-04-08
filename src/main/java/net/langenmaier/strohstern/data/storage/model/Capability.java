@@ -1,0 +1,22 @@
+package net.langenmaier.strohstern.data.storage.model;
+
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
+import net.langenmaier.strohstern.data.rule.CanUploadRule;
+import net.langenmaier.strohstern.data.storage.dto.JsonPersonalInformation;
+
+public class Capability {
+    public Boolean canUpload = false;
+    public OffsetDateTime updatedAt;
+
+    public static Capability of(JsonPersonalInformation jpi) {
+		Capability c  = new Capability();
+        c.canUpload = CanUploadRule.hasPermission(jpi);
+
+        ZoneOffset zoneOffSet= ZoneOffset.of("+00:00");
+		c.updatedAt = OffsetDateTime.now(zoneOffSet);
+        
+        return c;
+    }
+}

@@ -13,7 +13,9 @@ import javax.ws.rs.core.Response.Status;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import net.langenmaier.strohstern.data.storage.dto.MultipartUpload;
+import net.langenmaier.strohstern.data.storage.model.Capability;
 import net.langenmaier.strohstern.data.storage.model.Upload;
+import net.langenmaier.strohstern.data.storage.service.CapabilityService;
 import net.langenmaier.strohstern.data.storage.service.UploadService;
 
 @Path("/upload")
@@ -24,10 +26,18 @@ public class UploadResource {
 	
 	@Inject
 	UploadService service;
+
+	@Inject
+	CapabilityService cs;
 	
 	@POST
 	public Response upload(@MultipartForm MultipartUpload data) {
 		LOGGER.info("upload received");
+		Capability cap = cs.buildCapability(data.umd.creator);
+		if (!cap.canUpload) {
+			LOGGER.info("upload forbidden");
+			return Response.status(Status.FORBIDDEN).build();
+		}
 		Upload upload = Upload.of(data);
 		LOGGER.info("upload stored on disk");
 		service.register(upload);

@@ -50,6 +50,9 @@
 ## status
 ## rating
 
+# airrow-capabilities - uuid
+## canUpload
+
 curl -X PUT "localhost:9200/airrow?pretty" -H 'Content-Type: application/json' -d'
 {
   "settings": {
@@ -266,6 +269,30 @@ curl -X PUT "localhost:9200/airrow-ratings?pretty" -H 'Content-Type: application
         },
         "rating": {
           "type": "keyword"
+        },
+        "updatedAt": {
+            "type":   "date",
+            "format": "basic_date_time"
+        }
+      }
+    }
+  }
+}
+'
+
+curl -X PUT "localhost:9200/airrow-capabilities?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "index" : {
+      "number_of_shards" : 2,
+      "number_of_replicas" : 0
+    }
+  },
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "canUpload": {
+          "type": "boolean"
         },
         "updatedAt": {
             "type":   "date",
