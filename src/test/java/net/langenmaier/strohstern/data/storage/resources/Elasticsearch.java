@@ -15,7 +15,7 @@ import net.langenmaier.strohstern.data.storage.helper.FileUtil;
 public class Elasticsearch implements QuarkusTestResourceLifecycleManager {
 
     protected final ElasticsearchContainer container = new ElasticsearchContainer(
-            "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.13");
+            "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.15");
 
     @Override
     public Map<String, String> start() {
@@ -39,6 +39,10 @@ public class Elasticsearch implements QuarkusTestResourceLifecycleManager {
 
             request = new Request("PUT", "/airrow-ratings");
             request.setJsonEntity(FileUtil.readString(getClass().getResourceAsStream("/es/setup/put-airrow-ratings.json")));
+            client.performRequest(request);
+
+            request = new Request("PUT", "/airrow-capabilities");
+            request.setJsonEntity(FileUtil.readString(getClass().getResourceAsStream("/es/setup/put-airrow-capabilities.json")));
             client.performRequest(request);
 
             request = new Request("POST", "/_scripts/airrow-default-search");

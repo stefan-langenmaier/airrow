@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "index" : {
+      "number_of_shards" : 2,
+      "number_of_replicas" : 0
+    }
+  },
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "canUpload": {
+          "type": "boolean"
+        },
+        "updatedAt": {
+            "type":   "date",
+            "format": "basic_date_time"
+        }
+      }
+    }
+  }
+}
