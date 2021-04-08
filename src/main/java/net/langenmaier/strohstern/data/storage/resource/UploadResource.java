@@ -33,7 +33,7 @@ public class UploadResource {
 	@POST
 	public Response upload(@MultipartForm MultipartUpload data) {
 		LOGGER.info("upload received");
-		Capability cap = cs.buildCapability(data.umd.creator);
+		Capability cap = cs.updateCapability(data.umd.creator);
 		if (!cap.canUpload) {
 			LOGGER.info("upload forbidden");
 			return Response.status(Status.FORBIDDEN).build();

@@ -17,6 +17,7 @@ import io.vertx.core.json.JsonObject;
 import net.langenmaier.strohstern.data.storage.dto.EsLiveTrajectoryDto;
 import net.langenmaier.strohstern.data.storage.dto.EsTarget;
 import net.langenmaier.strohstern.data.storage.dto.EsTrajectoryDto;
+import net.langenmaier.strohstern.data.storage.dto.JsonCapabilityDto;
 import net.langenmaier.strohstern.data.storage.dto.JsonNavigationState;
 import net.langenmaier.strohstern.data.storage.enumeration.SearchState;
 import net.langenmaier.strohstern.data.storage.helper.FileUtil;
@@ -43,6 +44,9 @@ public class RefreshService {
 
 	@ConfigProperty(name = "airrow.search.minAccuracy")
 	Integer minAccuracy;
+
+	@Inject
+	CapabilityService cs;
 
 	public JsonNavigationState refresh(Session s) {
 		Request live = new Request("PUT", "/airrow/_doc/" + s.uuid.toString());
@@ -119,6 +123,8 @@ public class RefreshService {
 		if (s.status != null && s.status.contains("😷")) {
 			ns.angle = (ns.angle+180)%360;
 		}
+
+		ns.capability = JsonCapabilityDto.of(cs.getCapability(s.uuid));
 		return ns;
 	}
 

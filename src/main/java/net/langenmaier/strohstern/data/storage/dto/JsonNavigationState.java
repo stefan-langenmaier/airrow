@@ -9,4 +9,5 @@ public class JsonNavigationState {
 	
 	public Target target;
 	public SearchState searchState = SearchState.SEARCHING;
+	public JsonCapabilityDto capability;
 }

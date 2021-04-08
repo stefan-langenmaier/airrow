@@ -604,7 +604,13 @@ class Navigator {
     } else {
         document.querySelector('body').classList.remove('-found');
         ratingContainer.classList.add('-hidden');
-        uploadFileTarget.classList.remove('-hidden');
+        if (this.navState.capability !== undefined) {
+            if (this.navState.capability.canUpload) {
+                uploadFileTarget.classList.remove('-hidden');
+            } else {
+                uploadFileTarget.classList.add('-hidden');
+            }
+        }
 
         document.getElementById('rating-report').checked = false;
         document.getElementById('rating-down').checked = false;

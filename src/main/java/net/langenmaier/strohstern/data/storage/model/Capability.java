@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 import net.langenmaier.strohstern.data.rule.CanUploadRule;
+import net.langenmaier.strohstern.data.storage.dto.EsCapabilityDto;
 import net.langenmaier.strohstern.data.storage.dto.JsonPersonalInformation;
 
 public class Capability {
@@ -18,5 +19,17 @@ public class Capability {
 		c.updatedAt = OffsetDateTime.now(zoneOffSet);
         
         return c;
+    }
+
+    public static Capability of(EsCapabilityDto ec) {
+        Capability c  = new Capability();
+        c.canUpload = ec.canUpload;
+        c.updatedAt = ec.updatedAt;
+
+        return c;
+    }
+
+    public static Capability empty() {
+        return new Capability();
     }
 }

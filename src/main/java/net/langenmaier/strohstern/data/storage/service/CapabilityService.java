@@ -75,7 +75,7 @@ public class CapabilityService {
 
     }
 
-	private void updateCapability(UUID sessionId) {
+	public Capability updateCapability(UUID sessionId) {
 		LOGGER.info(sessionId.toString());
 
 		Capability cap = buildCapability(sessionId);
@@ -88,10 +88,45 @@ public class CapabilityService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		return cap;
 	}
 
-	public Capability buildCapability(UUID sessionId) {
+	private Capability buildCapability(UUID sessionId) {
 		return Capability.of(ps.get(sessionId.toString()));
+	}
+
+
+	public Capability getCapability(UUID sessionId) {
+		Request request = new Request("GET", "/airrow-capabilities/_search");
+
+		String ENTITY_QUERY = "{\"query\": {\"term\": {\"_id\": \"" + sessionId.toString() + "\"}}}";
+
+		request.setJsonEntity(ENTITY_QUERY);
+		Response response = null;
+		try {
+			response = restClient.performRequest(request);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String responseBody = null;
+		try {
+			responseBody = EntityUtils.toString(response.getEntity());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		JsonObject json = new JsonObject(responseBody);
+		JsonArray hits = json.getJsonObject("hits").getJsonArray("hits");
+		if (hits.size() == 0)
+			return Capability.empty();
+		JsonObject target = hits.getJsonObject(0);
+		JsonObject source = target.getJsonObject("_source");
+		EsCapabilityDto ec = source.mapTo(EsCapabilityDto.class);
+
+		return Capability.of(ec);
 	}
 
 }
