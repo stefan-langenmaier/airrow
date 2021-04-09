@@ -15,6 +15,8 @@ import net.langenmaier.strohstern.data.storage.model.Capability;
 public class EsCapabilityDto {
     public Boolean canUpload;
     
+	// https://quarkusio.zulipchat.com/#narrow/stream/187030-users/topic/vert.2Ex.20Json.20does.20not.20share.20the.20jackson.20objectmapper.20from/near/233819035
+	// once Quarkus 2.x is released the ObjectMapper is shared between vertx and quarkus
     @JsonDeserialize(using = OffsetDateTimeDeserializer.class)
 	@JsonSerialize(using = OffsetDateTimeSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd'T'HHmmss.SSSZ")
