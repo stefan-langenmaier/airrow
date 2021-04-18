@@ -3,9 +3,9 @@ package net.langenmaier.strohstern.data.storage.model;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-import net.langenmaier.strohstern.data.rule.CanUploadRule;
 import net.langenmaier.strohstern.data.storage.dto.EsCapabilityDto;
 import net.langenmaier.strohstern.data.storage.dto.JsonPersonalInformation;
+import net.langenmaier.strohstern.data.storage.rule.CanUploadRule;
 
 public class Capability {
     public Boolean canUpload = false;

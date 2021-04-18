@@ -1,4 +1,4 @@
-package net.langenmaier.strohstern.data.rule;
+package net.langenmaier.strohstern.data.storage.rule;
 
 import net.langenmaier.strohstern.data.storage.dto.JsonPersonalInformation;
 
