@@ -33,6 +33,12 @@ public class Upload {
 		Upload u  = new Upload();
 		u.uuid = UUID.randomUUID();
 		
+		u.creator = data.umd.creator;
+		u.location = data.umd.location;
+		u.status = data.umd.status;
+		u.accuracy = data.umd.accuracy;
+		u.fileName = data.umd.fileName;
+
 		File uploadedFile = data.file;
 		try {
 			u.fileHash = DigestUtils.sha256Hex(new FileInputStream(uploadedFile));
@@ -43,12 +49,6 @@ public class Upload {
 		u.detect(uploadedFile);
 		u.store(uploadedFile);
 		
-		u.creator = data.umd.creator;
-		u.location = data.umd.location;
-		u.status = data.umd.status;
-		u.accuracy = data.umd.accuracy;
-		u.fileName = data.umd.fileName;
-
 		ZoneOffset zoneOffSet= ZoneOffset.of("+00:00");
 		u.updatedAt = OffsetDateTime.now(zoneOffSet);
 		
@@ -67,6 +67,9 @@ public class Upload {
 				} catch (IOException e) {
 					// content is no link
 				}
+			}
+			if (mimeType.equals("application/octet-stream") && fileName.endsWith(".glb")) {
+				mimeType = "model/gltf-binary";
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

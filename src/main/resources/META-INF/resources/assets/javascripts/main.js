@@ -590,6 +590,9 @@ class Navigator {
                   navigationElement.innerHTML = "⏳";
                   Util.loadLink(fHash);
                   break;
+              case /model\/gltf-binary/.test(mimeType):
+                navigationElement.innerHTML = `<model-viewer src="/download/${fHash}" auto-rotate ar ar-modes="webxr scene-viewer" camera-controls></model-viewer>`;
+                break;
               default:
                 navigationElement.innerHTML = "🏁";
                 break;
