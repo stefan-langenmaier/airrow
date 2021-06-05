@@ -7,6 +7,14 @@
           "tokenizer": "status_tokenizer",
           "char_filter": [],
           "filter": []
+        },
+        "status_search_analyzer": {
+          "type": "custom",
+          "tokenizer": "status_tokenizer",
+          "char_filter": [
+            "remove_variation_selectors"
+          ],
+          "filter": []
         }
       },
       "tokenizer": {
@@ -14,6 +22,16 @@
           "type": "ngram",
           "min_gram": 1,
           "max_gram": 4
+        }
+      },
+      "char_filter": {
+        "remove_variation_selectors": {
+          "type": "mapping",
+          "mappings": [
+            "\ufe00 => ",
+            "\ufe0e => ",
+            "\ufe0f => "
+          ]
         }
       }
     },
@@ -36,7 +54,8 @@
         },
         "status": {
           "type": "text",
-          "analyzer": "status_analyzer"
+          "analyzer": "status_analyzer",
+          "search_analyzer": "status_search_analyzer"
         },
         "updatedAt": {
           "type": "date",
