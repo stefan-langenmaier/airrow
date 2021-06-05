@@ -1,27 +1,30 @@
 package net.langenmaier.airrow.backend.app.helper;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class EmojiUtils {
+	private static final int MAX_EMOJI_CODEPOINTS = 4;
+
 	public static String stripNonEmojis(String text) {
 		StringBuilder stripped = new StringBuilder();
 
-		// extracted from the library
-		final Pattern htmlEntityPattern = Pattern.compile("&#\\w+;");
-
-		String htmlifiedText = emoji4j.EmojiUtils.htmlify(text);
-		// regex to identify html entitities in htmlified text
-		Matcher matcher = htmlEntityPattern.matcher(htmlifiedText);
-
-		while (matcher.find()) {
-			String emojiCode = matcher.group();
-			if (emoji4j.EmojiUtils.isEmoji(emojiCode)) {
-				stripped.append(emojiCode);
+		int chars[] = text.codePoints().toArray();
+		codepoints:
+		for (int i=0; i<chars.length; ) {
+			for (int l=MAX_EMOJI_CODEPOINTS; l>0; --l) {
+				if ((i+l)> chars.length) continue;
+				String test = "";
+				for (int j=0; j<l; ++j) {
+					test += "&#" + chars[i+j] + ";";
+				}
+				if (emoji4j.EmojiUtils.isEmoji(test)) {
+					stripped.append(emoji4j.EmojiUtils.emojify(test));
+					i += l;
+					continue codepoints;
+				}
 			}
+			i += 1;
 		}
 
-		return emoji4j.EmojiUtils.emojify(stripped.toString());
+		return stripped.toString();
 	}
 
 }
