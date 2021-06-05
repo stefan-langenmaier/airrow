@@ -48,7 +48,7 @@ public class RefreshResourceTest {
             .when().post()
             .then()
                 .statusCode(200)
-                .body(jsonEquals("{\"angle\":38.940010179065325,\"geo_distance\":4476.19948922886,\"target\":{\"refCode\":null,\"status\":\"\uD83E\uDE91 \uD83D\uDCBA\",\"mimeType\":null,\"fileHash\":null},\"searchState\":\"SEARCHING\",\"capability\":{\"canUpload\":false}}"));
+                .body(jsonEquals("{\"angle\":38.940010179065325,\"geo_distance\":4476.19948922886,\"target\":{\"refCode\":null,\"status\":\"\uD83E\uDE91\uD83D\uDCBA\",\"mimeType\":null,\"fileHash\":null},\"searchState\":\"SEARCHING\",\"capability\":{\"canUpload\":false}}"));
     }
 
     /*
