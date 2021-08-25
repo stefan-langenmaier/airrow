@@ -15,7 +15,7 @@ import net.langenmaier.airrow.backend.app.helper.FileUtil;
 public class Elasticsearch implements QuarkusTestResourceLifecycleManager {
 
     protected final ElasticsearchContainer container = new ElasticsearchContainer(
-            "docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.15");
+            "docker.elastic.co/elasticsearch/elasticsearch:7.14.0");
 
     @Override
     public Map<String, String> start() {

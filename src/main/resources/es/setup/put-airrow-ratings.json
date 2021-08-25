@@ -18,26 +18,24 @@
       }
     },
     "index": {
-      "number_of_shards": 2,
+      "number_of_shards": 1,
       "number_of_replicas": 0
     }
   },
   "mappings": {
-    "_doc": {
-      "properties": {
-        "creator": {
-          "type": "keyword"
-        },
-        "entity": {
-          "type": "keyword"
-        },
-        "rating": {
-          "type": "keyword"
-        },
-        "updatedAt": {
-          "type": "date",
-          "format": "basic_date_time"
-        }
+    "properties": {
+      "creator": {
+        "type": "keyword"
+      },
+      "entity": {
+        "type": "keyword"
+      },
+      "rating": {
+        "type": "keyword"
+      },
+      "updatedAt": {
+        "type": "date",
+        "format": "basic_date_time"
       }
     }
   }

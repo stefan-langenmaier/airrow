@@ -26,9 +26,9 @@ public class PersonalService {
 
 	public JsonPersonalInformation get(String sessionId) {
 		Request pi = new Request("GET", "/airrow/_search");
-		Request trajectoryRequest = new Request("GET", "/airrow-trajectories/_doc/_count");
-		Request pointsRequest = new Request("GET", "/airrow-points/_doc/_count");
-		Request ratingsRequest = new Request("GET", "/airrow-ratings/_doc/_count");
+		Request trajectoryRequest = new Request("GET", "/airrow-trajectories/_count");
+		Request pointsRequest = new Request("GET", "/airrow-points/_count");
+		Request ratingsRequest = new Request("GET", "/airrow-ratings/_count");
 
 		String PI_QUERY = FileUtil.readString(getClass().getResourceAsStream("/es/query-session-id.json"));
 		PI_QUERY = PI_QUERY.replaceAll("\"_SESSION_ID_\"", "\"" + sessionId + "\"");

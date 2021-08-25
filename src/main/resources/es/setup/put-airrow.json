@@ -41,47 +41,45 @@
     }
   },
   "mappings": {
-    "_doc": {
-      "properties": {
-        "location": {
-          "type": "geo_point"
-        },
-        "status": {
-          "type": "text",
-          "analyzer": "status_analyzer",
-          "search_analyzer": "status_search_analyzer"
-        },
-        "relation": {
-          "type": "join",
-          "relations": {
-            "entity": "rating"
-          }
-        },
-        "updatedAt": {
-          "type": "date",
-          "format": "basic_date_time"
-        },
-        "creator": {
-          "type": "keyword"
-        },
-        "refCode": {
-          "type": "keyword"
-        },
-        "selfReference": {
-          "type": "boolean"
-        },
-        "permanent": {
-          "type": "boolean"
-        },
-        "mimeType": {
-          "type": "keyword"
-        },
-        "path": {
-          "type": "keyword"
-        },
-        "rating": {
-          "type": "keyword"
+    "properties": {
+      "location": {
+        "type": "geo_point"
+      },
+      "status": {
+        "type": "text",
+        "analyzer": "status_analyzer",
+        "search_analyzer": "status_search_analyzer"
+      },
+      "relation": {
+        "type": "join",
+        "relations": {
+          "entity": "rating"
         }
+      },
+      "updatedAt": {
+        "type": "date",
+        "format": "basic_date_time"
+      },
+      "creator": {
+        "type": "keyword"
+      },
+      "refCode": {
+        "type": "keyword"
+      },
+      "selfReference": {
+        "type": "boolean"
+      },
+      "permanent": {
+        "type": "boolean"
+      },
+      "mimeType": {
+        "type": "keyword"
+      },
+      "path": {
+        "type": "keyword"
+      },
+      "rating": {
+        "type": "keyword"
       }
     }
   }
