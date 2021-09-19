@@ -68,6 +68,48 @@ public class PointService {
 		return jpi;
 	}
 
+	public JsonPointsInformation listPublic(JsonPointsRequest pr) {
+		Request pi = new Request("GET", "/airrow-points/_search");
+
+		String PI_QUERY = FileUtil.readString(getClass().getResourceAsStream("/es/query-permanent-points.json"));
+		pi.setJsonEntity(PI_QUERY);
+
+		Response responsePI = null;
+		try {
+			responsePI = restClient.performRequest(pi);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String bodyPI = null;
+		try {
+			bodyPI = EntityUtils.toString(responsePI.getEntity());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		JsonPointsInformation jpi = new JsonPointsInformation();
+
+		JsonObject json = new JsonObject(bodyPI);
+		JsonArray hits = json.getJsonObject("hits").getJsonArray("hits");
+		if (hits.size() > 0) {
+			for (int i=0; i<10 && i<hits.size(); i++) {
+				JsonObject target = hits.getJsonObject(i);
+				JsonObject source = target.getJsonObject("_source");
+				EsPointDto ep = source.mapTo(EsPointDto.class);
+				// don't add the uuid because it is used to modify the point
+				ep.uuid = null;
+				JsonPoint jp = JsonPoint.of(ep, pr.location);
+
+				jpi.points.add(jp);
+			}
+		}
+
+		return jpi;
+	}
+
 	public void delete(JsonPointId point) {
 		Request live = new Request("POST", "/airrow/_delete_by_query");
 		Request points = new Request("POST", "/airrow-points/_delete_by_query");

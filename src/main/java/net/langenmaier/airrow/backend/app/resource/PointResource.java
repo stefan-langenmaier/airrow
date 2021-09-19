@@ -39,6 +39,19 @@ public class PointResource {
 	}
 
 	@POST
+	@Path("/list/public")
+	public JsonPointsInformation listPublic(JsonPointsRequest pr) {
+		if (pr == null) {
+			return null;
+		}
+
+		JsonPointsInformation pi = ps.listPublic(pr);
+		LOGGER.info("Points info retrieved: " + pr.uuid);
+
+		return pi;
+	}
+
+	@POST
 	@Path("/delete")
 	public Response list(JsonPointId point) {
 		if (point == null) {
