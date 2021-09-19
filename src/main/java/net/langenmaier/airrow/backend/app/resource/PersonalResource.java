@@ -12,7 +12,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import net.langenmaier.airrow.backend.app.dto.JsonDeleteAccountData;
 import net.langenmaier.airrow.backend.app.dto.JsonPersonal;
 import net.langenmaier.airrow.backend.app.dto.JsonPersonalInformation;
 import net.langenmaier.airrow.backend.app.service.PersonalService;
