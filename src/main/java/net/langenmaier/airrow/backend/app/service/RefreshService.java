@@ -19,6 +19,7 @@ import net.langenmaier.airrow.backend.app.dto.EsTarget;
 import net.langenmaier.airrow.backend.app.dto.EsTrajectoryDto;
 import net.langenmaier.airrow.backend.app.dto.JsonCapabilityDto;
 import net.langenmaier.airrow.backend.app.dto.JsonNavigationState;
+import net.langenmaier.airrow.backend.app.dto.JsonRefreshTarget;
 import net.langenmaier.airrow.backend.app.enumeration.SearchState;
 import net.langenmaier.airrow.backend.app.helper.FileUtil;
 import net.langenmaier.airrow.backend.app.helper.GeoTools;
@@ -126,6 +127,40 @@ public class RefreshService {
 
 		ns.capability = JsonCapabilityDto.of(cs.getCapability(s.uuid));
 		return ns;
+	}
+
+	public Target getTarget(JsonRefreshTarget rt) {
+		Request request = new Request("GET", "/airrow-points/_search");
+
+		String POINT_QUERY = null;
+		POINT_QUERY = FileUtil.readString(getClass().getResourceAsStream("/es/query-refCode.json"));
+		POINT_QUERY = POINT_QUERY.replaceAll("\"_REF_CODE_\"", "\"" + rt.refCode + "\"");
+
+		request.setJsonEntity(POINT_QUERY);
+		Response response = null;
+		try {
+			response = restClient.performRequest(request);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String responseBody = null;
+		try {
+			responseBody = EntityUtils.toString(response.getEntity());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		JsonObject json = new JsonObject(responseBody);
+		JsonArray hits = json.getJsonObject("hits").getJsonArray("hits");
+		if (hits.size() == 0)
+			return null;
+		JsonObject target = hits.getJsonObject(0);
+		JsonObject source = target.getJsonObject("_source");
+		EsTarget et = source.mapTo(EsTarget.class);
+
+		return Target.of(et);
 	}
 
 }

@@ -11,7 +11,9 @@ import javax.ws.rs.core.MediaType;
 
 import net.langenmaier.airrow.backend.app.dto.JsonNavigationState;
 import net.langenmaier.airrow.backend.app.dto.JsonRefreshData;
+import net.langenmaier.airrow.backend.app.dto.JsonRefreshTarget;
 import net.langenmaier.airrow.backend.app.model.Session;
+import net.langenmaier.airrow.backend.app.model.Target;
 import net.langenmaier.airrow.backend.app.service.RefreshService;
 
 @Path("/refresh")
@@ -35,6 +37,19 @@ public class RefreshResource {
 		LOGGER.info("Session refreshed: " + session.uuid.toString());
 
 		return ns;
+	}
+
+	@POST
+	@Path("/target")
+	public Target getTarget(JsonRefreshTarget rt) {
+		if (rt == null) {
+			return null;
+		}
+
+		LOGGER.info("Get Target: " + rt.refCode);
+		Target t = rs.getTarget(rt);
+
+		return t;
 	}
 
 }

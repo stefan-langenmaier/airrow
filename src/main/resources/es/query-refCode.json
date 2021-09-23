@@ -1,0 +1,7 @@
+{
+  "query": {
+    "term": {
+      "refCode": "_REF_CODE_"
+    }
+  }
+}
