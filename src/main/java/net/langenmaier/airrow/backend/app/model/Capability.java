@@ -32,4 +32,13 @@ public class Capability {
     public static Capability empty() {
         return new Capability();
     }
+
+    public static Capability adminCapability() {
+        Capability c  = new Capability();
+        c.canUpload = true;
+        ZoneOffset zoneOffSet= ZoneOffset.of("+00:00");
+		c.updatedAt = OffsetDateTime.now(zoneOffSet);
+
+        return c;
+    }
 }

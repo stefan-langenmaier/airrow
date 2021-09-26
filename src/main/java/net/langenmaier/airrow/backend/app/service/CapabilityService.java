@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
@@ -28,6 +29,9 @@ public class CapabilityService {
 
 	@Inject
 	PersonalService ps;
+
+	@ConfigProperty(name = "airrow.adminCreator")
+	String adminCreator;
 
 	private final static Logger LOGGER = Logger.getLogger(CapabilityService.class.getName());
 
@@ -93,11 +97,17 @@ public class CapabilityService {
 	}
 
 	private Capability buildCapability(UUID sessionId) {
+		if (sessionId.toString().equals(adminCreator)) {
+			return Capability.adminCapability();
+		}
 		return Capability.of(ps.get(sessionId.toString()));
 	}
 
 
 	public Capability getCapability(UUID sessionId) {
+		if (sessionId.toString().equals(adminCreator)) {
+			return Capability.adminCapability();
+		}
 		Request request = new Request("GET", "/airrow-capabilities/_search");
 
 		String ENTITY_QUERY = "{\"query\": {\"term\": {\"_id\": \"" + sessionId.toString() + "\"}}}";
