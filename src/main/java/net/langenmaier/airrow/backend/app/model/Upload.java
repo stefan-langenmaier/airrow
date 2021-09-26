@@ -83,7 +83,7 @@ public class Upload {
 	}
 	
 	private void store(File f) {
-		String storageDirectory = ConfigProvider.getConfig().getValue("storage.directory", String.class);
+		String storageDirectory = ConfigProvider.getConfig().getValue("airrow.storage.directory", String.class);
 		Path source = f.toPath();
 		File baseDir = new File(storageDirectory + getFileBasePath(fileHash));
 		baseDir.mkdirs();
