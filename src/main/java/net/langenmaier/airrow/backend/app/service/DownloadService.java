@@ -19,9 +19,6 @@ import net.langenmaier.airrow.backend.app.model.Download;
 
 @ApplicationScoped
 public class DownloadService {
-
-	private final static Logger LOGGER = Logger.getLogger(DownloadService.class.getName());
-
 	@Inject
 	RestClient restClient;
 
