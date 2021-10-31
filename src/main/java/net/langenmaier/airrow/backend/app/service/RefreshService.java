@@ -30,19 +30,10 @@ import net.langenmaier.airrow.backend.app.model.Target;
 @ApplicationScoped
 public class RefreshService {
 
-	private static final Double MIN_FOUND_DISTANCE = 10d;
+	private static final Double MIN_FOUND_DISTANCE = 15d;
 
 	@Inject
 	RestClient restClient;
-
-	@ConfigProperty(name = "airrow.search.walkDistance")
-	String walkDistance;
-
-	@ConfigProperty(name = "airrow.search.scale")
-	Double scale;
-
-	@ConfigProperty(name = "airrow.search.ttl")
-	String ttl;
 
 	@ConfigProperty(name = "airrow.search.minAccuracy")
 	Integer minAccuracy;
