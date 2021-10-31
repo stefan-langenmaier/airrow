@@ -1,5 +1,6 @@
 package net.langenmaier.airrow.backend.app;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.common.QuarkusTestResource;
@@ -13,6 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 import static net.javacrumbs.jsonunit.JsonMatchers.*;
 
+@Disabled("disabling all elasticsearch tests")
 @QuarkusTest
 @QuarkusTestResource(Elasticsearch.class)
 @TestHTTPEndpoint(RefreshResource.class)

@@ -33,10 +33,10 @@ class GeoToolsTest {
 	
 	@Test
 	void testWebAngle() {
-		assertTrue(Math.abs(GeoTools.getWebAngle(0) - 270) < 0.00001);
+		assertTrue(Math.abs(GeoTools.getWebAngle(0) - 90) < 0.00001);
 		assertTrue(Math.abs(GeoTools.getWebAngle(90) - 0) < 0.00001);
-		assertTrue(Math.abs(GeoTools.getWebAngle(10) - 280) < 0.00001);
-		assertTrue(Math.abs(GeoTools.getWebAngle(180) - 90) < 0.00001);
+		assertTrue(Math.abs(GeoTools.getWebAngle(10) - 80) < 0.00001);
+		assertTrue(Math.abs(GeoTools.getWebAngle(180) - 270) < 0.00001);
 	}
 
 }

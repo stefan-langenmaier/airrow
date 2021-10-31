@@ -2,6 +2,7 @@ package net.langenmaier.airrow.backend.app;
 
 import static io.restassured.RestAssured.given;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.common.QuarkusTestResource;
@@ -10,7 +11,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import net.langenmaier.airrow.backend.app.resource.PersonalResource;
 import net.langenmaier.airrow.backend.app.resources.Elasticsearch;
 
-@QuarkusTest
+@Disabled("disabling all elasticsearch tests")
+@QuarkusTest()
 @QuarkusTestResource(Elasticsearch.class)
 @TestHTTPEndpoint(PersonalResource.class)
 public class PersonalResourceTest {
