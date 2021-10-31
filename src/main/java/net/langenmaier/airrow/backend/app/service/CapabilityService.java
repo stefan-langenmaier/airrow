@@ -14,7 +14,6 @@ import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 
-import io.quarkus.scheduler.Scheduled;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import net.langenmaier.airrow.backend.app.dto.EsCapabilityDto;
@@ -35,8 +34,7 @@ public class CapabilityService {
 
 	private final static Logger LOGGER = Logger.getLogger(CapabilityService.class.getName());
 
-	@Scheduled(every="30s")     
-    void refresh() {
+	void refresh() {
 		Request airrows = new Request("POST", "/airrow/_search?scroll=10s");
 		String AIRROWS_QUERY = FileUtil.readString(getClass().getResourceAsStream("/es/all-airrows.json"));
 		airrows.setJsonEntity(AIRROWS_QUERY);
