@@ -6,11 +6,10 @@ Easily meet other people
 
 ### Elasticsearch
 
-docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.14.1
+docker-compose up -d
 
-## Kibana
-
-docker run --net host --name kibana -p 5601:5601 --rm -v /home/stefan/git/airrow/kibana.yml:/usr/share/kibana/config/kibana.yml docker.elastic.co/kibana/kibana:7.14
+* Elasticsearch available on http://localhost:9200
+* Kibana on http://localhost:5601
 
 ## Build this image
 
