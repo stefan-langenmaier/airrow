@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import net.langenmaier.airrow.backend.app.dto.JsonNavigationState;
+import net.langenmaier.airrow.backend.app.dto.JsonPoint;
 import net.langenmaier.airrow.backend.app.dto.JsonRefreshData;
 import net.langenmaier.airrow.backend.app.dto.JsonRefreshTarget;
 import net.langenmaier.airrow.backend.app.model.Session;
@@ -41,15 +42,15 @@ public class RefreshResource {
 
 	@POST
 	@Path("/target")
-	public Target getTarget(JsonRefreshTarget rt) {
+	public JsonPoint getTarget(JsonRefreshTarget rt) {
 		if (rt == null) {
 			return null;
 		}
 
 		LOGGER.info("Get Target: " + rt.refCode);
-		Target t = rs.getTarget(rt);
+		JsonPoint p = rs.getTarget(rt);
 
-		return t;
+		return p;
 	}
 
 }

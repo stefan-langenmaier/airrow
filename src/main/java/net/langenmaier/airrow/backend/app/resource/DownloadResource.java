@@ -26,7 +26,34 @@ public class DownloadResource {
 	@Path("/{fileHash}")
 	public Response upload(@PathParam String fileHash) {
 		LOGGER.info("download started");
-		Download download = service.get(fileHash);
+		Download download = service.get(fileHash, "fileHash");
+		ResponseBuilder response = Response.ok(download.file, download.mediaType).header("Content-Disposition", "attachment; filename=\"" + download.fileName + "\"");
+		return response.build();
+	}
+
+	@GET
+	@Path("/preview/{fileHash}")
+	public Response downloadPreview(@PathParam String fileHash) {
+		LOGGER.info("download started");
+		Download download = service.getPreview(fileHash);
+		ResponseBuilder response = Response.ok(download.file, download.mediaType).header("Content-Disposition", "attachment; filename=\"" + download.fileName + "\"");
+		return response.build();
+	}
+
+	@GET
+	@Path("/object/{fileHash}")
+	public Response downloadObject(@PathParam String fileHash) {
+		LOGGER.info("download started");
+		Download download = service.getObject(fileHash);
+		ResponseBuilder response = Response.ok(download.file, download.mediaType).header("Content-Disposition", "attachment; filename=\"" + download.fileName + "\"");
+		return response.build();
+	}
+
+	@GET
+	@Path("/background/{fileHash}")
+	public Response downloadBackground(@PathParam String fileHash) {
+		LOGGER.info("download started");
+		Download download = service.getBackground(fileHash);
 		ResponseBuilder response = Response.ok(download.file, download.mediaType).header("Content-Disposition", "attachment; filename=\"" + download.fileName + "\"");
 		return response.build();
 	}

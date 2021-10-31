@@ -1,40 +1,5 @@
 {
   "settings": {
-    "analysis": {
-      "analyzer": {
-        "status_analyzer": {
-          "type": "custom",
-          "tokenizer": "status_tokenizer",
-          "char_filter": [],
-          "filter": []
-        },
-        "status_search_analyzer": {
-          "type": "custom",
-          "tokenizer": "status_tokenizer",
-          "char_filter": [
-            "remove_variation_selectors"
-          ],
-          "filter": []
-        }
-      },
-      "tokenizer": {
-        "status_tokenizer": {
-          "type": "ngram",
-          "min_gram": 1,
-          "max_gram": 2
-        }
-      },
-      "char_filter": {
-        "remove_variation_selectors": {
-          "type": "mapping",
-          "mappings": [
-            "\ufe00 => ",
-            "\ufe0e => ",
-            "\ufe0f => "
-          ]
-        }
-      }
-    },
     "index": {
       "number_of_shards": 1,
       "number_of_replicas": 0
@@ -51,26 +16,84 @@
       "location": {
         "type": "geo_point"
       },
-      "status": {
-        "type": "text",
-        "analyzer": "status_analyzer",
-        "search_analyzer": "status_search_analyzer"
+      "accuracy": {
+        "type": "integer"
       },
       "updatedAt": {
         "type": "date",
         "format": "basic_date_time"
       },
-      "permanent": {
-        "type": "boolean"
-      },
-      "mimeType": {
+      "artistName": {
         "type": "keyword"
       },
-      "fileHash": {
+      "artistIntroDe": {
         "type": "keyword"
       },
-      "fileName": {
+      "artistIntroEn": {
         "type": "keyword"
+      },
+      "artistLink": {
+        "type": "keyword"
+      },
+      "objectIdeaDe": {
+        "type": "keyword"
+      },
+      "objectIdeaEn": {
+        "type": "keyword"
+      },
+      "objectLink": {
+        "type": "keyword"
+      },
+      "objectName": {
+        "type": "keyword"
+      },
+      "objectPlace": {
+        "type": "keyword"
+      },
+      "objectStreet": {
+        "type": "keyword"
+      },
+      "object": {
+        "type": "nested",
+        "properties": {
+          "mimeType": {
+            "type": "keyword"
+          },
+          "fileHash": {
+            "type": "keyword"
+          },
+          "fileName": {
+            "type": "keyword"
+          }
+        }
+      },
+      "background": {
+        "type": "nested",
+        "properties": {
+          "mimeType": {
+            "type": "keyword"
+          },
+          "fileHash": {
+            "type": "keyword"
+          },
+          "fileName": {
+            "type": "keyword"
+          }
+        }
+      },
+      "preview": {
+        "type": "nested",
+        "properties": {
+          "mimeType": {
+            "type": "keyword"
+          },
+          "fileHash": {
+            "type": "keyword"
+          },
+          "fileName": {
+            "type": "keyword"
+          }
+        }
       }
     }
   }

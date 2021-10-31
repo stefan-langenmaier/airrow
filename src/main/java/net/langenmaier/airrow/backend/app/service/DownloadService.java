@@ -20,14 +20,30 @@ import net.langenmaier.airrow.backend.app.model.Download;
 @ApplicationScoped
 public class DownloadService {
 
+	private final static Logger LOGGER = Logger.getLogger(DownloadService.class.getName());
+
 	@Inject
 	RestClient restClient;
 
-	public Download get(String fileHash) {
+	public Download getPreview(String fileHash) {
+		return get(fileHash, "preview");
+	}
+
+	public Download getObject(String fileHash) {
+		return get(fileHash, "object");
+	}
+
+	public Download getBackground(String fileHash) {
+		return get(fileHash, "background");
+	}
+
+	public Download get(String fileHash, String path) {
 		Request downloadRequest = new Request("GET", "/airrow-points/_search");
 
 		String DOWNLOAD_QUERY = FileUtil.readString(getClass().getResourceAsStream("/es/query-download.json"));
 		DOWNLOAD_QUERY = DOWNLOAD_QUERY.replaceAll("\"_FILE_HASH_\"", "\"" + fileHash + "\"");
+		DOWNLOAD_QUERY = DOWNLOAD_QUERY.replaceAll("\"_PATH_\"", "\"" + path + "\"");
+		DOWNLOAD_QUERY = DOWNLOAD_QUERY.replaceAll("\"_PATH_.", "\"" + path + ".");
 		downloadRequest.setJsonEntity(DOWNLOAD_QUERY);
 
 		Response response = null;
@@ -48,8 +64,10 @@ public class DownloadService {
 
 		JsonObject json = new JsonObject(responseBody); 
 		JsonArray hits = json.getJsonObject("hits").getJsonArray("hits");
+		if (hits.size() == 0) return null;
 		JsonObject target = hits.getJsonObject(0);
 		JsonObject source = target.getJsonObject("_source");
+		source = source.getJsonObject(path);
 
 		JsonDownloadDto jddto  = source.mapTo(JsonDownloadDto.class);
 

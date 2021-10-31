@@ -12,7 +12,7 @@ public class Session {
 	public UUID uuid;
 	
 	public Location location;
-	public String status;
+	public String targetRefCode;
 	public Integer accuracy;
 
 	public OffsetDateTime updatedAt;
@@ -22,7 +22,7 @@ public class Session {
 		s.uuid = ud.uuid;
 		
 		s.location = ud.location;
-		s.status = EmojiUtils.stripNonEmojis(ud.status);
+		s.targetRefCode = ud.targetRefCode;
 		s.accuracy = ud.accuracy;
 
 		ZoneOffset zoneOffSet= ZoneOffset.of("+00:00");
@@ -32,6 +32,6 @@ public class Session {
 	}
 
 	public String toString() {
-		return "{" + uuid.toString() + ", " + location.toString() + ", " + status + ", " + accuracy + "}";
+		return "{" + uuid.toString() + ", " + location.toString() + ", " + targetRefCode + ", " + accuracy + "}";
 	}
 }

@@ -1,22 +1,5 @@
 {
   "settings": {
-    "analysis": {
-      "analyzer": {
-        "status_analyzer": {
-          "type": "custom",
-          "tokenizer": "status_tokenizer",
-          "char_filter": [],
-          "filter": []
-        }
-      },
-      "tokenizer": {
-        "status_tokenizer": {
-          "type": "ngram",
-          "min_gram": 1,
-          "max_gram": 2
-        }
-      }
-    },
     "index": {
       "number_of_shards": 1,
       "number_of_replicas": 0

@@ -15,7 +15,6 @@ public class EsTrajectoryDto {
 
 	public String uuid;
 	public Location location;
-	public String status;
 
 	@JsonDeserialize(using = OffsetDateTimeDeserializer.class)
 	@JsonSerialize(using = OffsetDateTimeSerializer.class)
@@ -29,7 +28,6 @@ public class EsTrajectoryDto {
 		location.lon = s.location.lon;
 		location.lat = s.location.lat;
 		etd.location = location;
-		etd.status = s.status;
 		etd.updatedAt = s.updatedAt;
 		return etd;
 	}

@@ -1,7 +1,12 @@
 {
   "query": {
-    "term": {
-      "fileHash": "_FILE_HASH_"
+    "nested": {
+      "path": "_PATH_",
+      "query": {
+          "term": {
+            "_PATH_.fileHash": "_FILE_HASH_"
+          }
+        }
     }
   }
 }

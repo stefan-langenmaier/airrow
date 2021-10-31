@@ -1,14 +1,6 @@
 {
   "id": "airrow-default-search",
   "params": {
-    "status": "_STATUS_",
-    "self": "_SELF_",
-    "location": {
-      "latitude": "_LATITUDE_",
-      "longitude": "_LONGITUDE_"
-    },
-    "walkDistance": "_WALK_DISTANCE_",
-    "scale": "_SCALE_",
-    "ttl": "_TTL_"
+    "refCode": "_REF_CODE_"
   }
 }

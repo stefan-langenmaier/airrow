@@ -40,7 +40,6 @@ public class EsLiveTrajectoryDto {
 		location.lon = s.location.lon;
 		location.lat = s.location.lat;
 		esd.location = location;
-		esd.status = s.status;
 		esd.accuracy = s.accuracy;
 		esd.updatedAt = s.updatedAt;
 		return esd;

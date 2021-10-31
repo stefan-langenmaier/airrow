@@ -46,9 +46,6 @@ public class EsLivePointDto {
         eed.location = location;
         
         eed.creator = upload.creator.toString();
-        eed.status = upload.status;
-        eed.fileHash = upload.fileHash;
-        eed.mimeType = upload.mimeType;
         
         eed.updatedAt = upload.updatedAt;
         
