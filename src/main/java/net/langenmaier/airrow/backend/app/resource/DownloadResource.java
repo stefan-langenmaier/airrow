@@ -13,6 +13,8 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import net.langenmaier.airrow.backend.app.model.Download;
 import net.langenmaier.airrow.backend.app.service.DownloadService;
 
+// TODO: in the future this class should be removed as all assets are available
+// need to find a way to have the correct mime type configured
 
 @Path("/download/")
 public class DownloadResource {
