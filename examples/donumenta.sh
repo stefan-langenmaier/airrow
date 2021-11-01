@@ -16,7 +16,7 @@ curl -X POST \
     "artistLink":"http://klaraorosz.hu",
     "objectName":"The Black Tower",
     "objectYear":"2019",
-    "objectPlace": "93059 Regensburg",
+    "objectPlace": "93047 Regensburg",
     "objectStreet": "Am Brückenbasar 1",
     "objectIdeaDe":"Der Entwurf einer Neuinterpretation des nicht mehr erhaltenen Schwarzen Turms an der Nordseite der Steinernen Brücke. Der Turm war Bestandteil der Grenzbefestigung und Zollstation von Regensburg und wurde 1810 nach der Beschießung durch napoleonische und österreichische Truppen abgetragen. 2002 stieß man auf die Grundmauern des Gebäudes und konnte daraus seine genaue Position, Länge und Breite ableiten. Klára Orosz arbeitet mit den Originalmaßen des schwarzen Turms von 20 m Höhe. Dieser Entwurf konnte leider nicht realisiert werden.",
     "objectIdeaEn":"The design of a new interpretation of the Black Tower on the north side of the Stone Bridge, formed part of the border fortifications and customs station of Regensburg in the Stadtamhof district. The tower was removed in 1810 after being damaged by Napoleonic and Austrian troops. In 2002, the foundation walls of the building were revealed and allowed its exact positioning, length and width. Klára Orosz worked with the original dimensions of the black tower with 20 m height. Unfortunately, this design could not be realized.",
@@ -43,7 +43,7 @@ curl -X POST \
     "artistLink":"https://www.artlist.cz/en/dusan-zahoransky-2675/",
     "objectName":"MICHAEL BUSCHHEUER BRÜCKE",
     "objectYear":"2020",
-    "objectPlace": "93059 Regensburg",
+    "objectPlace": "93047 Regensburg",
     "objectStreet": "Eiserne Brücke",
     "objectIdeaDe":"Mit SEARCH and RESCUE wurde eine symbolische Umwidmung öffentlicher Plätze vollzogen. So gelangen die Helden unserer Zeit, die sich der Humanität verschrieben haben, Sea-Eye Gründer Michael Buschheuer (MICHAEL BUSCHHEUER BRÜCKE), aber auch die Opfer Alan und Ghalib Kurdi (ALAN & GHALIB KURDI HAFEN), die für die vielen stehen, die wir nicht retten konnten in den Fokus.",
     "objectIdeaEn":"With SEARCH and RESCUE, a symbolic rededication of public places were accomplished. In this way, the heroes of our time who have dedicated themselves to humanity, Sea-Eye founder Michael Buschheuer (MICHAEL BUSCHHEUER BRÜCKE), but also the victims Alan and Ghalib Kurdi (ALAN & GHALIB KURDI HAFEN), who stand for the many we were unable to save, come into focus.",
@@ -70,7 +70,7 @@ curl -X POST \
     "artistLink":"https://www.artlist.cz/en/dusan-zahoransky-2675/",
     "objectName":"ALAN & GHALIB KURDI HAFEN",
     "objectYear":"2020",
-    "objectPlace": "93059 Regensburg",
+    "objectPlace": "93047 Regensburg",
     "objectStreet": "Eiserne Brücke",
     "objectIdeaDe":"Mit SEARCH and RESCUE wurde eine symbolische Umwidmung öffentlicher Plätze vollzogen. So gelangen die Helden unserer Zeit, die sich der Humanität verschrieben haben, Sea-Eye Gründer Michael Buschheuer (MICHAEL BUSCHHEUER BRÜCKE), aber auch die Opfer Alan und Ghalib Kurdi (ALAN & GHALIB KURDI HAFEN), die für die vielen stehen, die wir nicht retten konnten in den Fokus.",
     "objectIdeaEn":"With SEARCH and RESCUE, a symbolic rededication of public places were accomplished. In this way, the heroes of our time who have dedicated themselves to humanity, Sea-Eye founder Michael Buschheuer (MICHAEL BUSCHHEUER BRÜCKE), but also the victims Alan and Ghalib Kurdi (ALAN & GHALIB KURDI HAFEN), who stand for the many we were unable to save, come into focus.",
@@ -110,6 +110,33 @@ curl -X POST \
   -F "backgroundMedia=@donumenta/pb/background.jpg" \
   https://api.dagva.donumenta.de/upload && echo "ok pb"
 
+# all my rivers
+curl -X POST \
+  -F 'meta={
+    "creator":"289ae107-aa5f-4423-9b5d-487e449ece56",
+    "location":{"lat":49.02215,"lon":12.09782},
+    "accuracy":10,
+    "artistName":"Eszter Dalma Muray",
+    "artistCountry":"Hungary/England",
+    "artistPlace":"Budapest/London",
+    "artistIntroDe":"Eszter Dalma Muray lebt und arbeitet in Budapest und London. Die freischaffende Designerin ist auf Print-, Interaktions- und Umweltdesign spezialisiert. Sie studierte Visuelle Kommunikation an der Glasgow School of Art und Interaktionsdesign an der ArtEZ in Arnheim, Niederlande. Neben ihrer Arbeit mit digitalen Programmen bevorzugt sie die Werkstoffe Holz, Beton und Silikon.",
+    "artistIntroEn":"Eszter Dalma Muray lives and works in Budapest and London. She is an independent designer specializing in print, interaction and environmental design. She studied visual communication at Glasgow School of Art and interaction design at ArtEZ in Arnhem, the Netherlands. She works with a wide variety of digital programs and materials, such as wood, concrete or silicone.",
+    "artistLink":"https://eszter.persona.co/",
+    "objectName":"All my rivers",
+    "objectYear":"2021",
+    "objectPlace": "93047 Regensburg",
+    "objectStreet": "Am Beschlächt",
+    "objectIdeaDe":"Auf 2850 km zeigt sich die Donau in unterschiedlichster Form, Größe und Fließgeschwindigkeit. Von unbedeutend zu dramatisch wechselt sie zwischen langsamen Mäandern zu schnell fließender Gebärde. Die mobile Skulptur des Flusses verändert sich ständig– je nach Tag, Wetter und Jahreszeit. Zudem ist die Donau Spiegel, die die Ufer und den Himmel über sich reflektiert. Sie verbindet zehn Länder, viele Landschaften und Menschen mit unterschiedlichsten Geschichten.",
+    "objectIdeaEn":"On its 2,850km journey the Danube evolves in its shape, size and flow, growing from insignificant to dramatic, oscillating between a slow meander and a harsh rapid. The river behaves like a mobile sculpture, ever changing with the day, season and the weather. It is in fact a mirror in itself, reflecting the shores and the sky above it. It connects several countries, landscapes, and people all with different histories.",
+    "objectLink":"https://www.donumenta.de/air-interventionen/eszter-muray-all-my-rivers/",
+    "previewMediaName":"preview.jpg",
+    "backgroundMediaName":"background.jpg",
+    "objectMediaName":"amr.glb"}' \
+  -F "objectMedia=@donumenta/amr/amr.glb" \
+  -F "previewMedia=@donumenta/amr/preview.jpg" \
+  -F "backgroundMedia=@donumenta/amr/background.jpg" \
+  https://api.dagva.donumenta.de/upload && echo "ok amr"
+
   # art lab
 curl -X POST \
   -F 'meta={
@@ -136,30 +163,3 @@ curl -X POST \
   -F "previewMedia=@donumenta/al/preview.jpg" \
   -F "backgroundMedia=@donumenta/al/background.jpg" \
   https://api.dagva.donumenta.de/upload && echo "ok al"
-
-# all my rivers
-curl -X POST \
-  -F 'meta={
-    "creator":"289ae107-aa5f-4423-9b5d-487e449ece56",
-    "location":{"lat":49.02225,"lon":12.09649},
-    "accuracy":10,
-    "artistName":"Eszter Dalma Muray",
-    "artistCountry":"Hungary/England",
-    "artistPlace":"Budapest/London",
-    "artistIntroDe":"Eszter Dalma Muray lebt und arbeitet in Budapest und London. Die freischaffende Designerin ist auf Print-, Interaktions- und Umweltdesign spezialisiert. Sie studierte Visuelle Kommunikation an der Glasgow School of Art und Interaktionsdesign an der ArtEZ in Arnheim, Niederlande. Neben ihrer Arbeit mit digitalen Programmen bevorzugt sie die Werkstoffe Holz, Beton und Silikon.",
-    "artistIntroEn":"Eszter Dalma Muray lives and works in Budapest and London. She is an independent designer specializing in print, interaction and environmental design. She studied visual communication at Glasgow School of Art and interaction design at ArtEZ in Arnhem, the Netherlands. She works with a wide variety of digital programs and materials, such as wood, concrete or silicone.",
-    "artistLink":"https://eszter.persona.co/",
-    "objectName":"All my rivers",
-    "objectYear":"2021",
-    "objectPlace": "93047 Regensburg",
-    "objectStreet": "Am Beschlächt",
-    "objectIdeaDe":"über das Objekt",
-    "objectIdeaEn":"about the object",
-    "objectLink":"https://www.donumenta.de/art-lab-gleis-1/kuenstlerinnen/notburga-karl-k-wie/",
-    "previewMediaName":"preview.jpg",
-    "backgroundMediaName":"background.jpg",
-    "objectMediaName":"amr.glb"}' \
-  -F "objectMedia=@donumenta/amr/amr.glb" \
-  -F "previewMedia=@donumenta/amr/preview.jpg" \
-  -F "backgroundMedia=@donumenta/amr/background.jpg" \
-  https://api.dagva.donumenta.de/upload && echo "ok amr"
