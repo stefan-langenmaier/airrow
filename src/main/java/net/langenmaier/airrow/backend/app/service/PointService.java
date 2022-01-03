@@ -111,17 +111,14 @@ public class PointService {
 	}
 
 	public void delete(JsonPointId point) {
-		Request live = new Request("POST", "/airrow/_delete_by_query");
 		Request points = new Request("POST", "/airrow-points/_delete_by_query");
 
 		String PI_QUERY = FileUtil.readString(getClass().getResourceAsStream("/es/query-session-id.json"));
 		PI_QUERY = PI_QUERY.replaceAll("\"_SESSION_ID_\"", "\"" + point.uuid + "\"");
 
-		live.setJsonEntity(PI_QUERY);
 		points.setJsonEntity(PI_QUERY);
 
 		try {
-			restClient.performRequest(live);
 			restClient.performRequest(points);
 		} catch (IOException e) {
 			e.printStackTrace();
