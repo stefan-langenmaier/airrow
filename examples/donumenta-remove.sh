@@ -4,6 +4,6 @@
 # list all my points in this area
 curl -X POST -H "Content-Type: application/json;charset=UTF-8" \
   -d '{
-    "uuid":"X"
+    "uuid":"XXXX"
     }' \
-  https://api.dagva.donumenta.de//points/delete
+  https://api.vr.donumenta.de/points/delete

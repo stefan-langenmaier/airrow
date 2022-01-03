@@ -27,7 +27,7 @@ curl -X POST \
   -F "objectMedia=@donumenta/bt/bt.glb" \
   -F "previewMedia=@donumenta/bt/preview.jpg" \
   -F "backgroundMedia=@donumenta/bt/background.jpg" \
-  https://api.dagva.donumenta.de/upload && echo "ok turm"
+  https://api.vr.donumenta.de/upload && echo "ok turm"
 
 # mbb
 curl -X POST \
@@ -54,7 +54,7 @@ curl -X POST \
   -F "objectMedia=@donumenta/mbb/mbb.glb" \
   -F "previewMedia=@donumenta/mbb/preview.jpg" \
   -F "backgroundMedia=@donumenta/mbb/background.jpg" \
-  https://api.dagva.donumenta.de/upload && echo "ok mbb"
+  https://api.vr.donumenta.de/upload && echo "ok mbb"
 
 # akh
 curl -X POST \
@@ -81,7 +81,7 @@ curl -X POST \
   -F "objectMedia=@donumenta/akh/akh.glb" \
   -F "previewMedia=@donumenta/akh/preview.jpg" \
   -F "backgroundMedia=@donumenta/akh/background.jpg" \
-  https://api.dagva.donumenta.de/upload && echo "ok akh"
+  https://api.vr.donumenta.de/upload && echo "ok akh"
 
 # parabelle
 curl -X POST \
@@ -108,7 +108,7 @@ curl -X POST \
   -F "objectMedia=@donumenta/pb/pb.glb" \
   -F "previewMedia=@donumenta/pb/preview.jpg" \
   -F "backgroundMedia=@donumenta/pb/background.jpg" \
-  https://api.dagva.donumenta.de/upload && echo "ok pb"
+  https://api.vr.donumenta.de/upload && echo "ok pb"
 
 # all my rivers
 curl -X POST \
@@ -135,7 +135,7 @@ curl -X POST \
   -F "objectMedia=@donumenta/amr/amr.glb" \
   -F "previewMedia=@donumenta/amr/preview.jpg" \
   -F "backgroundMedia=@donumenta/amr/background.jpg" \
-  https://api.dagva.donumenta.de/upload && echo "ok amr"
+  https://api.vr.donumenta.de/upload && echo "ok amr"
 
   # art lab
 curl -X POST \
@@ -162,4 +162,4 @@ curl -X POST \
   -F "objectMedia=@donumenta/al/link.txt" \
   -F "previewMedia=@donumenta/al/preview.jpg" \
   -F "backgroundMedia=@donumenta/al/background.jpg" \
-  https://api.dagva.donumenta.de/upload && echo "ok al"
+  https://api.vr.donumenta.de/upload && echo "ok al"
