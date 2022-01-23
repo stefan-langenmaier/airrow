@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import net.langenmaier.airrow.backend.app.dto.JsonRateData;
 import net.langenmaier.airrow.backend.app.enumeration.RatingState;
-import net.langenmaier.airrow.backend.app.helper.EmojiUtils;
 
 public class Rating {
 
@@ -23,7 +22,7 @@ public class Rating {
 		r.creator = rd.uuid;
 		r.entity = entity;
 
-		r.status = EmojiUtils.stripNonEmojis(rd.status);
+		r.status = rd.status;
 		r.rating = rd.rating;
 
 		ZoneOffset zoneOffSet= ZoneOffset.of("+00:00");

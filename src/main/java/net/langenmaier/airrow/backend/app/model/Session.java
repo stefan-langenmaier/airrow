@@ -5,7 +5,6 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 
 import net.langenmaier.airrow.backend.app.dto.JsonRefreshData;
-import net.langenmaier.airrow.backend.app.helper.EmojiUtils;
 
 public class Session {
 
