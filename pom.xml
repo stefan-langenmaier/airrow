@@ -87,11 +87,6 @@
       <artifactId>quarkus-scheduler</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.kcthota</groupId>
-      <artifactId>emoji4j</artifactId>
-      <version>6.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.tika</groupId>
       <artifactId>tika-core</artifactId>
       <version>1.28</version>
