@@ -164,10 +164,10 @@ curl -X POST \
   -F "backgroundMedia=@donumenta/al/background.jpg" \
   https://api.vr.donumenta.de/upload && echo "ok al"
   
-  # drehtüre
+  # Ring Steineren Brücke
 curl -X POST \
   -F 'meta={
-    "creator":"289ae107-aa5f-4423-9b5d-487e449ece56",
+    "creator":"43338665-dfc2-4f83-bc7a-fc6772040b0c",
     "location":{"lat":49.02222,"lon":12.09679},
     "accuracy":10,
     "artistName":"Katharina Cibulka",
@@ -191,10 +191,10 @@ curl -X POST \
   -F "backgroundMedia=@donumenta/st/background.jpg" \
   https://api.vr.donumenta.de/upload && echo "ok pb"
 
-   # ring
+   # Drehtür Cassianplatz
 curl -X POST \
   -F 'meta={
-    "creator":"289ae107-aa5f-4423-9b5d-487e449ece56",
+    "creator":"43338665-dfc2-4f83-bc7a-fc6772040b0c",
     "location":{"lat":49.01743,"lon":12.09748}, 
     "accuracy":10,
     "artistName":"Krassimir Terziev",
@@ -206,9 +206,9 @@ curl -X POST \
     "objectName":"Storm Door",
     "objectYear":"2021",
     "objectPlace": "93047 Regensburg",
-    "objectStreet": Sankt Kassian 1",
-    "objectIdeaDe":"Storm Door ist eine vierflügelige Drehtür, die auf der Form eines Kreuzes basiert. Das Kreuz stellt die Grundform zum Bau vieler Städte dar, welche Terziev so in seinem Werk aufgreift. Mit dem Werk bietet Terziev den Menschen neue Perspektiven auf sich und die Historie Regensburgs. Die Betrachter*innen spiegeln sich in den Karusselltüren und erkennen hinter sich Zeugnisse der eigenen Geschichte – historische Bauten und historisches Pflaster. Wer die Drehtür bewegt, schafft eine neue Form der Orientierung und lässt Aspekte der Geschichte und der Gegenwart miteinander verschmelzen.",
-    "objectIdeaEn":"Storm Door is a four-winged revolving door based on the shape of a cross. The cross represents the basic form for the construction of many cities, which Terziev thus picks up in his work. With this work, Terziev offers people new perspectives on themselves and the history of Regensburg. The viewers are reflected in the revolving doors and recognize behind them evidence of their own history - historic buildings and historic pavement. Anyone who moves the revolving door creates a new form of orientation and allows aspects of history and the present to merge.",
+    "objectStreet": "Sankt Kassian 1",
+    "objectIdeaDe":"Storm Door ist eine vierflügelige Drehtür, die auf der Form eines Kreuzes basiert. Das Kreuz stellt die Grundform zum Bau vieler Städte dar, welche Terziev so in seinem Werk aufgreift. Mit dem Werk bietet Terziev den Menschen neue Perspektiven auf sich und die Historie Regensburgs. Die Betrachter*innen spiegeln sich in den Karusselltüren und erkennen hinter sich Zeugnisse der eigenen Geschichte – historische Bauten und historisches Pflaster. Wer die Drehtür bewegt, schafft eine neue Form der Orientierung und lässt Aspekte der Geschichte und der Gegenwart miteinander verschmelzen. ",
+    "objectIdeaEn":"Storm Door is a four-winged revolving door based on the shape of a cross. The cross represents the basic form for the construction of many cities, which Terziev thus picks up in his work. With this work, Terziev offers people new perspectives on themselves and the history of Regensburg. The viewers are reflected in the revolving doors and recognize behind them evidence of their own history - historic buildings and historic pavement. Anyone who moves the revolving door creates a new form of orientation and allows aspects of history and the present to merge. ",
     "objectLink":"https://www.donumenta.de",
     "previewMediaName":"preview.jpg",
     "backgroundMediaName":"background.jpg",
