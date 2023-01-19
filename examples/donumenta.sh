@@ -168,7 +168,7 @@ curl -X POST \
 curl -X POST \
   -F 'meta={
     "creator":"43338665-dfc2-4f83-bc7a-fc6772040b0c",
-    "location":{"lat":49.02222,"lon":12.09679},
+    "location":{"lat":49.02313,"lon":12.09709},
     "accuracy":10,
     "artistName":"Katharina Cibulka",
     "artistCountry":"Austria",
