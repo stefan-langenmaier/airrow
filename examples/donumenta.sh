@@ -168,7 +168,7 @@ curl -X POST \
 curl -X POST \
   -F 'meta={
     "creator":"43338665-dfc2-4f83-bc7a-fc6772040b0c",
-    "location":{"lat":49.02313,"lon":12.09709},
+    "location":{"lat":49.02222,"lon":12.09679},
     "accuracy":10,
     "artistName":"Katharina Cibulka",
     "artistCountry":"Austria",
@@ -181,7 +181,7 @@ curl -X POST \
     "objectPlace": "93059 Regensburg",
     "objectStreet": "Steinerne Brücke",
     "objectIdeaDe":"Das Recht jeder Frau, über ihren Körper selbst zu bestimmen, ist ein universelles Menschenrecht. Temporäre Installation am 13. Brückenjoch der Steinernen Brücke. Hier fanden bis um 1600 die Wasserstrafen statt. Zur Todesstrafe durch Ertränken wurden meist Frauen verurteilt. Cibulka verknüpft die mittelalterliche Praxis der Todesstrafe mit Rettungsstangen, die heute das Donauufer säumen – zwei diametral entgegengesetzte Perspektiven auf das Leben. In ihrer 19 Meter langen Skulptur transformiert sie den Ring am Ende der Stange in einen Kleiderbügel – Symbol für einen gefährlichen Abbruch, wenn Schwangere in die Illegalität getrieben werden. Cibulkas Werk ist im Kontext aktueller Rückschläge für die Frauenrechte – wie das neue Abtreibungsverbot in den USA – zu interpretieren. ",
-    "objectIdeaEn":"The right of every woman to determine her own body is a universal human right. Temporary installation at the 13th bridge yoke of the Stone Bridge. This is where the water punishments took place until around 1600. Mostly women were sentenced to death by drowning. Cibulka links the medieval practice of capital punishment with rescue poles that line the banks of the Danube today - two diametrically opposed perspectives on life. In her 19-meter-long sculpture, she transforms the ring at the end of the pole into a coat hanger - symbolizing a dangerous abortion when pregnant women are driven into illegality. Cibulkas work is to be interpreted in the context of current setbacks for womens rights - such as the new abortion ban in the US. ",
+    "objectIdeaEn":"The right of every woman to determine her own body is a universal human right. Temporary installation at the 13th bridge yoke of the Stone Bridge. This is where the water punishments took place until around 1600. Mostly women were sentenced to death by drowning. Cibulka links the medieval practice of capital punishment with rescue poles that line the banks of the Danube today - two diametrically opposed perspectives on life. In her 19-meter-long sculpture, she transforms the ring at the end of the pole into a coat hanger - symbolizing a dangerous abortion when pregnant women are driven into illegality. Cibulka's work is to be interpreted in the context of current setbacks for women's rights - such as the new abortion ban in the US. ",
     "objectLink":"https://www.donumenta.de",
     "previewMediaName":"preview.jpg",
     "backgroundMediaName":"background.jpg",
