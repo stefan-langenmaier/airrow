@@ -163,3 +163,57 @@ curl -X POST \
   -F "previewMedia=@donumenta/al/preview.jpg" \
   -F "backgroundMedia=@donumenta/al/background.jpg" \
   https://api.vr.donumenta.de/upload && echo "ok al"
+  
+  # Ring Steineren Brücke
+curl -X POST \
+  -F 'meta={
+    "creator":"43338665-dfc2-4f83-bc7a-fc6772040b0c",
+    "location":{"lat":49.02222,"lon":12.09679},
+    "accuracy":10,
+    "artistName":"Katharina Cibulka",
+    "artistCountry":"Austria",
+    "artistPlace":"Wien/Austria",
+    "artistIntroDe":"Katharina Cibulka (1975) ist Künstlerin, Filmemacherin und Fotografin aus Österreich. Sie leitet Workshops an der Akademie der Bildenden Künste in Wien und hält regelmäßig Vorträge an verschiedenen Universitäten. In ihren Arbeiten setzt sie sich mit Themen wie Feminismus, sozialer Gerechtigkeit, Gemeinschaftlichkeit und Fragen zu ästhetischen Vorgängen auseinander.",
+    "artistIntroEn":"Katharina Cibulka (1975) is an artist, filmmaker and photographer from Austria. She leads workshops at the Academy of Fine Arts in Vienna and regularly lectures at various universities. In her work she explores themes such as feminism, social justice, communality and questions about aesthetic processes.",
+    "artistLink":"https://www.donumenta.de",
+    "objectName":"Für Margretha, Johanna, Sophia …",
+    "objectYear":"2021",
+    "objectPlace": "93059 Regensburg",
+    "objectStreet": "Steinerne Brücke",
+    "objectIdeaDe":"Das Recht jeder Frau, über ihren Körper selbst zu bestimmen, ist ein universelles Menschenrecht. Temporäre Installation am 13. Brückenjoch der Steinernen Brücke. Hier fanden bis um 1600 die Wasserstrafen statt. Zur Todesstrafe durch Ertränken wurden meist Frauen verurteilt. Cibulka verknüpft die mittelalterliche Praxis der Todesstrafe mit Rettungsstangen, die heute das Donauufer säumen – zwei diametral entgegengesetzte Perspektiven auf das Leben. In ihrer 19 Meter langen Skulptur transformiert sie den Ring am Ende der Stange in einen Kleiderbügel – Symbol für einen gefährlichen Abbruch, wenn Schwangere in die Illegalität getrieben werden. Cibulkas Werk ist im Kontext aktueller Rückschläge für die Frauenrechte – wie das neue Abtreibungsverbot in den USA – zu interpretieren. ",
+    "objectIdeaEn":"The right of every woman to determine her own body is a universal human right. Temporary installation at the 13th bridge yoke of the Stone Bridge. This is where the water punishments took place until around 1600. Mostly women were sentenced to death by drowning. Cibulka links the medieval practice of capital punishment with rescue poles that line the banks of the Danube today - two diametrically opposed perspectives on life. In her 19-meter-long sculpture, she transforms the ring at the end of the pole into a coat hanger - symbolizing a dangerous abortion when pregnant women are driven into illegality. Cibulka's work is to be interpreted in the context of current setbacks for women's rights - such as the new abortion ban in the US. ",
+    "objectLink":"https://www.donumenta.de",
+    "previewMediaName":"preview.jpg",
+    "backgroundMediaName":"background.jpg",
+    "objectMediaName":"st.glb"}' \
+  -F "objectMedia=@donumenta/st/st.glb" \
+  -F "previewMedia=@donumenta/st/preview.jpg" \
+  -F "backgroundMedia=@donumenta/st/background.jpg" \
+  https://api.vr.donumenta.de/upload && echo "ok pb"
+
+   # Drehtür Cassianplatz
+curl -X POST \
+  -F 'meta={
+    "creator":"43338665-dfc2-4f83-bc7a-fc6772040b0c",
+    "location":{"lat":49.01743,"lon":12.09748}, 
+    "accuracy":10,
+    "artistName":"Krassimir Terziev",
+    "artistCountry":"Bulgaria",
+    "artistPlace":"Bulgaria",
+    "artistIntroDe":"Krassimir Terziev (1968) ist Künstler aus Bulgarien und arbeitet mit verschiedenen Medien wie Film, Fotografie, Malerei und Zeichnungen. Er lehrt an der Universität Sofia, an der er auch seinen PH.D. in Kultureller Anthropologie machte. In seinen Werken setzt er sich mit Fragen der Grenze zwischen Realität und Fiktion auseinander. Er beschäftigt sich mit der globalisierten Welt und ihrer vielschichtigen Bildwelt.",
+    "artistIntroEn":"Krassimir Terziev (1968) is an artist from Bulgaria working with different media such as film, photography, painting and drawings. He teaches at Sofia University, where he also earned his PH.D. in Cultural Anthropology. In his works he deals with issues of the border between reality and fiction. He is concerned with the globalized world and its multilayered visual world.",
+    "artistLink":"https://www.donumenta.de",
+    "objectName":"Storm Door",
+    "objectYear":"2021",
+    "objectPlace": "93047 Regensburg",
+    "objectStreet": "Sankt Kassian 1",
+    "objectIdeaDe":"Storm Door ist eine vierflügelige Drehtür, die auf der Form eines Kreuzes basiert. Das Kreuz stellt die Grundform zum Bau vieler Städte dar, welche Terziev so in seinem Werk aufgreift. Mit dem Werk bietet Terziev den Menschen neue Perspektiven auf sich und die Historie Regensburgs. Die Betrachter*innen spiegeln sich in den Karusselltüren und erkennen hinter sich Zeugnisse der eigenen Geschichte – historische Bauten und historisches Pflaster. Wer die Drehtür bewegt, schafft eine neue Form der Orientierung und lässt Aspekte der Geschichte und der Gegenwart miteinander verschmelzen. ",
+    "objectIdeaEn":"Storm Door is a four-winged revolving door based on the shape of a cross. The cross represents the basic form for the construction of many cities, which Terziev thus picks up in his work. With this work, Terziev offers people new perspectives on themselves and the history of Regensburg. The viewers are reflected in the revolving doors and recognize behind them evidence of their own history - historic buildings and historic pavement. Anyone who moves the revolving door creates a new form of orientation and allows aspects of history and the present to merge. ",
+    "objectLink":"https://www.donumenta.de",
+    "previewMediaName":"preview.jpg",
+    "backgroundMediaName":"background.jpg",
+    "objectMediaName":"dt.glb"}' \
+  -F "objectMedia=@donumenta/dt/dt.glb" \
+  -F "previewMedia=@donumenta/dt/preview.jpg" \
+  -F "backgroundMedia=@donumenta/dt/background.jpg" \
+  https://api.vr.donumenta.de/upload && echo "ok pb"
