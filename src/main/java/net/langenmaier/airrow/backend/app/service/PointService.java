@@ -54,7 +54,7 @@ public class PointService {
 		JsonObject json = new JsonObject(bodyPI); 
 		JsonArray hits = json.getJsonObject("hits").getJsonArray("hits");
 		if (hits.size() > 0) {
-			for (int i=0; i<10 && i<hits.size(); i++) {
+			for (int i=0; i<hits.size(); i++) {
 				JsonObject target = hits.getJsonObject(i);
 				JsonObject source = target.getJsonObject("_source");
 				EsPointDto ep = source.mapTo(EsPointDto.class);
@@ -95,7 +95,7 @@ public class PointService {
 		JsonObject json = new JsonObject(bodyPI);
 		JsonArray hits = json.getJsonObject("hits").getJsonArray("hits");
 		if (hits.size() > 0) {
-			for (int i=0; i<10 && i<hits.size(); i++) {
+			for (int i=0; i<hits.size(); i++) {
 				JsonObject target = hits.getJsonObject(i);
 				JsonObject source = target.getJsonObject("_source");
 				EsPointDto ep = source.mapTo(EsPointDto.class);
