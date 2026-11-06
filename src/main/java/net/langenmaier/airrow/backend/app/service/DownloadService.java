@@ -2,14 +2,14 @@ package net.langenmaier.airrow.backend.app.service;
 
 import java.io.IOException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-import org.apache.http.ParseException;
-import org.apache.http.util.EntityUtils;
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.RestClient;
+import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import co.elastic.clients.transport.rest5_client.low_level.Request;
+import co.elastic.clients.transport.rest5_client.low_level.Response;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -21,7 +21,7 @@ import net.langenmaier.airrow.backend.app.model.Download;
 public class DownloadService {
 
 	@Inject
-	RestClient restClient;
+	Rest5Client restClient;
 
 	public Download get(String fileHash) {
 		Request downloadRequest = new Request("GET", "/airrow-points/_search");

@@ -2,7 +2,7 @@ package net.langenmaier.airrow.backend.app.model;
 
 import java.io.File;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.config.ConfigProvider;
 

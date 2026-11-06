@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.http.HttpHost;
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.RestClient;
+import org.apache.hc.core5.http.HttpHost;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
+import co.elastic.clients.transport.rest5_client.low_level.Request;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import net.langenmaier.airrow.backend.app.helper.FileUtil;
 
@@ -21,7 +21,7 @@ public class Elasticsearch implements QuarkusTestResourceLifecycleManager {
     public Map<String, String> start() {
         container.addEnv("ES_JAVA_OPTS", "-Xms128m -Xmx128m");
         container.start();
-        RestClient client = RestClient.builder(HttpHost.create(container.getHttpHostAddress())).build();
+        Rest5Client client = Rest5Client.builder(new HttpHost("http", container.getHost(), container.getMappedPort(9200))).build();
         try {
             Request request = null;
 
