@@ -2,11 +2,11 @@ package net.langenmaier.airrow.backend.app.service;
 
 import java.io.IOException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.RestClient;
+import co.elastic.clients.transport.rest5_client.low_level.Request;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
 
 import io.vertx.core.json.JsonObject;
 import net.langenmaier.airrow.backend.app.dto.EsLivePointDto;
@@ -17,7 +17,7 @@ import net.langenmaier.airrow.backend.app.model.Upload;
 public class UploadService {
 
 	@Inject
-	RestClient restClient;
+	Rest5Client restClient;
 
 	public void register(Upload upload) {
 		Request entity = new Request("PUT", "/airrow-points/_doc/" + upload.uuid.toString());

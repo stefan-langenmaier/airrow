@@ -21,7 +21,7 @@ public class RateResourceTest {
     public void testRate() {
         given()
             .contentType("application/json")
-            .body("{\"uuid\":\"466a73a0-0d8b-46cc-ac9e-9e719bd9ffff\",\"refCode\": \"r01\", \"status\":\"\",\"rating\":\"UP\"}")
+            .body("{\"uuid\":\"466a73a0-0d8b-46cc-ac9e-9e719bd9eeee\",\"refCode\": \"r01\", \"status\":\"\",\"rating\":\"UP\"}")
             .when().post()
             .then()
                 .statusCode(200);

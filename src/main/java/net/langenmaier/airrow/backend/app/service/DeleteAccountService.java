@@ -3,17 +3,17 @@ package net.langenmaier.airrow.backend.app.service;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.RestClient;
+import co.elastic.clients.transport.rest5_client.low_level.Request;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
 
 @ApplicationScoped
 public class DeleteAccountService {
 
 	@Inject
-	RestClient restClient;
+	Rest5Client restClient;
 
 	public void delete(UUID sessionId) {
 		Request delete = new Request("POST", "/airrow-trajectories/_delete_by_query");

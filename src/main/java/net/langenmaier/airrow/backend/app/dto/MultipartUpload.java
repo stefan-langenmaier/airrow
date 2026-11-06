@@ -2,8 +2,8 @@ package net.langenmaier.airrow.backend.app.dto;
 
 import java.io.File;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
